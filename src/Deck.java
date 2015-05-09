@@ -1,7 +1,7 @@
 
 public class Deck {
 	public static final int NUMCARDS = 52;
-	private Card[] deckOfCards;
+	public Card[] deckOfCards;
 	
 	//construct deck
 	public Deck() {
