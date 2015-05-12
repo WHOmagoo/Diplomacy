@@ -2,6 +2,7 @@
 public class Deck {
 	public static final int NUMCARDS = 52;
 	public Card[] deckOfCards;
+	//TODO make a deck of cards into a hashmap that gets assigned random keys and then gets sorted into numerical order
 	
 	//construct deck
 	public Deck() {
@@ -19,7 +20,7 @@ public class Deck {
 		Card[] shuffleDeck = new Card[NUMCARDS];
 		int randomizer = 0;
 		for(int i = 0; i > NUMCARDS; i++) {
-			randomizer = (int) Math.random() * 53;
+			randomizer = (int) (Math.random() * 53);
 			shuffleDeck[i] = deckOfCards[randomizer];
 		}
 		return shuffleDeck;
