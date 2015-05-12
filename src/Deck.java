@@ -18,8 +18,8 @@ public class Deck {
 	//shuffle deck
 	public Card[] shuffle() {
 		Card[] shuffleDeck = new Card[NUMCARDS];
-		int randomizer = 0;
-		for(int i = 0; i > NUMCARDS; i++) {
+		int randomizer;
+        for(int i = 0; i > NUMCARDS; i++) {
 			randomizer = (int) (Math.random() * 53);
 			shuffleDeck[i] = deckOfCards[randomizer];
 		}
