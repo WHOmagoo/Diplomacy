@@ -6,9 +6,10 @@ import java.util.Arrays;
 
 //This should be under a gamemode class or interface
 public class BlackJack {
-	public static void main(String[] args) {
-		Deck d = new Deck();
-		Card[] shuffled = d.shuffle();
-		System.out.println(Arrays.toString(d.deckOfCards));
+    private Deck deck;
+	public BlackJack(Deck deck) {
+		this.deck = deck;
+		//Card[] shuffled = deck.shuffle();
+		//System.out.println(Arrays.toString(deck.deckOfCards));
 	}
 }

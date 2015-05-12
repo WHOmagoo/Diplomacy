@@ -1,40 +1,37 @@
-
+import java.util.ArrayList;
 public class Deck {
 	public static final int NUMCARDS = 52;
-	public Card[] deckOfCards;
-	//TODO make a deck of cards into a hashmap that gets assigned random keys and then gets sorted into numerical order
-	
+	private ArrayList<Card> deckOfCards;
+    private ArrayList<Card> shuffledDeck;
+	//TODO make a deck of cards into a HashMap that gets assigned random keys and then gets sorted into numerical order NO
+
 	//construct deck
 	public Deck() {
-		deckOfCards = new Card[NUMCARDS];
+		deckOfCards = new ArrayList<Card>();
 		int i = 0;
-		for(int suit = Card.CLUB; suit <= Card.HEART; suit++) {
+        String suitName = "";
+		for(int suit = 1; suit <= 4; suit++) {
 			for(int rank = 1; rank <= 13; rank++) {
-				deckOfCards[i++] = new Card(suit, rank);
+				deckOfCards.add(new Card(suit, rank));
 			}
 		}
 	}
-	
-	//shuffle deck
-	public Card[] shuffle() {
-		Card[] shuffleDeck = new Card[NUMCARDS];
-		int randomizer;
-        for(int i = 0; i > NUMCARDS; i++) {
-			randomizer = (int) (Math.random() * 53);
-			shuffleDeck[i] = deckOfCards[randomizer];
+
+    public ArrayList<Card> getDeckOfCards() {
+        return deckOfCards;
+    }
+
+    //shuffle deck
+	public ArrayList<Card> shuffle() {
+        ArrayList<Card> workingDeck = deckOfCards;
+		shuffledDeck = new ArrayList<Card>();
+		int random;
+        int deckSize = workingDeck.size();
+        for(int i = 0; i < deckSize; i++) {
+			random = (int) (Math.random() * (52 - i));
+			shuffledDeck.add(workingDeck.get(random));
+            workingDeck.remove(random);
 		}
-		return shuffleDeck;
-	}
-	
-	public String toString(Card[] deck) {
-		String s = "";
-		int k = 0;
-		for (int i = 0; i < 4; i++) {
-			for(int j = 1; j <= 13; j++) {
-				s+=(deck[k++] + " ");
-			}
-			s += "\n";
-		}
-		return (s);
+        return shuffledDeck;
 	}
 }
