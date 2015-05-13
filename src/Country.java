@@ -22,8 +22,13 @@ public class Country extends JButton implements ActionListener, Comparable{
         super.addActionListener(this);
     }
 
-    public void setBorder(Border borders){
-        this.borders = borders;
+    public Country(String name) {
+        this.name = name;
+        super.setSize(40, 40);
+        super.setOpaque(true);
+        super.setBorder(null);
+        super.setContentAreaFilled(false);
+        super.addActionListener(this);
     }
 
     public void setOccupiedBy(int occupiedBy){
@@ -54,8 +59,17 @@ public class Country extends JButton implements ActionListener, Comparable{
         try {
             c = (Country) country;
         } catch (Exception e){
-            throw new IllegalArgumentException("Must compare 2 countries");
+            throw new IllegalArgumentException("Must compare two countries");
         }
+
         return this.name.compareTo(c.getName());
+    }
+
+    public Border getBorders() {
+        return borders;
+    }
+
+    public void setBorders(Country[] countries) {
+        borders = new Border(this, countries);
     }
 }

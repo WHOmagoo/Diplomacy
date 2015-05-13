@@ -1,35 +1,35 @@
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 
 /**
  * Created by ros_hrmcgough on 4/29/2015.
  */
-public class Border {
-    private ArrayList<Country> borders;
+public class Border extends ArrayList<Country> {
     private Country country;
     private String random;
 
     public Border(Country country, ArrayList<Country> borders){
         Collections.sort(borders);
-        this.borders = borders;
+        super.addAll(borders);
         this.country = country;
 
     }
 
-    public void setRandom(String s){
-        random = s;
-    }
+    public Border(Country country, Country[] borders) {
+        for (Country s : borders) {
+            if (s == country) {
+                throw new IllegalArgumentException("Country must not be borderd by itself");
+            } else {
+                super.add(s);
+            }
+        }
 
-    public String getRandom(){
-        return random;
+        Collections.sort(this);
+        this.country = country;
+
     }
 
     public Country getCountry(int i) {
-        return borders.get(i);
-    }
-
-    public String toString(){
-        return borders.toString();
+        return super.get(i);
     }
 }
