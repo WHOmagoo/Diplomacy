@@ -1,10 +1,10 @@
 import javax.swing.*;
 
 public enum Team {
-    Null(new ImageIcon[]{
+    NULL(new ImageIcon[]{
     }),
 
-    Britain(new ImageIcon[]
+    BRITAIN(new ImageIcon[]
             {
                     new ImageIcon("Star.png"),
                     new ImageIcon("rolloverstar.png"),
@@ -14,7 +14,7 @@ public enum Team {
                     new ImageIcon("clickanchor.png")
             }),
 
-    Austria(new ImageIcon[]
+    AUSTRIA(new ImageIcon[]
             {
                     new ImageIcon("Austriaarmy.png"),
                     new ImageIcon("Austriaarmyrollover.png"),
@@ -24,7 +24,7 @@ public enum Team {
                     new ImageIcon("Austrianavyclick.png")
             }),
 
-    Egypt(new ImageIcon[]
+    EGYPT(new ImageIcon[]
             {
                     new ImageIcon("Egyptarmy.png"),
                     new ImageIcon("Egyptarmyrollover.png"),
@@ -34,7 +34,7 @@ public enum Team {
                     new ImageIcon("Egyptnavyclick.png")
             }),
 
-    France(new ImageIcon[]
+    FRANCE(new ImageIcon[]
             {
 
                     new ImageIcon("Francearmy.png"),
@@ -45,7 +45,7 @@ public enum Team {
                     new ImageIcon("Francenavyclick.png")
             }),
 
-    Germany(new ImageIcon[]
+    GERMANY(new ImageIcon[]
             {
                     new ImageIcon("Germanyarmy.png"),
                     new ImageIcon("Germanyarmyrollover.png"),
@@ -55,7 +55,7 @@ public enum Team {
                     new ImageIcon("Germanynavyclick.png")
             }),
 
-    Italy(new ImageIcon[]
+    ITALY(new ImageIcon[]
             {
                     new ImageIcon("Italyarmy.png"),
                     new ImageIcon("Italyarmyrollover.png"),
@@ -65,7 +65,7 @@ public enum Team {
                     new ImageIcon("Italynavyclick.png")
             }),
 
-    NorthAfrica(new ImageIcon[]
+    NORTH_AFRICA(new ImageIcon[]
             {
                     new ImageIcon("NAfricaarmy.png"),
                     new ImageIcon("NAfricaarmyrollover.png"),
@@ -75,7 +75,7 @@ public enum Team {
                     new ImageIcon("NAfricanavyclick.png")
             }),
 
-    Ottoman(new ImageIcon[]
+    OTTOMAN(new ImageIcon[]
             {
                     new ImageIcon("Ottomanarmy.png"),
                     new ImageIcon("Ottomanarmyrollover.png"),
@@ -85,7 +85,7 @@ public enum Team {
                     new ImageIcon("Ottomannavyclick.png")
             }),
 
-    Russia(new ImageIcon[]
+    RUSSIA(new ImageIcon[]
             {
                     new ImageIcon("Russiaarmy.png"),
                     new ImageIcon("Russiaarmyrollover.png"),
@@ -95,7 +95,7 @@ public enum Team {
                     new ImageIcon("Russianavyclick.png")
             }),
 
-    Spain(new ImageIcon[]
+    SPAIN(new ImageIcon[]
             {
                     new ImageIcon("Spainarmy.png"),
                     new ImageIcon("Spainarmyrollover.png"),
@@ -105,7 +105,7 @@ public enum Team {
                     new ImageIcon("Spainnavyclick.png")
             }),
 
-    Balkans(new ImageIcon[]
+    BALKANS(new ImageIcon[]
             {
                     new ImageIcon("Balkansarmy.png"),
                     new ImageIcon("Balkansarmyrollover.png"),
@@ -115,7 +115,7 @@ public enum Team {
                     new ImageIcon("Balkansnavyclick.png")
             }),
 
-    Belarus(new ImageIcon[]{
+    BELARUS(new ImageIcon[]{
             new ImageIcon("Belarusarmy.png"),
             new ImageIcon("Belarusarmyrollover.png"),
             new ImageIcon("Belarusarmyclick.png"),
@@ -157,4 +157,5 @@ public enum Team {
     Icon getNavyClickIcon() {
         return icons[5];
     }
+
 }
