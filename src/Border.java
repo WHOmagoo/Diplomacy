@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by ros_hrmcgough on 4/29/2015.
+ * Created by WHOmagoo? on 4/29/2015.
  */
 public class Border extends ArrayList<Country> {
     private Country country;
