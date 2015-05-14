@@ -23,6 +23,9 @@ public class Test {
         t.setBackground(Color.BLACK);
         t.setVisible(true);
 
+        JComponent[] objs = new JComponent[]{
+                p, t
+        };
         j.add(p, 0);
         j.add(t, 0);
 
