@@ -7,13 +7,13 @@ import java.awt.event.ActionListener;
 public class Country extends JButton implements ActionListener, Comparable{
     private String name;
     private Border borders;
-    private int occupiedBy = 0;
-    private Point originalLocaion;
-    private String random;
+    private Team occupiedBy = Team.NULL;
+    private TileTypes tileType;
+    private Point originalLoctaion;
 
     public Country(String name, Point location){
         this.name = name;
-        originalLocaion = location;
+        originalLoctaion = location;
         super.setLocation(location);
         super.setSize(40, 40);
         super.setOpaque(true);
@@ -31,7 +31,7 @@ public class Country extends JButton implements ActionListener, Comparable{
         super.addActionListener(this);
     }
 
-    public void setOccupiedBy(int occupiedBy){
+    public void setOccupiedBy(Team occupiedBy) {
         this.occupiedBy = occupiedBy;
     }
 
@@ -40,7 +40,7 @@ public class Country extends JButton implements ActionListener, Comparable{
     }
 
     public void resetPosition(){
-        super.setLocation(originalLocaion);
+        super.setLocation(originalLoctaion);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Country extends JButton implements ActionListener, Comparable{
 
     public String toString() {
         return "Country: " + name + ", Borders: " + borders
-                + "Original Location: " + originalLocaion;
+                + "Original Location: " + originalLoctaion;
     }
 
     @Override
@@ -71,5 +71,17 @@ public class Country extends JButton implements ActionListener, Comparable{
 
     public void setBorders(Country[] countries) {
         borders = new Border(this, countries);
+    }
+
+    public boolean isOccupied() {
+        if (this.occupiedBy != Team.NULL) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public TileTypes getTileType() {
+        return tileType;
     }
 }

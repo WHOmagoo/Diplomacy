@@ -1,6 +1,10 @@
 import javax.swing.*;
 
-public class Input extends JComboBox implements CommandControl {
+public class Input extends JComponent implements CommandControl {
+
+    public Input() {
+    }
+
     @Override
     public void remove() {
         super.setVisible(false);
