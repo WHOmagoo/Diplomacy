@@ -85,13 +85,13 @@ public class Country extends JButton implements ActionListener, Comparable{
         return borders;
     }
 
-    public void setBorders(Border borders) {
-        this.borders = borders;
-    }
-
     @Deprecated
     public void setBorders(Country[] countries) {
         borders = new Border(this, countries);
+    }
+
+    public void setBorders(Border borders) {
+        this.borders = borders;
     }
 
     public void calculateSecondDegreeBorders() {
