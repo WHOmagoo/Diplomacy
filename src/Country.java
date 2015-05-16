@@ -34,6 +34,7 @@ public class Country extends JButton implements ActionListener, Comparable{
         declarationConstants();
     }
 
+    @Deprecated
     public Country(String name) {
         this.name = name;
         declarationConstants();
@@ -85,13 +86,13 @@ public class Country extends JButton implements ActionListener, Comparable{
         return borders;
     }
 
+    public void setBorders(Border borders) {
+        this.borders = borders;
+    }
+
     @Deprecated
     public void setBorders(Country[] countries) {
         borders = new Border(this, countries);
-    }
-
-    public void setBorders(Border borders) {
-        this.borders = borders;
     }
 
     public void calculateSecondDegreeBorders() {
@@ -107,6 +108,16 @@ public class Country extends JButton implements ActionListener, Comparable{
         } else {
             return false;
         }
+    }
+
+    public boolean contains(Country country) {
+        for (Country c : borders) {
+            if (c == country) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public TileTypes getTileType() {
