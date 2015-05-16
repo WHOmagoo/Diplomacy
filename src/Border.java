@@ -6,7 +6,10 @@ import java.util.Collections;
  */
 public class Border extends ArrayList<Country> {
     private Country country;
-    private String random;
+
+    public Border(Country country) {
+        this.country = country;
+    }
 
     public Border(Country country, ArrayList<Country> borders){
         Collections.sort(borders);
@@ -16,11 +19,16 @@ public class Border extends ArrayList<Country> {
     }
 
     public Border(Country country, Country[] borders) {
-        for (Country s : borders) {
-            if (s == country) {
-                throw new IllegalArgumentException("Country must not be borderd by itself");
+        for (Country c : borders) {
+            if (c == country) {
+                throw new IllegalArgumentException("Country must not be borderd by itself.\nCountry of issue: " + country);
             } else {
-                super.add(s);
+                for (Country addedCountry : this) {
+                    if (addedCountry == c) {
+                        //throw new IllegalArgumentException("There is a duplicate country, the problem is with the country " + c);
+                    }
+                }
+                super.add(c);
             }
         }
 
@@ -29,7 +37,22 @@ public class Border extends ArrayList<Country> {
 
     }
 
-    public Country getCountry(int i) {
+    public Country getCountry(int i) {//May be removed later
         return super.get(i);
     }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public Country getCountry(String nameOfCountry) {
+        for (Country country : this) {
+            if (country.getName() == nameOfCountry) {
+                return country;
+            }
+        }
+
+        throw new NullPointerException("The specified country does not exist as a border");
+    }
+
 }

@@ -1,29 +1,44 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Input extends JComboBox implements ActionListener {
-    DefaultComboBoxModel model = new DefaultComboBoxModel();
+    ;
 
     public Input() {
+        new JComboBox<OrderTypes>();
         for (OrderTypes o : OrderTypes.values()) {
-            model.addElement(o);
+            addItem(o);
         }
+
+        constants();
     }
 
     public Input(ArrayList<Country> countries) {
+        new JComboBox<Country>();
         Collections.sort(countries);
         for (Country c : countries) {
-            if (c.isOccupied()) {
-                model.addElement(c);
-            }
+            addItem(c);
         }
+
+        constants();
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
+    }
+
+    private void constants() {
+        setMaximumRowCount(36);
+        setRequestFocusEnabled(false);
+        setBackground(Color.ORANGE);
+        setForeground(Color.BLUE);
+        setSize(getFontMetrics(getFont()).stringWidth(getSelectedItem().toString()) + 25, 25);
+        setLocation(0, 0);
+        setAutoscrolls(true);
     }
 }
