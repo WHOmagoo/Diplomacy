@@ -1,0 +1,98 @@
+91	Adriatic Sea
+69	Aflou
+92	Agean Sea
+44	Albania
+67	Algiers
+62	Apulia
+84	Atlantic Ocean
+41	Austria
+82	Baltic Sea
+46	Banat
+33	Barcelona
+85	Bay of Biscay
+22	Belgium
+13	Bellorussia
+73	Bengasi
+18	Berlin
+28	Bilboa
+43	Bosnia
+24	Brest
+48	Bulgaria
+76	Cairo
+66	Casablanca
+79	Crete
+38	Crimea
+40	Czechoslovakia
+97	East Black Sea
+93	Eastern Mediterranean
+4	Edinburgh
+83	English  Channel
+71	Fazzar
+8	Finland
+27	Gacony
+86	Gibraltar
+37	Gorki
+50	Greece
+88	Gulf of Lyons
+16	Holland
+42	Hungary
+90	Ionian Sea
+2	Ireland
+80	Irish Sea
+56	Israel
+51	Istanbul
+54	Izmir
+57	Jordan
+17	Kiel
+15	Kiev
+36	Komi
+53	Kras
+95	Lake Cherkassy
+55	Lebanon
+10	Leningrad
+1	Liverpool
+5	London
+29	Lugo
+49	Macedonia
+26	Marseille
+12	Moscow
+21	Munich
+72	Murzq
+63	Naples
+77	Nile
+81	North Sea
+6	Norway
+0	Off Map
+25	Paris
+35	Pechora
+23	Picardy
+58	Piedmont
+30	Portugal
+14	Presov
+94	Red Sea
+47	Romania
+61	Rome
+39	Rostov
+20	Rurh
+70	Sahara
+74	Sallum
+52	Samsun
+65	Sardinia
+78	Sawhaj
+45	Serbia
+68	Setif
+31	Seville
+64	Sicily
+19	Siliesia
+11	Smolensk
+7	Sweden
+75	Tobruk
+60	Tuscany
+89	Tyrrhenian Sea
+34	Ust
+32	Valancia
+59	Venice
+9	Vologda
+3	Wales
+96	West Black Sea
+87	Western Mediterranean
