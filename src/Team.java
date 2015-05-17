@@ -158,4 +158,34 @@ public enum Team {
         return icons[5];
     }
 
+    Icon getIcon(UnitType unitType) {
+        if (unitType == UnitType.ARMY) {
+            return icons[0];
+        } else if (unitType == UnitType.NAVY) {
+            return icons[3];
+        } else {
+            return null;
+        }
+    }
+
+    Icon getRolloverIcon(UnitType unitType) {
+        if (unitType == UnitType.ARMY) {
+            return icons[1];
+        } else if (unitType == UnitType.NAVY) {
+            return icons[4];
+        } else {
+            return null;
+        }
+    }
+
+    Icon getSelectedIcon(UnitType unitType) {
+        if (unitType == UnitType.ARMY) {
+            return icons[2];
+        } else if (unitType == UnitType.NAVY) {
+            return icons[5];
+        } else {
+            return null;
+        }
+    }
+
 }

@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 /**
  * Created by Hugh on 5/12/2015.
  */
@@ -6,8 +8,18 @@
 public class Test {
 
     public static void main(String[] args) {
+        GameFrame frame = new GameFrame();
         Map map = CountryCreation.createMap();
-        System.out.println(map);
+
+        map.verifyBorders();
+        map.calculateSecondDegreeBorders();
+        map.setMapGraphics(new ImageIcon("Files\\Map.png"));
+        map.setMapText(new ImageIcon("Files\\Map Text.png"));
+
+        frame.addComponentCentered(map);
+        frame.repaint();
+        //fram.add(map);
+        //System.out.println(map);
         /*JFrame j = new JFrame();
         j.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         j.setSize(1000, 500);

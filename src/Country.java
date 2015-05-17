@@ -2,45 +2,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 
 public class Country extends JButton implements ActionListener, Comparable{
     private String name;
     private Border borders;
     private SecondDegreeBorder secondDegreeBorders;
-    private Team occupiedBy = Team.NULL;
+    private Team team = Team.NULL;
+    private UnitType unitType = UnitType.EMPTY;
     private TileTypes tileType;
     private Point originalLoctaion;
 
-    public Country(String name, int locationX, int locationY) {
-        this.name = name;
-        originalLoctaion = new Point(locationX, locationY);
-        setLocation(locationX, locationY);
-        declarationConstants();
-    }
-
-    public Country(String name, Point location){
-        this.name = name;
-        originalLoctaion = location;
-        setLocation(location);
-        declarationConstants();
-    }
-
-    public Country(String name, Point location, TileTypes tileType) {
-        this.name = name;
-        this.tileType = tileType;
-        originalLoctaion = location;
-        setLocation(location);
-        declarationConstants();
-    }
-
-    @Deprecated
-    public Country(String name) {
-        this.name = name;
-        declarationConstants();
-    }
-
-    private void declarationConstants() {
+    private Country() {
         setSize(40, 40);
         setOpaque(true);
         setBorder(null);
@@ -48,8 +22,36 @@ public class Country extends JButton implements ActionListener, Comparable{
         addActionListener(this);
     }
 
-    public void setOccupiedBy(Team occupiedBy) {
-        this.occupiedBy = occupiedBy;
+    public Country(String name, Point location, TileTypes tileType) {
+        this();
+        this.name = name;
+        this.tileType = tileType;
+        originalLoctaion = location;
+        setLocation(location);
+    }
+
+    public Country(String name, int locationX, int locationY) {
+        this();
+        this.name = name;
+        originalLoctaion = new Point(locationX, locationY);
+        setLocation(locationX, locationY);
+    }
+
+    public Country(String name, Point location){
+        this();
+        this.name = name;
+        originalLoctaion = location;
+        setLocation(location);
+    }
+
+    @Deprecated
+    public Country(String name) {
+        this();
+        this.name = name;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public String getName(){
@@ -86,13 +88,13 @@ public class Country extends JButton implements ActionListener, Comparable{
         return borders;
     }
 
-    public void setBorders(Border borders) {
-        this.borders = borders;
-    }
-
     @Deprecated
     public void setBorders(Country[] countries) {
         borders = new Border(this, countries);
+    }
+
+    public void setBorders(Border borders) {
+        this.borders = borders;
     }
 
     public void calculateSecondDegreeBorders() {
@@ -102,11 +104,24 @@ public class Country extends JButton implements ActionListener, Comparable{
         secondDegreeBorders = new SecondDegreeBorder(this, borders);
     }
 
+    public SecondDegreeBorder getSecondDegreeBorders() {
+        return secondDegreeBorders;
+    }
+
     public boolean isOccupied() {
-        if (this.occupiedBy != Team.NULL) {
+        if (this.team != Team.NULL) {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public void calculateCostal() {
+        for (Country c : borders) {
+            if (c.getTileType() == TileTypes.Water && tileType == TileTypes.Landlocked) {
+                tileType = TileTypes.Costal;
+                break;
+            }
         }
     }
 
@@ -122,5 +137,31 @@ public class Country extends JButton implements ActionListener, Comparable{
 
     public TileTypes getTileType() {
         return tileType;
+    }
+
+    public ArrayList<Country> getOccupiedNeighbors() {
+        ArrayList<Country> occupiedNeighbors = new ArrayList();
+        for (Country country : borders) {
+            if (country.isOccupied()) {
+                occupiedNeighbors.add(country);
+            }
+        }
+
+        return occupiedNeighbors;
+    }
+
+    public UnitType getUnitType() {
+        return unitType;
+    }
+
+    public void setUnitType(UnitType unitType) {
+        this.unitType = unitType;
+    }
+
+    public void refreshGraphics() {
+        setIcon(team.getIcon(unitType));
+        setRolloverIcon(team.getRolloverIcon(unitType));
+        setSelectedIcon(team.getSelectedIcon(unitType));
+        repaint();
     }
 }

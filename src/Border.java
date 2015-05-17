@@ -37,6 +37,9 @@ public class Border extends ArrayList<Country> {
 
     }
 
+    public Border() {
+    }
+
     public Country getCountry(int i) {//May be removed later
         return super.get(i);
     }

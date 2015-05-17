@@ -8,12 +8,33 @@ public class Map extends JPanel {
     public Map(ArrayList<Country> countries) {
         this.countries.addAll(countries);
         Collections.sort(this.countries);
+
+        setLayout(null);
+        setSize(1024, 768);
+
     }
 
     public void calculateSecondDegreeBorders() {
         for (Country c : countries) {
             c.calculateSecondDegreeBorders();
         }
+    }
+
+    public void setMapGraphics(ImageIcon map) {
+        add(mapGraphicsConstants(map), -1);
+    }
+
+    public void setMapText(ImageIcon text) {
+        add(mapGraphicsConstants(text), 0);
+    }
+
+    private JLabel mapGraphicsConstants(ImageIcon imageIcon) {
+        JLabel temp = new JLabel(imageIcon);
+        temp.setSize(1024, 768);
+        temp.setLocation(0, 0);
+        temp.setLayout(null);
+        return temp;
+
     }
 
 
@@ -30,7 +51,7 @@ public class Map extends JPanel {
     public String toString() {
         String temp = new String();
         for (Country c : countries) {
-            temp += "Coutnry: " + c + "\n\t Borders: " + c.getBorders().toString() + "\n\n";
+            temp += "Country: " + c + "\n\tBorders: " + c.getBorders() + "\n\tSecond Degree Borders: " + c.getSecondDegreeBorders() + "\n";
         }
 
         return temp;
