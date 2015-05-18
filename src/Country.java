@@ -1,8 +1,8 @@
+import javax.swing.JButton;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.JButton;
 
 public class Country extends JButton implements ActionListener, Comparable{
     private String name;
@@ -150,31 +150,9 @@ public class Country extends JButton implements ActionListener, Comparable{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Action");
-        info = new Info("Yes!");
-        info.setLocation(0, 0);
-        mapAssociation.add(info);
-        mapAssociation.repaint(info.getBounds());
-        Runnable runner = new Runnable() {
-            @Override
-            public void run() {
-                while (1 == 1) {
-                    try {
-                        Thread.sleep(4);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                    info.setLocation(info.getX() + 1, info.getY() + 1);
-                    mapAssociation.validate();
-                    if (info.getX() > getWidth() && info.getY() > getHeight()) {
-                        mapAssociation.remove(info);
-                    }
-                }
-            }
-        };
-        Thread ted = new Thread(runner);
-        ted.start();
-
+        Input bob = new Input(OrderType.values());
+        mapAssociation.add(bob, -1);
+        mapAssociation.repaint(bob.getBounds());
     }
 
     @Override

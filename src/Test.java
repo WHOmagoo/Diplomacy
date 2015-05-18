@@ -1,12 +1,12 @@
 import java.io.*;
 
-//TODO Use a ObjectOutputStream and ObjectInputStream to read and write files (ObjectOutputStream.writeObject(object)).
 public class Test {
 
     public static void main(String[] args) {
 
         GameFrame frame = new GameFrame();
-        Map map = writeMap();
+        Map map = MapCreation.createMap();
+        //Map map = writeMap();
         //Map map = readMap();
 
         frame.addComponentCentered(map);
@@ -19,12 +19,12 @@ public class Test {
             Map map = MapCreation.createMap();
             try {
                 out.writeObject(map);
+                out.close();
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Error writing");
-            } finally {
-                out.close();
             }
+            out.close();
             return map;
         } catch (FileNotFoundException e) {
             System.out.println("The File could not be found");

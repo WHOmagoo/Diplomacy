@@ -4,10 +4,10 @@ public class Order {
     private Country orderFrom;
     private Country orderTo;
     private Country supporting;
-    private OrderTypes orderType;
+    private OrderType orderType;
 
-    public Order(Country orderFrom, Country orderTo, OrderTypes orderType) throws IllegalArgumentException {
-        if(orderType != OrderTypes.ATTACK && orderType != OrderTypes.MOVE) {
+    public Order(Country orderFrom, Country orderTo, OrderType orderType) throws IllegalArgumentException {
+        if(orderType != OrderType.ATTACK && orderType != OrderType.MOVE) {
             throw new IllegalArgumentException("This must use an attack or a move command");
         }
             this.orderFrom = orderFrom;
@@ -15,8 +15,8 @@ public class Order {
             this.orderType = orderType;
     }
 
-    public Order(Country orderFrom, Country supporting, Country orderTo, OrderTypes orderType) throws IllegalArgumentException {
-        if(orderType != OrderTypes.SUPPORT){
+    public Order(Country orderFrom, Country supporting, Country orderTo, OrderType orderType) throws IllegalArgumentException {
+        if(orderType != OrderType.SUPPORT){
             throw new IllegalArgumentException("This must use a support command");
         }
         this.orderFrom = orderFrom;
@@ -25,8 +25,8 @@ public class Order {
         this.orderType = orderType;
     }
 
-    public Order(OrderTypes orderType){
-        if(orderType != OrderTypes.HOLD){
+    public Order(OrderType orderType){
+        if(orderType != OrderType.HOLD){
             throw new IllegalArgumentException("This must use a hold command");
         }
         this.orderType = orderType;

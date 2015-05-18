@@ -1,10 +1,10 @@
+import javax.swing.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
 
 /**
  * Created by Hugh on 5/16/2015.
@@ -17,7 +17,7 @@ public class GameFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setUndecorated(true);
-        setIconImage(Toolkit.getDefaultToolkit().getImage("Files\\spainarmy.png"));
+        setIconImage(Toolkit.getDefaultToolkit().getImage("Files\\Spain\\spainarmy.png"));
         getContentPane().setBackground(new Color(204, 132, 63));
         setTitle("Diplomacy");
         addQuit();

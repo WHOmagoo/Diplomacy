@@ -1,7 +1,7 @@
-import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import java.awt.Color;
 
 public class Info extends JLabel {
     public Info(String text) {

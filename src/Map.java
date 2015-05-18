@@ -1,7 +1,7 @@
-import java.util.ArrayList;
-import java.util.Collections;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Map extends JLabel {
     ArrayList<Country> countries = new ArrayList<Country>();

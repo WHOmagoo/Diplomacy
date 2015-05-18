@@ -1,6 +1,6 @@
+import javax.swing.ImageIcon;
 import java.awt.Point;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 
 /**
  * Created by Hugh on 5/15/2015.
