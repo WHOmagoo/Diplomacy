@@ -14,7 +14,7 @@ public class GameFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setUndecorated(true);
-        setIconImage(Toolkit.getDefaultToolkit().getImage("spainarmy.png"));
+        setIconImage(Toolkit.getDefaultToolkit().getImage("Files\\spainarmy.png"));
         getContentPane().setBackground(new Color(204, 132, 63));
         setTitle("Diplomacy");
         addQuit();

@@ -1,62 +1,61 @@
-import javax.swing.*;
-
-/**
- * Created by Hugh on 5/12/2015.
- */
+import java.io.*;
 
 //TODO Use a ObjectOutputStream and ObjectInputStream to read and write files (ObjectOutputStream.writeObject(object)).
 public class Test {
 
     public static void main(String[] args) {
-        GameFrame frame = new GameFrame();
-        Map map = CountryCreation.createMap();
 
-        map.verifyBorders();
-        map.calculateSecondDegreeBorders();
-        map.setMapGraphics(new ImageIcon("Files\\Map.png"));
-        map.setMapText(new ImageIcon("Files\\Map Text.png"));
+        GameFrame frame = new GameFrame();
+        Map map = writeMap();
+        //Map map = readMap();
 
         frame.addComponentCentered(map);
         frame.repaint();
-        //fram.add(map);
-        //System.out.println(map);
-        /*JFrame j = new JFrame();
-        j.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        j.setSize(1000, 500);
-        j.setLayout(null);
+    }
 
-        JPanel p = new JPanel();
-        p.setLayout(null);
-        p.setSize(125, 55);
-        p.setLocation(0, 0);
-        p.setBackground(Color.ORANGE);
-        p.setVisible(true);
+    public static Map writeMap() {
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File("..\\Save Files\\test.dat")));
+            Map map = MapCreation.createMap();
+            try {
+                out.writeObject(map);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error writing");
+            } finally {
+                out.close();
+            }
+            return map;
+        } catch (FileNotFoundException e) {
+            System.out.println("The File could not be found");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("The file is being accesed by another file");
 
-        JTextArea t = new JTextArea("Wurd");
-        t.setBounds(125, 55, 125, 55);
-        t.setBackground(Color.BLACK);
-        t.setVisible(true);
+        }
 
-        JComboBox<Country> combo = new JComboBox<Country>();
-        combo.addItem(new Country("Strouser"));
-        combo.addItem(new Country("Bober rober"));
-        combo.addItem(new Country("Ronald REgan"));
-        combo.setLocation(250,250);
-        combo.setSize(225, 33);
+        return null;
+    }
 
-        JComponent[] objs = new JComponent[]{
-                p, t
-        };
-        j.add(p, -1);
-        j.add(t, -1);
-        j.add(combo, 0);
+    public static Map readMap() {
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("..\\Save Files\\test.dat"));
+            try {
+                Map map = (Map) in.readObject();
+                in.close();
+                return map;
+            } catch (ClassNotFoundException e) {
+                System.out.println("Wrong class type");
+                e.printStackTrace();
+            } finally {
+                in.close();
+            }
+        } catch (IOException e) {
+            System.out.println("Loading bad class");
+            e.printStackTrace();
+        }
 
-        //j.setVisible(true);
-        Thread.sleep(1000);
-        p.setVisible(false);
-        Thread.sleep(1000);
-        p.setVisible(true);*/
-
+        return null;
 
     }
 }

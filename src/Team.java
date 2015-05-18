@@ -10,15 +10,6 @@ public enum Team {
             new ImageIcon(),
     }),
 
-    BRITAIN(new ImageIcon[]
-            {
-                    new ImageIcon("Files\\Star.png"),
-                    new ImageIcon("Files\\rolloverstar.png"),
-                    new ImageIcon("Files\\clickstar.png"),
-                    new ImageIcon("Files\\anchor.png"),
-                    new ImageIcon("Files\\rolloveranchor.png"),
-                    new ImageIcon("Files\\clickanchor.png")
-            }),
 
     AUSTRIA(new ImageIcon[]
             {
@@ -28,6 +19,36 @@ public enum Team {
                     new ImageIcon("Files\\Austrianavy.png"),
                     new ImageIcon("Files\\Austrianavyrollover.png"),
                     new ImageIcon("Files\\Austrianavyclick.png")
+            }),
+
+    BALKANS(new ImageIcon[]
+            {
+                    new ImageIcon("Files\\Balkansarmy.png"),
+                    new ImageIcon("Files\\Balkansarmyrollover.png"),
+                    new ImageIcon("Files\\Balkansarmyclick.png"),
+                    new ImageIcon("Files\\Balkansnavy.png"),
+                    new ImageIcon("Files\\Balkansnavyrollover.png"),
+                    new ImageIcon("Files\\Balkansnavyclick.png")
+            }),
+
+    BELARUS(new ImageIcon[]
+            {
+                    new ImageIcon("Files\\Belarusarmy.png"),
+                    new ImageIcon("Files\\Belarusarmyrollover.png"),
+                    new ImageIcon("Files\\Belarusarmyclick.png"),
+                    new ImageIcon("Files\\Belarusnavy.png"),
+                    new ImageIcon("Files\\Belarusnavyrollover.png"),
+                    new ImageIcon("Files\\Belarusnavyclick.png")
+            }),
+
+    BRITAIN(new ImageIcon[]
+            {
+                    new ImageIcon("Files\\Star.png"),
+                    new ImageIcon("Files\\rolloverstar.png"),
+                    new ImageIcon("Files\\clickstar.png"),
+                    new ImageIcon("Files\\anchor.png"),
+                    new ImageIcon("Files\\rolloveranchor.png"),
+                    new ImageIcon("Files\\clickanchor.png")
             }),
 
     EGYPT(new ImageIcon[]
@@ -42,7 +63,6 @@ public enum Team {
 
     FRANCE(new ImageIcon[]
             {
-
                     new ImageIcon("Files\\Francearmy.png"),
                     new ImageIcon("Files\\Francearmyrollover.png"),
                     new ImageIcon("Files\\Francearmyclick.png"),
@@ -109,26 +129,9 @@ public enum Team {
                     new ImageIcon("Files\\Spainnavy.png"),
                     new ImageIcon("Files\\Spainnavyrollover.png"),
                     new ImageIcon("Files\\Spainnavyclick.png")
-            }),
+            });
 
-    BALKANS(new ImageIcon[]
-            {
-                    new ImageIcon("Files\\Balkansarmy.png"),
-                    new ImageIcon("Files\\Balkansarmyrollover.png"),
-                    new ImageIcon("Files\\Balkansarmyclick.png"),
-                    new ImageIcon("Files\\Balkansnavy.png"),
-                    new ImageIcon("Files\\Balkansnavyrollover.png"),
-                    new ImageIcon("Files\\Balkansnavyclick.png")
-            }),
 
-    BELARUS(new ImageIcon[]{
-            new ImageIcon("Files\\Belarusarmy.png"),
-            new ImageIcon("Files\\Belarusarmyrollover.png"),
-            new ImageIcon("Files\\Belarusarmyclick.png"),
-            new ImageIcon("Files\\Belarusnavy.png"),
-            new ImageIcon("Files\\Belarusnavyrollover.png"),
-            new ImageIcon("Files\\Belarusnavyclick.png")
-    });
 
     private ImageIcon[] icons;
 
@@ -136,35 +139,35 @@ public enum Team {
         icons = i;
     }
 
-    Icon[] getIcons() {
+    ImageIcon[] getIcons() {
         return icons;
     }
 
-    Icon getArmyIcon() {
+    ImageIcon getArmyIcon() {
         return icons[0];
     }
 
-    Icon getArmyRolloverIcon() {
+    ImageIcon getArmyRolloverIcon() {
         return icons[1];
     }
 
-    Icon getArmyClickIcon() {
+    ImageIcon getArmyClickIcon() {
         return icons[2];
     }
 
-    Icon getNavyIcon() {
+    ImageIcon getNavyIcon() {
         return icons[3];
     }
 
-    Icon getNavyRolloverIcon() {
+    ImageIcon getNavyRolloverIcon() {
         return icons[4];
     }
 
-    Icon getNavyClickIcon() {
+    ImageIcon getNavyClickIcon() {
         return icons[5];
     }
 
-    Icon getIcon(UnitType unitType) {
+    ImageIcon getIcon(UnitType unitType) {
         if (unitType == UnitType.ARMY) {
             return icons[0];
         } else if (unitType == UnitType.NAVY) {
@@ -174,7 +177,7 @@ public enum Team {
         }
     }
 
-    Icon getRolloverIcon(UnitType unitType) {
+    ImageIcon getRolloverIcon(UnitType unitType) {
         if (unitType == UnitType.ARMY) {
             return icons[1];
         } else if (unitType == UnitType.NAVY) {
@@ -184,7 +187,7 @@ public enum Team {
         }
     }
 
-    Icon getSelectedIcon(UnitType unitType) {
+    ImageIcon getPressedIcon(UnitType unitType) {
         if (unitType == UnitType.ARMY) {
             return icons[2];
         } else if (unitType == UnitType.NAVY) {

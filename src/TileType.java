@@ -1,3 +1,3 @@
-public enum TileTypes {
+public enum TileType {
     Landlocked, Costal, Water
 }

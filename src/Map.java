@@ -2,39 +2,34 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Map extends JPanel {
+public class Map extends JLabel {
     ArrayList<Country> countries = new ArrayList<Country>();
+    JLabel text = new JLabel();
 
     public Map(ArrayList<Country> countries) {
         this.countries.addAll(countries);
         Collections.sort(this.countries);
+        for (Country c : countries) {
+            c.calculateCostal();
+            c.setMapAssociation(this);
+            c.calculateSecondDegreeBorders();
+        }
 
         setLayout(null);
         setSize(1024, 768);
 
     }
 
-    public void calculateSecondDegreeBorders() {
-        for (Country c : countries) {
-            c.calculateSecondDegreeBorders();
-        }
-    }
-
-    public void setMapGraphics(ImageIcon map) {
-        add(mapGraphicsConstants(map), -1);
+    public void setMapGraphic(ImageIcon map) {
+        setIcon(map);
     }
 
     public void setMapText(ImageIcon text) {
-        add(mapGraphicsConstants(text), 0);
-    }
-
-    private JLabel mapGraphicsConstants(ImageIcon imageIcon) {
-        JLabel temp = new JLabel(imageIcon);
-        temp.setSize(1024, 768);
-        temp.setLocation(0, 0);
-        temp.setLayout(null);
-        return temp;
-
+        this.text.setIcon(text);
+        this.text.setSize(1024, 768);
+        this.text.setLocation(0, 0);
+        this.text.setLayout(null);
+        add(this.text, 0);
     }
 
 
@@ -65,6 +60,28 @@ public class Map extends JPanel {
                 }
 
             }
+        }
+    }
+
+    public void refreshAllCountries() {
+        for (Country c : countries) {
+            c.refreshGraphics();
+        }
+    }
+
+    public ArrayList<Country> getCountries() {
+        return countries;
+    }
+
+    public void addAllCountries() {
+        for (Country c : countries) {
+            add(c, -1);
+        }
+    }
+
+    public void removeAllCountries() {
+        for (Country c : countries) {
+            remove(c);
         }
     }
 }

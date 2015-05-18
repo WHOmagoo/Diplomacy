@@ -4,10 +4,10 @@ import java.awt.*;
 /**
  * Created by Hugh on 5/14/2015.
  */
-public class Info extends JTextArea {
+public class Info extends JLabel {
     public Info(String text) {
-        new JTextArea(text);
-        new JLabel(text, SwingConstants.CENTER);
+        //new JTextArea(text);
+        super(text, SwingConstants.CENTER);
         setFont(Scheme.FONT.getFont());
         setOpaque(true);
         setSize(getFontMetrics(Scheme.FONT.getFont()).stringWidth(getText()) + 13, 25);
