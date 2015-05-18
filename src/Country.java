@@ -1,9 +1,8 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
+import javax.swing.JButton;
 
 public class Country extends JButton implements ActionListener, Comparable{
     private String name;
@@ -34,21 +33,11 @@ public class Country extends JButton implements ActionListener, Comparable{
         setLocation(location);
     }
 
-    public Country(String name, int locationX, int locationY) {
-        this();
-        this.name = name;
-        originalLocation = new Point(locationX, locationY);
-        setLocation(locationX, locationY);
+    public void setMapAssociation(Map map) {
+        mapAssociation = map;
     }
 
-    public Country(String name, Point location){
-        this();
-        this.name = name;
-        originalLocation = location;
-        setLocation(location);
-    }
-
-    public void setOccupiedBy(Team team, UnitType unitType) {
+    public void setOccupiedBy(Team team, UnitType unitType) throws IllegalArgumentException {
         if (team == Team.NULL && unitType != UnitType.EMPTY) {
             throw new IllegalArgumentException("When setting team to null, unit type must also be null");
         }
@@ -69,58 +58,47 @@ public class Country extends JButton implements ActionListener, Comparable{
         this.unitType = unitType;
     }
 
-
-    public String getName(){
-        return name;
-    }
-
-    public void resetPosition(){
-        super.setLocation(originalLocation);
-    }
-
-    public Info getInfo() {
-        return info;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-        /*
-        return "Country: " + name + ", Borders: " + borders
-                + "Original Location: " + originalLocation;*/
-    }
-
-    @Override
-    public int compareTo(Object country) {
-        try {
-            return this.name.compareTo(((Country) country).getName());
-        } catch (Exception e){
-            throw new IllegalArgumentException("Must compare two countries");
+    public ArrayList<Country> getOccupiedNeighbors() {
+        ArrayList<Country> occupiedNeighbors = new ArrayList<Country>();
+        for (Country country : borders) {
+            if (country.isOccupied()) {
+                occupiedNeighbors.add(country);
+            }
         }
+
+        return occupiedNeighbors;
     }
 
     public Border getBorders() {
         return borders;
     }
 
-    @Deprecated
-    public void setBorders(Country[] countries) {
-        borders = new Border(this, countries);
-    }
-
     public void setBorders(Border borders) {
         this.borders = borders;
     }
 
-    public void calculateSecondDegreeBorders() {
-        if (borders == null) {
-            throw new NullPointerException("The borders have not yet been set");
-        }
-        secondDegreeBorders = new SecondDegreeBorder(this, borders);
+    public javax.swing.border.Border getBorder() {
+        return border;
+    }
+
+    public Info getInfo() {
+        return info;
     }
 
     public SecondDegreeBorder getSecondDegreeBorders() {
         return secondDegreeBorders;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public TileType getTileType() {
+        return tileType;
+    }
+
+    public UnitType getUnitType() {
+        return unitType;
     }
 
     public boolean isOccupied() {
@@ -128,15 +106,6 @@ public class Country extends JButton implements ActionListener, Comparable{
             return true;
         } else {
             return false;
-        }
-    }
-
-    public void calculateCostal() {
-        for (Country c : borders) {
-            if (c.getTileType() == TileType.Water && tileType == TileType.Landlocked) {
-                tileType = TileType.Costal;
-                break;
-            }
         }
     }
 
@@ -150,23 +119,20 @@ public class Country extends JButton implements ActionListener, Comparable{
         return false;
     }
 
-    public TileType getTileType() {
-        return tileType;
-    }
-
-    public ArrayList<Country> getOccupiedNeighbors() {
-        ArrayList<Country> occupiedNeighbors = new ArrayList<Country>();
-        for (Country country : borders) {
-            if (country.isOccupied()) {
-                occupiedNeighbors.add(country);
+    public void calculateCostal() {
+        for (Country c : borders) {
+            if (c.getTileType() == TileType.Water && tileType == TileType.Landlocked) {
+                tileType = TileType.Costal;
+                break;
             }
         }
-
-        return occupiedNeighbors;
     }
 
-    public UnitType getUnitType() {
-        return unitType;
+    public void calculateSecondDegreeBorders() throws NullPointerException {
+        if (borders == null) {
+            throw new NullPointerException("The borders have not yet been set");
+        }
+        secondDegreeBorders = new SecondDegreeBorder(this, borders);
     }
 
     public void refreshGraphics() {
@@ -178,12 +144,8 @@ public class Country extends JButton implements ActionListener, Comparable{
         }
     }
 
-    public javax.swing.border.Border getBorder() {
-        return border;
-    }
-
-    public void setMapAssociation(Map map) {
-        mapAssociation = map;
+    public void resetPosition() {
+        super.setLocation(originalLocation);
     }
 
     @Override
@@ -213,5 +175,19 @@ public class Country extends JButton implements ActionListener, Comparable{
         Thread ted = new Thread(runner);
         ted.start();
 
+    }
+
+    @Override
+    public int compareTo(Object country) throws IllegalArgumentException {
+        try {
+            return this.name.compareTo(((Country) country).getName());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Must compare two countries");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

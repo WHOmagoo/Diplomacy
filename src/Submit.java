@@ -1,5 +1,6 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 
 /**
  * Created by Hugh on 5/15/2015.

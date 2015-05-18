@@ -1,9 +1,8 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
-/**
- * Created by Hugh on 5/14/2015.
- */
 public class Info extends JLabel {
     public Info(String text) {
         //new JTextArea(text);

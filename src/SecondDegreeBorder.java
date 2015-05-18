@@ -1,6 +1,3 @@
-/**
- * Created by Hugh on 5/15/2015.
- */
 public class SecondDegreeBorder extends Border {
 
     public SecondDegreeBorder(Country country, Border regularBorders) {

@@ -1,10 +1,12 @@
+//TODO create new sub classes for each type of order, like an attack or support class.
+
 public class Order {
     private Country orderFrom;
     private Country orderTo;
     private Country supporting;
     private OrderTypes orderType;
 
-    public Order(Country orderFrom, Country orderTo, OrderTypes orderType){
+    public Order(Country orderFrom, Country orderTo, OrderTypes orderType) throws IllegalArgumentException {
         if(orderType != OrderTypes.ATTACK && orderType != OrderTypes.MOVE) {
             throw new IllegalArgumentException("This must use an attack or a move command");
         }
@@ -13,7 +15,7 @@ public class Order {
             this.orderType = orderType;
     }
 
-    public Order(Country orderFrom, Country supporting, Country orderTo, OrderTypes orderType){
+    public Order(Country orderFrom, Country supporting, Country orderTo, OrderTypes orderType) throws IllegalArgumentException {
         if(orderType != OrderTypes.SUPPORT){
             throw new IllegalArgumentException("This must use a support command");
         }

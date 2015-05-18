@@ -1,6 +1,7 @@
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class Map extends JLabel {
     ArrayList<Country> countries = new ArrayList<Country>();
@@ -33,7 +34,7 @@ public class Map extends JLabel {
     }
 
 
-    public Country getCountry(String nameOfCountry) {
+    public Country getCountry(String nameOfCountry) throws NullPointerException {
         for (Country country : countries) {
             if (country.getName() == nameOfCountry) {
                 return country;

@@ -1,4 +1,4 @@
-import javax.swing.*;
+import javax.swing.ImageIcon;
 
 public enum Team {
     NULL(new ImageIcon[]{
@@ -13,125 +13,123 @@ public enum Team {
 
     AUSTRIA(new ImageIcon[]
             {
-                    new ImageIcon("Files\\Austriaarmy.png"),
-                    new ImageIcon("Files\\Austriaarmyrollover.png"),
-                    new ImageIcon("Files\\Austriaarmyclick.png"),
-                    new ImageIcon("Files\\Austrianavy.png"),
-                    new ImageIcon("Files\\Austrianavyrollover.png"),
-                    new ImageIcon("Files\\Austrianavyclick.png")
+                    new ImageIcon("Files\\Austria\\Austriaarmy.png"),
+                    new ImageIcon("Files\\Austria\\Austriaarmyrollover.png"),
+                    new ImageIcon("Files\\Austria\\Austriaarmyclick.png"),
+                    new ImageIcon("Files\\Austria\\Austrianavy.png"),
+                    new ImageIcon("Files\\Austria\\Austrianavyrollover.png"),
+                    new ImageIcon("Files\\Austria\\Austrianavyclick.png")
             }),
 
     BALKANS(new ImageIcon[]
             {
-                    new ImageIcon("Files\\Balkansarmy.png"),
-                    new ImageIcon("Files\\Balkansarmyrollover.png"),
-                    new ImageIcon("Files\\Balkansarmyclick.png"),
-                    new ImageIcon("Files\\Balkansnavy.png"),
-                    new ImageIcon("Files\\Balkansnavyrollover.png"),
-                    new ImageIcon("Files\\Balkansnavyclick.png")
+                    new ImageIcon("Files\\Balkans\\Balkansarmy.png"),
+                    new ImageIcon("Files\\Balkans\\Balkansarmyrollover.png"),
+                    new ImageIcon("Files\\Balkans\\Balkansarmyclick.png"),
+                    new ImageIcon("Files\\Balkans\\Balkansnavy.png"),
+                    new ImageIcon("Files\\Balkans\\Balkansnavyrollover.png"),
+                    new ImageIcon("Files\\Balkans\\Balkansnavyclick.png")
             }),
 
     BELARUS(new ImageIcon[]
             {
-                    new ImageIcon("Files\\Belarusarmy.png"),
-                    new ImageIcon("Files\\Belarusarmyrollover.png"),
-                    new ImageIcon("Files\\Belarusarmyclick.png"),
-                    new ImageIcon("Files\\Belarusnavy.png"),
-                    new ImageIcon("Files\\Belarusnavyrollover.png"),
-                    new ImageIcon("Files\\Belarusnavyclick.png")
+                    new ImageIcon("Files\\Belarus\\Belarusarmy.png"),
+                    new ImageIcon("Files\\Belarus\\Belarusarmyrollover.png"),
+                    new ImageIcon("Files\\Belarus\\Belarusarmyclick.png"),
+                    new ImageIcon("Files\\Belarus\\Belarusnavy.png"),
+                    new ImageIcon("Files\\Belarus\\Belarusnavyrollover.png"),
+                    new ImageIcon("Files\\Belarus\\Belarusnavyclick.png")
             }),
 
     BRITAIN(new ImageIcon[]
             {
-                    new ImageIcon("Files\\Star.png"),
-                    new ImageIcon("Files\\rolloverstar.png"),
-                    new ImageIcon("Files\\clickstar.png"),
-                    new ImageIcon("Files\\anchor.png"),
-                    new ImageIcon("Files\\rolloveranchor.png"),
-                    new ImageIcon("Files\\clickanchor.png")
+                    new ImageIcon("Files\\Britain\\Star.png"),
+                    new ImageIcon("Files\\Britain\\rolloverstar.png"),
+                    new ImageIcon("Files\\Britain\\clickstar.png"),
+                    new ImageIcon("Files\\Britain\\anchor.png"),
+                    new ImageIcon("Files\\Britain\\rolloveranchor.png"),
+                    new ImageIcon("Files\\Britain\\clickanchor.png")
             }),
 
     EGYPT(new ImageIcon[]
             {
-                    new ImageIcon("Files\\Egyptarmy.png"),
-                    new ImageIcon("Files\\Egyptarmyrollover.png"),
-                    new ImageIcon("Files\\Egyptarmyclick.png"),
-                    new ImageIcon("Files\\Egyptnavy.png"),
-                    new ImageIcon("Files\\Egyptnavyrollover.png"),
-                    new ImageIcon("Files\\Egyptnavyclick.png")
+                    new ImageIcon("Files\\Egypt\\Egyptarmy.png"),
+                    new ImageIcon("Files\\Egypt\\Egyptarmyrollover.png"),
+                    new ImageIcon("Files\\Egypt\\Egyptarmyclick.png"),
+                    new ImageIcon("Files\\Egypt\\Egyptnavy.png"),
+                    new ImageIcon("Files\\Egypt\\Egyptnavyrollover.png"),
+                    new ImageIcon("Files\\Egypt\\Egyptnavyclick.png")
             }),
 
     FRANCE(new ImageIcon[]
             {
-                    new ImageIcon("Files\\Francearmy.png"),
-                    new ImageIcon("Files\\Francearmyrollover.png"),
-                    new ImageIcon("Files\\Francearmyclick.png"),
-                    new ImageIcon("Files\\Francenavy.png"),
-                    new ImageIcon("Files\\Francenavyrollover.png"),
-                    new ImageIcon("Files\\Francenavyclick.png")
+                    new ImageIcon("Files\\France\\Francearmy.png"),
+                    new ImageIcon("Files\\France\\Francearmyrollover.png"),
+                    new ImageIcon("Files\\France\\Francearmyclick.png"),
+                    new ImageIcon("Files\\France\\Francenavy.png"),
+                    new ImageIcon("Files\\France\\Francenavyrollover.png"),
+                    new ImageIcon("Files\\France\\Francenavyclick.png")
             }),
 
     GERMANY(new ImageIcon[]
             {
-                    new ImageIcon("Files\\Germanyarmy.png"),
-                    new ImageIcon("Files\\Germanyarmyrollover.png"),
-                    new ImageIcon("Files\\Germanyarmyclick.png"),
-                    new ImageIcon("Files\\Germanynavy.png"),
-                    new ImageIcon("Files\\Germanynavyrollover.png"),
-                    new ImageIcon("Files\\Germanynavyclick.png")
+                    new ImageIcon("Files\\Germany\\Germanyarmy.png"),
+                    new ImageIcon("Files\\Germany\\Germanyarmyrollover.png"),
+                    new ImageIcon("Files\\Germany\\Germanyarmyclick.png"),
+                    new ImageIcon("Files\\Germany\\Germanynavy.png"),
+                    new ImageIcon("Files\\Germany\\Germanynavyrollover.png"),
+                    new ImageIcon("Files\\Germany\\Germanynavyclick.png")
             }),
 
     ITALY(new ImageIcon[]
             {
-                    new ImageIcon("Files\\Italyarmy.png"),
-                    new ImageIcon("Files\\Italyarmyrollover.png"),
-                    new ImageIcon("Files\\Italyarmyclick.png"),
-                    new ImageIcon("Files\\Italynavy.png"),
-                    new ImageIcon("Files\\Italynavyrollover.png"),
-                    new ImageIcon("Files\\Italynavyclick.png")
+                    new ImageIcon("Files\\Italy\\Italyarmy.png"),
+                    new ImageIcon("Files\\Italy\\Italyarmyrollover.png"),
+                    new ImageIcon("Files\\Italy\\Italyarmyclick.png"),
+                    new ImageIcon("Files\\Italy\\Italynavy.png"),
+                    new ImageIcon("Files\\Italy\\Italynavyrollover.png"),
+                    new ImageIcon("Files\\Italy\\Italynavyclick.png")
             }),
 
     NORTH_AFRICA(new ImageIcon[]
             {
-                    new ImageIcon("Files\\NAfricaarmy.png"),
-                    new ImageIcon("Files\\NAfricaarmyrollover.png"),
-                    new ImageIcon("Files\\NAfricaarmyclick.png"),
-                    new ImageIcon("Files\\NAfricanavy.png"),
-                    new ImageIcon("Files\\NAfricanavyrollover.png"),
-                    new ImageIcon("Files\\NAfricanavyclick.png")
+                    new ImageIcon("Files\\North Africa\\NAfricaarmy.png"),
+                    new ImageIcon("Files\\North Africa\\NAfricaarmyrollover.png"),
+                    new ImageIcon("Files\\North Africa\\NAfricaarmyclick.png"),
+                    new ImageIcon("Files\\North Africa\\NAfricanavy.png"),
+                    new ImageIcon("Files\\North Africa\\NAfricanavyrollover.png"),
+                    new ImageIcon("Files\\North Africa\\NAfricanavyclick.png")
             }),
 
     OTTOMAN(new ImageIcon[]
             {
-                    new ImageIcon("Files\\Ottomanarmy.png"),
-                    new ImageIcon("Files\\Ottomanarmyrollover.png"),
-                    new ImageIcon("Files\\Ottomanarmyclick.png"),
-                    new ImageIcon("Files\\Ottomannavy.png"),
-                    new ImageIcon("Files\\Ottomannavyrollover.png"),
-                    new ImageIcon("Files\\Ottomannavyclick.png")
+                    new ImageIcon("Files\\Ottoman\\Ottomanarmy.png"),
+                    new ImageIcon("Files\\Ottoman\\Ottomanarmyrollover.png"),
+                    new ImageIcon("Files\\Ottoman\\Ottomanarmyclick.png"),
+                    new ImageIcon("Files\\Ottoman\\Ottomannavy.png"),
+                    new ImageIcon("Files\\Ottoman\\Ottomannavyrollover.png"),
+                    new ImageIcon("Files\\Ottoman\\Ottomannavyclick.png")
             }),
 
     RUSSIA(new ImageIcon[]
             {
-                    new ImageIcon("Files\\Russiaarmy.png"),
-                    new ImageIcon("Files\\Russiaarmyrollover.png"),
-                    new ImageIcon("Files\\Russiaarmyclick.png"),
-                    new ImageIcon("Files\\Russianavy.png"),
-                    new ImageIcon("Files\\Russianavyrollover.png"),
-                    new ImageIcon("Files\\Russianavyclick.png")
+                    new ImageIcon("Files\\Russia\\Russiaarmy.png"),
+                    new ImageIcon("Files\\Russia\\Russiaarmyrollover.png"),
+                    new ImageIcon("Files\\Russia\\Russiaarmyclick.png"),
+                    new ImageIcon("Files\\Russia\\Russianavy.png"),
+                    new ImageIcon("Files\\Russia\\Russianavyrollover.png"),
+                    new ImageIcon("Files\\Russia\\Russianavyclick.png")
             }),
 
     SPAIN(new ImageIcon[]
             {
-                    new ImageIcon("Files\\Spainarmy.png"),
-                    new ImageIcon("Files\\Spainarmyrollover.png"),
-                    new ImageIcon("Files\\Spainarmyclick.png"),
-                    new ImageIcon("Files\\Spainnavy.png"),
-                    new ImageIcon("Files\\Spainnavyrollover.png"),
-                    new ImageIcon("Files\\Spainnavyclick.png")
+                    new ImageIcon("Files\\Spain\\Spainarmy.png"),
+                    new ImageIcon("Files\\Spain\\Spainarmyrollover.png"),
+                    new ImageIcon("Files\\Spain\\Spainarmyclick.png"),
+                    new ImageIcon("Files\\Spain\\Spainnavy.png"),
+                    new ImageIcon("Files\\Spain\\Spainnavyrollover.png"),
+                    new ImageIcon("Files\\Spain\\Spainnavyclick.png")
             });
-
-
 
     private ImageIcon[] icons;
 
@@ -196,5 +194,4 @@ public enum Team {
             return null;
         }
     }
-
 }

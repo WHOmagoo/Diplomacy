@@ -1,24 +1,23 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * Created by WHOmagoo? on 4/29/2015 coolio.
- */
 public class Border extends ArrayList<Country> {
     private Country country;
 
-    public Border(Country country) {
-        this.country = country;
+    public Border() {
     }
 
-    public Border(Country country, ArrayList<Country> borders){
+    public Border(Country country, ArrayList<Country> borders) throws IllegalArgumentException {
+        if (borders.contains(country)) {
+            throw new IllegalArgumentException("The Country must not be bordered by itself.\nCountry of issue: " + country);
+        }
         Collections.sort(borders);
         super.addAll(borders);
         this.country = country;
 
     }
 
-    public Border(Country country, Country[] borders) {
+    public Border(Country country, Country[] borders) throws IllegalArgumentException {
         for (Country c : borders) {
             if (c == country) {
                 throw new IllegalArgumentException("Country must not be borderd by itself.\nCountry of issue: " + country);
@@ -35,9 +34,6 @@ public class Border extends ArrayList<Country> {
         Collections.sort(this);
         this.country = country;
 
-    }
-
-    public Border() {
     }
 
     public Country getCountry(int i) {//May be removed later
