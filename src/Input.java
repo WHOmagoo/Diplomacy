@@ -18,6 +18,7 @@ public class Input extends JComboBox implements ActionListener {
         setSize(getFontMetrics(getFont()).stringWidth(getSelectedItem().toString()) + 25, 25);
         setLocation(0, 0);
         setAutoscrolls(true);
+        System.out.println("Creating");
     }
 
     public Input(ArrayList<Country> countries) {
