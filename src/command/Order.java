@@ -1,4 +1,6 @@
-//TODO create new sub classes for each type of order, like an attack or support class.
+package command;//TODO create new sub classes for each type of order, like an attack or support class.
+
+import map.Country;
 
 public class Order {
     private Country orderFrom;

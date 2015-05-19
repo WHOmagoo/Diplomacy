@@ -1,30 +1,33 @@
-import javax.swing.JComboBox;
+package command.input;
+
+import command.OrderType;
+import constants.Scheme;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.JComboBox;
+import map.Country;
+import map.Map;
 
-public class Input extends JComboBox implements ActionListener {
-    ;
+public class Input<Object> extends JComboBox implements ActionListener {
 
     public Input() {
-        new JComboBox();
-        setSelectedItem("RObb");
+        new JComboBox<Country>();
         setMaximumRowCount(36);
         setRequestFocusEnabled(false);
         setBackground(Color.ORANGE);
         setForeground(Color.BLUE);
-        setSize(getFontMetrics(getFont()).stringWidth(getSelectedItem().toString()) + 25, 25);
+        setFont(Scheme.FONT.getFont());
         setLocation(0, 0);
         setAutoscrolls(true);
-        System.out.println("Creating");
     }
 
-    public Input(ArrayList<Country> countries) {
+    public Input(ArrayList objects) {
         super();
-        Collections.sort(countries);
-        for (Country c : countries) {
+        Collections.sort(objects);
+        for (java.lang.Object c : objects) {//See if this works as expected
             addItem(c);
         }
 
@@ -36,6 +39,13 @@ public class Input extends JComboBox implements ActionListener {
         for(OrderType o : orderTypes){
             addItem(o);
         }
+    }
+
+    //TODO implement this correctly.
+    public Input(Map map, Country c) {
+        super();
+        //for(Country c : );
+        map.add(this);
     }
 
     @Override

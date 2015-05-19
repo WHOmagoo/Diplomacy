@@ -1,3 +1,5 @@
+package map;
+
 public class SecondDegreeBorder extends Border {
 
     public SecondDegreeBorder(Country country, Border regularBorders) {

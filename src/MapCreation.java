@@ -1,10 +1,9 @@
-import javax.swing.ImageIcon;
+import constants.Team;
 import java.awt.Point;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import map.*;
 
-/**
- * Created by Hugh on 5/15/2015.
- */
 public class MapCreation {
 
     public static Map createMap() {
@@ -364,6 +363,5 @@ public class MapCreation {
         countries.get(95).setOccupiedBy(Team.NULL, UnitType.EMPTY);
         countries.get(96).setOccupiedBy(Team.NULL, UnitType.EMPTY);
         countries.get(97).setOccupiedBy(Team.NULL, UnitType.EMPTY);
-        //countries.get().setOccupiedBy(Team.NULL, UnitType.EMPTY);
     }
 }

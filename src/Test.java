@@ -1,4 +1,7 @@
+import command.input.Input;
+import constants.GameFrame;
 import java.io.*;
+import map.Map;
 
 public class Test {
 
@@ -6,6 +9,8 @@ public class Test {
 
         GameFrame frame = new GameFrame();
         Map map = MapCreation.createMap();
+        Input non = new Input(map, map.getCountry("Berlin"));
+        //non.add(map.getCountry("Berlin"));
         //Map map = writeMap();
         //Map map = readMap();
 
