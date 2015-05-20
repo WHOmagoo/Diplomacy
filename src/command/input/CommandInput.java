@@ -1,27 +1,34 @@
 package command.input;
 
 import command.OrderType;
+
+import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class CommandInput extends Input implements ActionListener {
+    private DefaultComboBoxModel<OrderType> elements = new DefaultComboBoxModel<OrderType>();
+
     public CommandInput(ArrayList<OrderType> possibleOrders) {
+        this((OrderType[]) possibleOrders.toArray());
+    }
+
+    public CommandInput(OrderType[] possibleOrders){
         super();
-        Collections.sort(possibleOrders);
         for (OrderType order : possibleOrders) {
-            addItem(order);
+            elements.addElement(order);
         }
-        //setSelectedItem();
-        setSize(getFontMetrics(getFont()).stringWidth(getSelectedItem().toString() + 25), 25);
+        elements.setSelectedItem("Choose an Item");
+        setModel(elements);
+
+        setSize(longestItem() + 25, 25);
         addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e);
-        System.out.println(getSelectedItem());
-
+        setSize(longestItem() + 25, 25);
+        revalidate();
     }
 }

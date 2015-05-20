@@ -1,13 +1,15 @@
 package map;
 
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import java.util.ArrayList;
 import java.util.Collections;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 public class Map extends JLabel {
-    ArrayList<Country> countries = new ArrayList<Country>();
-    JLabel text = new JLabel();
+    private ArrayList<Country> countries = new ArrayList<Country>();
+    private JLabel text = new JLabel();
+    private Country lastCountryClicked;
 
     public Map(ArrayList<Country> countries) {
         this.countries.addAll(countries);
@@ -35,6 +37,19 @@ public class Map extends JLabel {
         add(this.text, 0);
     }
 
+    public void setLastCountryClicked(Country countryClicked){
+        lastCountryClicked = countryClicked;
+    }
+
+    public void clearOldInput(){
+        try {
+            for (JComponent input : lastCountryClicked.getInputs()) {
+                remove(input);
+                input.revalidate();
+            }
+        } catch (NullPointerException npe){
+        }
+    }
 
     public Country getCountry(String nameOfCountry) throws NullPointerException {
         for (Country country : countries) {
