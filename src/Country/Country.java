@@ -1,17 +1,12 @@
-package map;
+package Country;
 
-import command.Info;
-import command.OrderType;
-import command.input.CommandInput;
-import constants.Team;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 
-public class Country extends JButton implements ActionListener, Comparable {
+public class Country extends JButton implements ActionListener, Comparable{
     private String name;
     private Border borders;
     private SecondDegreeBorder secondDegreeBorders;
@@ -21,7 +16,7 @@ public class Country extends JButton implements ActionListener, Comparable {
     private Point originalLocation;
     private javax.swing.border.Border border = null;
     private Map mapAssociation;
-    private ArrayList<JComponent> inputs = new ArrayList<JComponent>();
+    private Info info;
 
     private Country() {
         setSize(40, 40);
@@ -86,6 +81,10 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     public javax.swing.border.Border getBorder() {
         return border;
+    }
+
+    public Info getInfo() {
+        return info;
     }
 
     public SecondDegreeBorder getSecondDegreeBorders() {
@@ -153,21 +152,8 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        mapAssociation.clearOldInput();
-        mapAssociation.setLastCountryClicked((Country) e.getSource());
-
-        Info country = new Info(getName());
-        country.setLocation(0,0);
-        inputs.add(country);
-        country.validate();
-        mapAssociation.add(country);
-
-        CommandInput bob = new CommandInput(OrderType.values());
-        inputs.add(bob);
-        bob.setLocation(country.getX() + country.getWidth() + 4, 0);
-        mapAssociation.add(bob);
-        bob.validate();
-        mapAssociation.repaint(country.getBounds());
+        Input bob = new Input(OrderType.values());
+        mapAssociation.add(bob, -1);
         mapAssociation.repaint(bob.getBounds());
     }
 
@@ -183,9 +169,5 @@ public class Country extends JButton implements ActionListener, Comparable {
     @Override
     public String toString() {
         return name;
-    }
-
-    public ArrayList<JComponent> getInputs() {
-        return inputs;
     }
 }

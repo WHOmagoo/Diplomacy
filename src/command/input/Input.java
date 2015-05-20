@@ -2,16 +2,15 @@ package command.input;
 
 import command.OrderType;
 import constants.Scheme;
-import map.Country;
-import map.Map;
-
-import javax.swing.ComboBoxModel;
-import javax.swing.JComboBox;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
+import map.Country;
+import map.Map;
 
 public class Input<Object> extends JComboBox implements ActionListener {
 
@@ -51,7 +50,7 @@ public class Input<Object> extends JComboBox implements ActionListener {
     }
 
     public int longestItem(){
-        int longestItem = getFontMetrics(getFont()).stringWidth(getSelectedItem().toString()) + 25;
+        int longestItem = getFontMetrics(getFont()).stringWidth(getSelectedItem().toString());
         ComboBoxModel model = getModel();
         for(int i = 0; i < model.getSize(); i++){
             int thisLength = getFontMetrics(getFont()).stringWidth(model.getElementAt(i).toString());
@@ -60,13 +59,12 @@ public class Input<Object> extends JComboBox implements ActionListener {
             }
         }
 
-        return longestItem + 4;
+        return longestItem;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        setPopupVisible(true);
-        revalidate();
+
     }
 
     private void constants() {
