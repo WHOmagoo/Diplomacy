@@ -18,16 +18,20 @@ public class CommandInput extends Input implements ActionListener {
         for (OrderType order : possibleOrders) {
             elements.addElement(order);
         }
-        elements.setSelectedItem("Choose an Item");
+        elements.setSelectedItem("Choose an command");
         setModel(elements);
 
-        setSize(longestItem() + 25, 25);
+        setSize(longestItem(), 25);
         addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        setSize(longestItem() + 25, 25);
+        setSize(longestItem(), 25);
+        if (getSelectedItem() == OrderType.ATTACK) {
+            System.out.println("We'll do it");
+            addActionListener(OrderType.ATTACK.get());
+        }
         revalidate();
     }
 }

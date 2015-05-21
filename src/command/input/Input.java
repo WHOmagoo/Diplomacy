@@ -50,7 +50,7 @@ public class Input<Object> extends JComboBox implements ActionListener {
     }
 
     public int longestItem(){
-        int longestItem = getFontMetrics(getFont()).stringWidth(getSelectedItem().toString());
+        int longestItem = getFontMetrics(getFont()).stringWidth(getSelectedItem().toString()) + 25;
         ComboBoxModel model = getModel();
         for(int i = 0; i < model.getSize(); i++){
             int thisLength = getFontMetrics(getFont()).stringWidth(model.getElementAt(i).toString());
@@ -59,7 +59,7 @@ public class Input<Object> extends JComboBox implements ActionListener {
             }
         }
 
-        return longestItem;
+        return longestItem + 4;
     }
 
     @Override

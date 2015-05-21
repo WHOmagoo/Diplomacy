@@ -1,8 +1,7 @@
 package constants;
 
-import map.UnitType;
-
 import javax.swing.ImageIcon;
+import map.UnitType;
 
 public enum Team {
     NULL(new ImageIcon[]{
