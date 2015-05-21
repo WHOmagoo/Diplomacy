@@ -2,19 +2,16 @@ package command.input;
 
 import command.OrderType;
 import constants.Scheme;
-import map.Country;
-import map.Map;
-
-import javax.swing.ComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collections;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import map.Country;
 
 public class Input extends JComboBox implements ActionListener, Comparable{
+    private Country countryAssociation;
 
     public Input() {
         new JComboBox<Country>();
@@ -27,28 +24,16 @@ public class Input extends JComboBox implements ActionListener, Comparable{
         setAutoscrolls(true);
     }
 
-    public Input(ArrayList objects) {
-        super();
-        Collections.sort(objects);
-        for (java.lang.Object c : objects) {//See if this works as expected
-            addItem(c);
-        }
-
-        constants();
+    public Input(Country countryAssociation) {
+        this();
+        this.countryAssociation = countryAssociation;
     }
 
-    public Input(OrderType[] orderTypes){
+    public Input(OrderType[] orderTypes, Country countryAssociation) {
         super();
         for(OrderType o : orderTypes){
             addItem(o);
         }
-    }
-
-    //TODO implement this correctly.
-    public Input(Map map, Country c) {
-        super();
-        //for(Country c : );
-        map.add(this);
     }
 
     public int longestItem(){
@@ -62,6 +47,10 @@ public class Input extends JComboBox implements ActionListener, Comparable{
         }
 
         return longestItem + 4;
+    }
+
+    private Country getCountryAssociation() {
+        return countryAssociation;
     }
 
     @Override

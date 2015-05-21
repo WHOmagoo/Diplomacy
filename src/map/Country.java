@@ -3,14 +3,14 @@ package map;
 import command.Info;
 import command.OrderType;
 import command.input.CommandInput;
+import command.input.Input;
 import constants.Team;
-
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 
 public class Country extends JButton implements ActionListener, Comparable {
     private String name;
@@ -22,7 +22,7 @@ public class Country extends JButton implements ActionListener, Comparable {
     private Point originalLocation;
     private javax.swing.border.Border border = null;
     private Map mapAssociation;
-    private ArrayList<JComponent> inputs = new ArrayList<JComponent>();
+    private ArrayList<JComponent> inputs = new ArrayList<JComponent>(); //TODO make an object for this
 
     private Country() {
         setSize(40, 40);
@@ -77,14 +77,14 @@ public class Country extends JButton implements ActionListener, Comparable {
         return occupiedNeighbors;
     }
 
-    public ArrayList<Country> getOccupiedSecondDegreeNeighbors(){
+    public ArrayList<Country> getSupportableCountries() {
         ArrayList<Country> occupiedSecondBorders = new ArrayList<Country>();
         for(Country country : secondDegreeBorders){
-            for(Country occupiedNeighbors: country.getOccupiedNeighbors()) {
-                if (!occupiedSecondBorders.contains(occupiedNeighbors)) {
-                    occupiedSecondBorders.add(occupiedNeighbors);
+            if (!occupiedSecondBorders.contains(country) &&
+                    ((unitType == UnitType.NAVY && country.getTileType() != TileType.Landlocked) ||
+                            (unitType == UnitType.ARMY && country.getTileType() != TileType.Water))) {
+                occupiedSecondBorders.add(country);
                 }
-            }
         }
 
         return occupiedSecondBorders;
@@ -134,6 +134,27 @@ public class Country extends JButton implements ActionListener, Comparable {
         }
 
         return false;
+    }
+
+    public void add(Input input) {
+        inputs.add(input);
+        int index = getIndexOf(input);
+        JComponent previousItem = inputs.get(index - 1);
+        int xLocation = previousItem.getX() + previousItem.getWidth() + 4;
+        setLocation(xLocation, previousItem.getY());
+        input.revalidate();
+        mapAssociation.add(input, -1);
+        mapAssociation.repaint(input.getBounds());
+    }
+
+    private int getIndexOf(Input input) {
+        for (int index = 0; index < inputs.size(); index++) {
+            if (inputs.get(index) == input) {
+                return index;
+            }
+        }
+
+        return -1;
     }
 
     public void calculateCoastal() {
@@ -201,5 +222,9 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     public ArrayList<JComponent> getInputs() {
         return inputs;
+    }
+
+    public Map getMap() {
+        return mapAssociation;
     }
 }
