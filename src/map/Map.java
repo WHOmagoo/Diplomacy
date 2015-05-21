@@ -15,7 +15,7 @@ public class Map extends JLabel {
         this.countries.addAll(countries);
         Collections.sort(this.countries);
         for (Country c : countries) {
-            c.calculateCostal();
+            c.calculateCoastal();
             c.setMapAssociation(this);
             c.calculateSecondDegreeBorders();
         }

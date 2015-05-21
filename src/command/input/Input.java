@@ -2,17 +2,19 @@ package command.input;
 
 import command.OrderType;
 import constants.Scheme;
+import map.Country;
+import map.Map;
+
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import javax.swing.ComboBoxModel;
-import javax.swing.JComboBox;
-import map.Country;
-import map.Map;
 
-public class Input<Object> extends JComboBox implements ActionListener {
+public class Input extends JComboBox implements ActionListener, Comparable{
 
     public Input() {
         new JComboBox<Country>();
@@ -68,5 +70,17 @@ public class Input<Object> extends JComboBox implements ActionListener {
     }
 
     private void constants() {
+    }
+
+    @Override
+    public int compareTo(Object o) throws ClassCastException{
+        if(o instanceof JComponent){
+            JComponent temp = (JComponent) o;
+            if(temp.getY() == getY()){
+                return getX() - temp.getX();
+            } else return getY() - temp.getY();
+        }
+
+        throw new ClassCastException("Must compare a JComponent");
     }
 }

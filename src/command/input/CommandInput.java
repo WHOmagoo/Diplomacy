@@ -1,23 +1,29 @@
 package command.input;
 
 import command.OrderType;
+import map.Country;
+
+import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.DefaultComboBoxModel;
 
 public class CommandInput extends Input implements ActionListener {
     private DefaultComboBoxModel<OrderType> elements = new DefaultComboBoxModel<OrderType>();
+    private Country countryAssociation;
 
-    public CommandInput(ArrayList<OrderType> possibleOrders) {
-        this((OrderType[]) possibleOrders.toArray());
+    public CommandInput(ArrayList<OrderType> possibleOrders, Country countryCalled) {
+        this((OrderType[]) possibleOrders.toArray(), countryCalled);
     }
 
-    public CommandInput(OrderType[] possibleOrders){
+    public CommandInput(OrderType[] possibleOrders, Country countryCalled){
         super();
+        countryAssociation = countryCalled;
+
         for (OrderType order : possibleOrders) {
             elements.addElement(order);
         }
+
         elements.setSelectedItem("Choose an command");
         setModel(elements);
 
@@ -27,6 +33,15 @@ public class CommandInput extends Input implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(getSelectedItem() == OrderType.ATTACK){
+
+        } else if(getSelectedItem() == OrderType.HOLD){
+
+        } else if(getSelectedItem() == OrderType.MOVE){
+
+        } else if(getSelectedItem() == OrderType.SUPPORT){
+            SupportInput temp = new SupportInput(countryAssociation);
+        }
         setSize(longestItem(), 25);
         revalidate();
     }
