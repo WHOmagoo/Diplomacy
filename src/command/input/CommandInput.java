@@ -28,10 +28,6 @@ public class CommandInput extends Input implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         setSize(longestItem(), 25);
-        if (getSelectedItem() == OrderType.ATTACK) {
-            System.out.println("We'll do it");
-            addActionListener(OrderType.ATTACK.get());
-        }
         revalidate();
     }
 }
