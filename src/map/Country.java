@@ -12,6 +12,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Country extends JButton implements ActionListener, Comparable {
     private String name;
@@ -82,13 +83,18 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     public ArrayList<Country> getSupportableCountries() {
         ArrayList<Country> occupiedSecondBorders = new ArrayList<Country>();
-        for(Country country : secondDegreeBorders){
+        for(Country country : secondDegreeBorders) {
             if (!occupiedSecondBorders.contains(country) &&
-                    ((unitType == UnitType.NAVY && country.getTileType() != TileType.Landlocked) ||
-                            (unitType == UnitType.ARMY && country.getTileType() != TileType.Water))) {
+                ((unitType == UnitType.NAVY && country.getTileType() != TileType.Landlocked) ||
+                (unitType == UnitType.ARMY && country.getTileType() != TileType.Water)) &&
+                country != this &&
+                isOccupied()) {
                 occupiedSecondBorders.add(country);
-                }
+            }
         }
+
+
+        Collections.sort(occupiedSecondBorders);
 
         return occupiedSecondBorders;
     }
@@ -141,7 +147,6 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     public void add(Input input) {
         inputBanner.add(input);
-        setLocation(inputBanner.getNextLocation());
         input.revalidate();
         mapAssociation.add(input, -1);
         mapAssociation.repaint(input.getBounds());
@@ -181,19 +186,15 @@ public class Country extends JButton implements ActionListener, Comparable {
         mapAssociation.clearOldInput();
         mapAssociation.setLastCountryClicked((Country) e.getSource());
 
-        Info country = new Info(getName());
-        inputBanner.add(country);
-        country.setLocation(0,0);
-        country.validate();
+        Info infoCountry = new Info(getName());
+        inputBanner.add(infoCountry);
+        infoCountry.validate();
 
-        CommandInput bob = new CommandInput(OrderType.values(), this);
-        inputBanner.add(bob);
-        bob.setLocation(inputBanner.getNextLocation());
-        inputBanner.add
-        mapAssociation.add(bob);
-        bob.validate();
-        mapAssociation.repaint(country.getBounds());
-        mapAssociation.repaint(bob.getBounds());
+        CommandInput commandInput = new CommandInput(OrderType.values(), this);
+        inputBanner.add(commandInput);
+        commandInput.validate();
+
+        inputBanner.setLastVisible(commandInput);
     }
 
     @Override
