@@ -188,6 +188,7 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println("bob");
         mapAssociation.clearOldInput();
         mapAssociation.setLastCountryClicked((Country) e.getSource());
 
