@@ -1,16 +1,17 @@
 package map;
 
 import command.Info;
+import command.InputBanner;
 import command.OrderType;
 import command.input.CommandInput;
 import command.input.Input;
 import constants.Team;
+
+import javax.swing.JButton;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JComponent;
 
 public class Country extends JButton implements ActionListener, Comparable {
     private String name;
@@ -22,7 +23,8 @@ public class Country extends JButton implements ActionListener, Comparable {
     private Point originalLocation;
     private javax.swing.border.Border border = null;
     private Map mapAssociation;
-    private ArrayList<JComponent> inputs = new ArrayList<JComponent>(); //TODO make an object for this
+    private InputBanner inputBanner;
+    //private ArrayList<JComponent> inputs = new ArrayList<JComponent>(); //TODO make an object for this
 
     private Country() {
         setSize(40, 40);
@@ -42,6 +44,7 @@ public class Country extends JButton implements ActionListener, Comparable {
     }
 
     public void setMapAssociation(Map map) {
+        inputBanner = new InputBanner(map, this);
         mapAssociation = map;
     }
 
@@ -137,24 +140,11 @@ public class Country extends JButton implements ActionListener, Comparable {
     }
 
     public void add(Input input) {
-        inputs.add(input);
-        int index = getIndexOf(input);
-        JComponent previousItem = inputs.get(index - 1);
-        int xLocation = previousItem.getX() + previousItem.getWidth() + 4;
-        setLocation(xLocation, previousItem.getY());
+        inputBanner.add(input);
+        setLocation(inputBanner.getNextLocation());
         input.revalidate();
         mapAssociation.add(input, -1);
         mapAssociation.repaint(input.getBounds());
-    }
-
-    private int getIndexOf(Input input) {
-        for (int index = 0; index < inputs.size(); index++) {
-            if (inputs.get(index) == input) {
-                return index;
-            }
-        }
-
-        return -1;
     }
 
     public void calculateCoastal() {
@@ -188,19 +178,18 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("bob");
         mapAssociation.clearOldInput();
         mapAssociation.setLastCountryClicked((Country) e.getSource());
 
         Info country = new Info(getName());
+        inputBanner.add(country);
         country.setLocation(0,0);
-        inputs.add(country);
         country.validate();
-        mapAssociation.add(country);
 
         CommandInput bob = new CommandInput(OrderType.values(), this);
-        inputs.add(bob);
-        bob.setLocation(country.getX() + country.getWidth() + 4, 0);
+        inputBanner.add(bob);
+        bob.setLocation(inputBanner.getNextLocation());
+        inputBanner.add
         mapAssociation.add(bob);
         bob.validate();
         mapAssociation.repaint(country.getBounds());
@@ -221,8 +210,8 @@ public class Country extends JButton implements ActionListener, Comparable {
         return name;
     }
 
-    public ArrayList<JComponent> getInputs() {
-        return inputs;
+    public InputBanner getInputs() {
+        return inputBanner;
     }
 
     public Map getMap() {
