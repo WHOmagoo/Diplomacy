@@ -1,10 +1,11 @@
 package command;
 
-import java.awt.Point;
-import java.util.ArrayList;
-import javax.swing.JComponent;
 import map.Country;
 import map.Map;
+
+import javax.swing.JComponent;
+import java.awt.Point;
+import java.util.ArrayList;
 
 public class InputBanner extends ArrayList<JComponent> {
     private Map associatedMap;
@@ -47,7 +48,6 @@ public class InputBanner extends ArrayList<JComponent> {
         if(super.add(e)){
             e.setLocation(getNextLocation());
         }
-
         return false;
     }
 
@@ -64,9 +64,8 @@ public class InputBanner extends ArrayList<JComponent> {
     public void clearAll() {
         for (JComponent j : this) {
             associatedMap.remove(j);
-            associatedMap.repaint(j.getBounds());
-            this.remove(j);
         }
+        clear();
     }
 
     public void setLastVisible(JComponent item){
