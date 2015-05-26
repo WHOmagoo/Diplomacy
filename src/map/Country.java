@@ -6,12 +6,13 @@ import command.OrderType;
 import command.input.CommandInput;
 import command.input.Input;
 import constants.Team;
+
+import javax.swing.JButton;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import javax.swing.JButton;
 
 public class Country extends JButton implements ActionListener, Comparable {
     private String name;
@@ -84,14 +85,12 @@ public class Country extends JButton implements ActionListener, Comparable {
         ArrayList<Country> occupiedSecondBorders = new ArrayList<Country>();
         for(Country country : secondDegreeBorders) {
             if (!occupiedSecondBorders.contains(country) &&
-                ((unitType == UnitType.NAVY && country.getTileType() != TileType.Landlocked) ||
-                (unitType == UnitType.ARMY && country.getTileType() != TileType.Water)) &&
                 country != this &&
-                isOccupied()) {
+                country.isOccupied()) {
                 occupiedSecondBorders.add(country);
             }
+            //TODO check ahead of time if there is a common country that is accessible by both units.
         }
-
 
         Collections.sort(occupiedSecondBorders);
 
@@ -100,6 +99,22 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     public Border getBorders() {
         return borders;
+    }
+
+    public ArrayList<Country> getAttackableCountries(){
+        ArrayList<Country> attackableCountries = new ArrayList<Country>();
+        for (Country otherCountry : getBorders()) {
+            boolean correctLandType = false;
+                if (unitType == UnitType.NAVY && otherCountry.getTileType() != TileType.Landlocked) {
+                    correctLandType = true;
+                } else if (unitType == UnitType.ARMY && otherCountry.getTileType() != TileType.Water) {
+                    correctLandType = true;
+                }
+            if(correctLandType){
+                attackableCountries.add(otherCountry);
+            }
+        }
+        return attackableCountries;
     }
 
     public void setBorders(Border borders) {
@@ -127,10 +142,10 @@ public class Country extends JButton implements ActionListener, Comparable {
     }
 
     public boolean isOccupied() {
-        if (this.team != Team.NULL) {
-            return true;
-        } else {
+        if (this.team == Team.NULL || unitType == UnitType.EMPTY) {
             return false;
+        } else {
+            return true;
         }
     }
 
@@ -204,7 +219,14 @@ public class Country extends JButton implements ActionListener, Comparable {
     @Override
     public int compareTo(Object country) throws IllegalArgumentException {
         try {
-            return this.name.compareTo(((Country) country).getName());
+            Country other = (Country) country;
+            if(getTileType() != TileType.Water && other.getTileType() == TileType.Water) {
+                return -1;
+            } else if (getTileType() == other.getTileType()) {
+                return this.name.compareTo(other.getName());
+            } else{
+                return 1;
+            }
         } catch (Exception e) {
             throw new IllegalArgumentException("Must compare two countries");
         }

@@ -1,9 +1,9 @@
 package map;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Map extends JLabel {
     private ArrayList<Country> countries = new ArrayList<Country>();
@@ -38,14 +38,12 @@ public class Map extends JLabel {
 
     public void setLastCountryClicked(Country countryClicked){
         lastCountryClicked = countryClicked;
-        System.out.println(countryClicked);
     }
 
     public void clearOldInput(){
         try {
             lastCountryClicked.getInputBanner().clearAll();
         } catch (NullPointerException npe){
-            System.out.println("Null");
         }
     }
 

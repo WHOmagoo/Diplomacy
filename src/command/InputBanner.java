@@ -64,6 +64,7 @@ public class InputBanner extends ArrayList<JComponent> {
     public void clearAll() {
         for (JComponent j : this) {
             associatedMap.remove(j);
+            associatedMap.repaint(j.getBounds());
         }
         clear();
     }
