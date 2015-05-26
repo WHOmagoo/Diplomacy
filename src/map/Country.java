@@ -1,10 +1,8 @@
 package map;
 
 import command.Info;
-import command.InputBanner;
 import command.OrderType;
 import command.input.CommandInput;
-import command.input.Input;
 import constants.Team;
 
 import javax.swing.JButton;
@@ -24,7 +22,7 @@ public class Country extends JButton implements ActionListener, Comparable {
     private Point originalLocation;
     private javax.swing.border.Border border = null;
     private Map mapAssociation;
-    private InputBanner inputBanner;
+    //private InputBanner inputBanner;
     //private ArrayList<JComponent> inputs = new ArrayList<JComponent>(); //TODO make an object for this
 
     private Country() {
@@ -45,7 +43,6 @@ public class Country extends JButton implements ActionListener, Comparable {
     }
 
     public void setMapAssociation(Map map) {
-        inputBanner = new InputBanner(map, this);
         mapAssociation = map;
     }
 
@@ -159,12 +156,11 @@ public class Country extends JButton implements ActionListener, Comparable {
         return false;
     }
 
-    public void add(Input input) {
-        inputBanner.add(input);
+    /*public void add(Input input) {
+        //inputBanner.add(input);
         input.revalidate();
-        mapAssociation.add(input, -1);
         mapAssociation.repaint(input.getBounds());
-    }
+    }*/
 
     public void calculateCoastal() {
         for (Country c : borders) {
@@ -195,25 +191,24 @@ public class Country extends JButton implements ActionListener, Comparable {
         super.setLocation(originalLocation);
     }
 
-    public InputBanner getInputBanner() {
+    /*public InputBanner getInputBanner() {
         return inputBanner;
-    }
+    }*/
 
     @Override
     public void actionPerformed(ActionEvent e) {
         mapAssociation.clearOldInput();
         mapAssociation.setLastCountryClicked((Country) e.getSource());
-
-        inputBanner = new InputBanner(mapAssociation, this);
         Info infoCountry = new Info(getName());
-        inputBanner.add(infoCountry);
         infoCountry.validate();
 
         CommandInput commandInput = new CommandInput(OrderType.values(), this);
-        inputBanner.add(commandInput);
         commandInput.validate();
 
-        inputBanner.setLastVisible(commandInput);
+        mapAssociation.addToInputBanner(infoCountry);
+        mapAssociation.addToInputBanner(commandInput);
+
+        mapAssociation.setLastVisible(commandInput);
     }
 
     @Override
@@ -235,10 +230,6 @@ public class Country extends JButton implements ActionListener, Comparable {
     @Override
     public String toString() {
         return name;
-    }
-
-    public InputBanner getInputs() {
-        return inputBanner;
     }
 
     public Map getMap() {

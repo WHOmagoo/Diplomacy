@@ -1,6 +1,9 @@
 package map;
 
+import command.InputBanner;
+
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,6 +12,7 @@ public class Map extends JLabel {
     private ArrayList<Country> countries = new ArrayList<Country>();
     private JLabel text = new JLabel();
     private Country lastCountryClicked;
+    private InputBanner banner = new InputBanner(this);
 
     public Map(ArrayList<Country> countries) {
         this.countries.addAll(countries);
@@ -42,9 +46,25 @@ public class Map extends JLabel {
 
     public void clearOldInput(){
         try {
-            lastCountryClicked.getInputBanner().clearAll();
+            banner.clearAll();
+            banner = new InputBanner(this);
         } catch (NullPointerException npe){
+            System.out.println("error " + npe);
         }
+    }
+
+    public void setLastVisible(JComponent j){
+        banner.setLastVisible(j);
+    }
+
+
+    public void addToInputBanner(JComponent component){
+        banner.add(component);
+        System.out.println(banner.size());
+    }
+
+    public InputBanner getBanner(){
+        return banner;
     }
 
     public Country getCountry(String nameOfCountry) throws NullPointerException {

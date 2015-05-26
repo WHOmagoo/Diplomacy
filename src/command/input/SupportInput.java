@@ -1,7 +1,8 @@
 package command.input;
 
-import javax.swing.DefaultComboBoxModel;
 import map.Country;
+
+import javax.swing.DefaultComboBoxModel;
 
 /**
  * Created by Hugh on 5/18/2015.

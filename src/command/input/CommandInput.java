@@ -45,7 +45,8 @@ public class CommandInput extends Input implements ActionListener {
         }
 
         setSize(longestItem(), 25);
-        countryAssociation.add(temp);
+        countryAssociation.getMap().addToInputBanner(temp);
         revalidate();
+        countryAssociation.getMap().getBanner().setLastVisible(this);
     }
 }

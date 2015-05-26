@@ -17,9 +17,17 @@ public class InputBanner extends ArrayList<JComponent> {
         this.associatedCountry = associatedCountry;
     }
 
-    public void setLastVisible(int index){
-        if(numberOfItemsShowing < index){
-            for(int i = numberOfItemsShowing; i < index; i++){
+    public InputBanner(Map associatedMap){
+        this.associatedMap = associatedMap;
+    }
+
+    public void setAssociatedCountry(Country associatedCountry){
+        this.associatedCountry = associatedCountry;
+    }
+
+    public void setLastVisible(int index) {
+        if (numberOfItemsShowing < index) {
+            for (int i = numberOfItemsShowing; i < index; i++) {
                 associatedMap.add(get(i), -1);
                 get(i).revalidate();
                 associatedMap.repaint(get(i).getBounds());
@@ -45,8 +53,15 @@ public class InputBanner extends ArrayList<JComponent> {
     }
 
     public boolean add(JComponent e){
-        if(super.add(e)){
+        if(getIndex(e) != -1){
+            int indexOf = getIndex(e);
+            remove(indexOf);
+            add(indexOf, e);
             e.setLocation(getNextLocation());
+            return true;
+        } else if(super.add(e)){
+            e.setLocation((getNextLocation()));
+            return true;
         }
         return false;
     }
@@ -62,16 +77,15 @@ public class InputBanner extends ArrayList<JComponent> {
     }
 
     public void clearAll() {
-        for (JComponent j : this) {
-            associatedMap.remove(j);
-            associatedMap.repaint(j.getBounds());
+        while (size() != 0) {
+            associatedMap.remove(get(0));
+            associatedMap.repaint(get(0).getBounds());
+            remove(0);
         }
-        clear();
     }
 
     public void setLastVisible(JComponent item){
         setLastVisible(getIndex(item));
-
     }
 
     public int getIndex(JComponent item){
