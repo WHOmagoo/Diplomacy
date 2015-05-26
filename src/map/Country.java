@@ -6,13 +6,12 @@ import command.OrderType;
 import command.input.CommandInput;
 import command.input.Input;
 import constants.Team;
-
-import javax.swing.JButton;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.JButton;
 
 public class Country extends JButton implements ActionListener, Comparable {
     private String name;
@@ -181,11 +180,16 @@ public class Country extends JButton implements ActionListener, Comparable {
         super.setLocation(originalLocation);
     }
 
+    public InputBanner getInputBanner() {
+        return inputBanner;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         mapAssociation.clearOldInput();
         mapAssociation.setLastCountryClicked((Country) e.getSource());
 
+        inputBanner = new InputBanner(mapAssociation, this);
         Info infoCountry = new Info(getName());
         inputBanner.add(infoCountry);
         infoCountry.validate();
