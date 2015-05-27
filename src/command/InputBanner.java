@@ -1,10 +1,11 @@
 package command;
 
-import java.awt.Point;
-import java.util.ArrayList;
-import javax.swing.JComponent;
 import map.Country;
 import map.Map;
+
+import javax.swing.JComponent;
+import java.awt.Point;
+import java.util.ArrayList;
 
 public class InputBanner extends ArrayList<JComponent> {
     private Map associatedMap;
@@ -26,7 +27,7 @@ public class InputBanner extends ArrayList<JComponent> {
 
     public void setLastVisible(int index) {
         if (numberOfItemsShowing < index) {
-            for (int i = numberOfItemsShowing; i < index; i++) {
+            for (int i = numberOfItemsShowing; i <= index; i++) {
                 associatedMap.add(get(i), -1);
                 get(i).revalidate();
                 associatedMap.repaint(get(i).getBounds());
@@ -36,6 +37,7 @@ public class InputBanner extends ArrayList<JComponent> {
                 associatedMap.remove(get(i));
                 get(i).revalidate();
                 associatedMap.repaint(get(i).getBounds());
+                remove(i);
             }
         }
         numberOfItemsShowing = index;
@@ -89,7 +91,7 @@ public class InputBanner extends ArrayList<JComponent> {
     public int getIndex(JComponent item){
         for(int i = 0; i < size(); i++){
             if (item == get(i)){
-                return i + 1;
+                return i;
             }
         }
 

@@ -1,6 +1,7 @@
 import constants.GameFrame;
-import java.io.*;
 import map.Map;
+
+import java.io.*;
 
 public class Test {
 
@@ -8,6 +9,7 @@ public class Test {
 
         GameFrame frame = new GameFrame();
         Map map = MapCreation.createMap();
+        System.out.println(map);
         //Input non = new Input(map, map.getCountry("Berlin"));
         //non.add(map.getCountry("Berlin"));
         //Map map = writeMap();

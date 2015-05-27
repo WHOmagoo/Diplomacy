@@ -60,7 +60,6 @@ public class Map extends JLabel {
 
     public void addToInputBanner(JComponent component){
         banner.add(component);
-        System.out.println(banner.size());
     }
 
     public InputBanner getBanner(){
@@ -84,6 +83,10 @@ public class Map extends JLabel {
         }
 
         return temp;
+    }
+
+    public Country getLastCountryClicked(){
+        return lastCountryClicked;
     }
 
     public void verifyBorders() {

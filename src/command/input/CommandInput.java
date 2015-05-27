@@ -1,23 +1,28 @@
 package command.input;
 
+import command.InputBanner;
 import command.OrderType;
+import map.Country;
+import map.Map;
+
+import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.DefaultComboBoxModel;
-import map.Country;
 
 public class CommandInput extends Input implements ActionListener {
     private DefaultComboBoxModel<OrderType> elements = new DefaultComboBoxModel<OrderType>();
     private Country countryAssociation;
+    private InputBanner banner;
 
-    public CommandInput(ArrayList<OrderType> possibleOrders, Country countryCalled) {
-        this((OrderType[]) possibleOrders.toArray(), countryCalled);
+    public CommandInput(ArrayList<OrderType> possibleOrders, Map map) {
+        this((OrderType[]) possibleOrders.toArray(), map);
     }
 
-    public CommandInput(OrderType[] possibleOrders, Country countryCalled){
+    public CommandInput(OrderType[] possibleOrders, Map map){
         super();
-        countryAssociation = countryCalled;
+        banner = map.getBanner();
+        countryAssociation = map.getLastCountryClicked();
 
         for (OrderType order : possibleOrders) {
             elements.addElement(order);
@@ -32,6 +37,7 @@ public class CommandInput extends Input implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        banner.setLastVisible(this);
         Input temp = null;
         if(getSelectedItem() == OrderType.ATTACK){
             temp = new AttackInput(countryAssociation);
@@ -44,8 +50,8 @@ public class CommandInput extends Input implements ActionListener {
         }
 
         setSize(longestItem(), 25);
-        countryAssociation.getMap().addToInputBanner(temp);
+        banner.add(temp);
         revalidate();
-        countryAssociation.getMap().getBanner().setLastVisible(temp);
+        banner.setLastVisible(temp);
     }
 }

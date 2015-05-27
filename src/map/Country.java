@@ -22,8 +22,6 @@ public class Country extends JButton implements ActionListener, Comparable {
     private Point originalLocation;
     private javax.swing.border.Border border = null;
     private Map mapAssociation;
-    //private InputBanner inputBanner;
-    //private ArrayList<JComponent> inputs = new ArrayList<JComponent>(); //TODO make an object for this
 
     private Country() {
         setSize(40, 40);
@@ -40,31 +38,6 @@ public class Country extends JButton implements ActionListener, Comparable {
         this.tileType = tileType;
         originalLocation = location;
         setLocation(location);
-    }
-
-    public void setMapAssociation(Map map) {
-        mapAssociation = map;
-    }
-
-    public void setOccupiedBy(Team team, UnitType unitType) throws IllegalArgumentException {
-        if (team == Team.NULL && unitType != UnitType.EMPTY) {
-            throw new IllegalArgumentException("When setting team to null, unit type must also be null");
-        }
-
-        if (unitType == UnitType.EMPTY && team != Team.NULL) {
-            throw new IllegalArgumentException("When setting unit type to null, team must also be null");
-        }
-
-        if (unitType == UnitType.NAVY && tileType == TileType.Landlocked) {
-            throw new IllegalArgumentException("A navy is not allowed in a landlocked area");
-        }
-
-        if (unitType == UnitType.ARMY && tileType == TileType.Water) {
-            throw new IllegalArgumentException("An army is not allowed in the water");
-        }
-
-        this.team = team;
-        this.unitType = unitType;
     }
 
     public ArrayList<Country> getOccupiedNeighbors() {
@@ -94,6 +67,17 @@ public class Country extends JButton implements ActionListener, Comparable {
         return occupiedSecondBorders;
     }
 
+    public ArrayList<Country> getSupportableInCommon(Country otherCountry){
+        ArrayList<Country> temp = new ArrayList<Country>();
+        for(Country c : otherCountry.getAttackableCountries()){
+            if(getAttackableCountries().contains(c)){
+                temp.add(c);
+            }
+        }
+
+        return temp;
+    }
+
     public Border getBorders() {
         return borders;
     }
@@ -103,7 +87,16 @@ public class Country extends JButton implements ActionListener, Comparable {
         for (Country otherCountry : getBorders()) {
             boolean correctLandType = false;
                 if (unitType == UnitType.NAVY && otherCountry.getTileType() != TileType.Landlocked) {
-                    correctLandType = true;
+                    if(otherCountry.tileType == TileType.Water){
+                        correctLandType = true;
+                    } else {
+                        for (Country c : otherCountry.getWaterBorders()) {
+                            if (contains(c)) {
+                                correctLandType = true;
+                                break;
+                            }
+                        }
+                    }
                 } else if (unitType == UnitType.ARMY && otherCountry.getTileType() != TileType.Water) {
                     correctLandType = true;
                 }
@@ -114,8 +107,15 @@ public class Country extends JButton implements ActionListener, Comparable {
         return attackableCountries;
     }
 
-    public void setBorders(Border borders) {
-        this.borders = borders;
+    public ArrayList<Country> getWaterBorders(){
+        ArrayList<Country> temp = new ArrayList<Country>();
+        for(Country c : borders){
+            if(c.getTileType() == TileType.Water){
+                temp.add(c);
+            }
+        }
+
+        return temp;
     }
 
     public javax.swing.border.Border getBorder() {
@@ -156,11 +156,34 @@ public class Country extends JButton implements ActionListener, Comparable {
         return false;
     }
 
-    /*public void add(Input input) {
-        //inputBanner.add(input);
-        input.revalidate();
-        mapAssociation.repaint(input.getBounds());
-    }*/
+    public void setMapAssociation(Map map) {
+        mapAssociation = map;
+    }
+
+    public void setOccupiedBy(Team team, UnitType unitType) throws IllegalArgumentException {
+        if (team == Team.NULL && unitType != UnitType.EMPTY) {
+            throw new IllegalArgumentException("When setting team to null, unit type must also be null");
+        }
+
+        if (unitType == UnitType.EMPTY && team != Team.NULL) {
+            throw new IllegalArgumentException("When setting unit type to null, team must also be null");
+        }
+
+        if (unitType == UnitType.NAVY && tileType == TileType.Landlocked) {
+            throw new IllegalArgumentException("A navy is not allowed in a landlocked area");
+        }
+
+        if (unitType == UnitType.ARMY && tileType == TileType.Water) {
+            throw new IllegalArgumentException("An army is not allowed in the water");
+        }
+
+        this.team = team;
+        this.unitType = unitType;
+    }
+
+    public void setBorders(Border borders) {
+        this.borders = borders;
+    }
 
     public void calculateCoastal() {
         for (Country c : borders) {
@@ -191,10 +214,6 @@ public class Country extends JButton implements ActionListener, Comparable {
         super.setLocation(originalLocation);
     }
 
-    /*public InputBanner getInputBanner() {
-        return inputBanner;
-    }*/
-
     @Override
     public void actionPerformed(ActionEvent e) {
         mapAssociation.clearOldInput();
@@ -202,7 +221,7 @@ public class Country extends JButton implements ActionListener, Comparable {
         Info infoCountry = new Info(getName());
         infoCountry.validate();
 
-        CommandInput commandInput = new CommandInput(OrderType.values(), this);
+        CommandInput commandInput = new CommandInput(OrderType.values(), mapAssociation);
         commandInput.validate();
 
         mapAssociation.addToInputBanner(infoCountry);
