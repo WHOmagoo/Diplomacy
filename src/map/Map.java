@@ -2,9 +2,7 @@ package map;
 
 import command.InputBanner;
 
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -56,7 +54,6 @@ public class Map extends JLabel {
     public void setLastVisible(JComponent j){
         banner.setLastVisible(j);
     }
-
 
     public void addToInputBanner(JComponent component){
         banner.add(component);
