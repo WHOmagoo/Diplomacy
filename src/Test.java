@@ -9,11 +9,6 @@ public class Test {
 
         GameFrame frame = new GameFrame();
         Map map = MapCreation.createMap();
-        System.out.println(map);
-        //Input non = new Input(map, map.getCountry("Berlin"));
-        //non.add(map.getCountry("Berlin"));
-        //Map map = writeMap();
-        //Map map = readMap();
 
         frame.addComponentCentered(map);
         frame.repaint();
