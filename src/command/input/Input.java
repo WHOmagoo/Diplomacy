@@ -1,14 +1,16 @@
 package command.input;
 
+import command.InputBanner;
 import command.OrderType;
 import constants.Scheme;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import map.Country;
+
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import map.Country;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Input extends JComboBox implements ActionListener, Comparable{
     private Country countryAssociation;
@@ -71,5 +73,15 @@ public class Input extends JComboBox implements ActionListener, Comparable{
         }
 
         throw new ClassCastException("Must compare a JComponent");
+    }
+
+    public void firstAction(InputBanner banner){
+        banner.setLastVisible(this);
+        setSize(longestItem(), getHeight());
+    }
+
+    public void lastAction(InputBanner banner, Input newInput){
+        banner.setLastVisible(newInput);
+        revalidate();
     }
 }

@@ -37,21 +37,18 @@ public class CommandInput extends Input implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        banner.setLastVisible(this);
+        firstAction(banner);
+
         Input temp = null;
+
         if(getSelectedItem() == OrderType.ATTACK){
             temp = new AttackInput(countryAssociation);
-        } else if(getSelectedItem() == OrderType.HOLD){
-
         } else if(getSelectedItem() == OrderType.MOVE){
-
+            temp = new MoveInput(countryAssociation);
         } else if(getSelectedItem() == OrderType.SUPPORT){
             temp = new SupportInput(countryAssociation);
+        } else {
         }
-
-        setSize(longestItem(), 25);
-        banner.add(temp);
-        revalidate();
-        banner.setLastVisible(temp);
+        lastAction(banner, temp);
     }
 }
