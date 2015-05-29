@@ -85,6 +85,10 @@ public class InputBanner extends ArrayList<JComponent> {
     }
 
     public void setLastVisible(JComponent item){
+        if(getIndex(item) == -1){
+            add(item);
+        }
+
         setLastVisible(getIndex(item));
     }
 
