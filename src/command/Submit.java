@@ -1,5 +1,6 @@
-package constants;
+package command;
 
+import constants.Scheme;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;

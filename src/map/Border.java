@@ -38,10 +38,6 @@ public class Border extends ArrayList<Country> {
 
     }
 
-    public Country getCountry(int i) {//May be removed later
-        return super.get(i);
-    }
-
     public Country getCountry() {
         return country;
     }
