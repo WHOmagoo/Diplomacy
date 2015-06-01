@@ -2,11 +2,13 @@ package map;
 
 import command.Info;
 import command.OrderType;
-import command.input.CommandInput;
+import command.input.OrderInput;
+import command.order.Defend;
+import command.order.Order;
 import constants.Team;
 
-import javax.swing.JButton;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class Country extends JButton implements ActionListener, Comparable {
     private Point originalLocation;
     private javax.swing.border.Border border = null;
     private Map mapAssociation;
+    private Order order;
 
     private Country() {
         setSize(40, 40);
@@ -138,6 +141,15 @@ public class Country extends JButton implements ActionListener, Comparable {
         return unitType;
     }
 
+    public void setOrder(Order order){
+        this.order = order;
+    }
+
+    public void increaseDefensePower(Defend order){
+        if(order.getCountryBeingDefended() == this){
+        }
+    }
+
     public boolean isOccupied() {
         if (this.team == Team.NULL || unitType == UnitType.EMPTY) {
             return false;
@@ -216,18 +228,18 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        mapAssociation.clearOldInput();
         mapAssociation.setLastCountryClicked((Country) e.getSource());
+        mapAssociation.clearOldInput();
         Info infoCountry = new Info(getName());
         infoCountry.validate();
 
-        CommandInput commandInput = new CommandInput(OrderType.values(), mapAssociation);
-        commandInput.validate();
+        OrderInput orderInput = new OrderInput(OrderType.values(), mapAssociation);
+        orderInput.validate();
 
         mapAssociation.addToInputBanner(infoCountry);
-        mapAssociation.addToInputBanner(commandInput);
+        mapAssociation.addToInputBanner(orderInput);
 
-        mapAssociation.setLastVisible(commandInput);
+        mapAssociation.setLastVisible(orderInput);
     }
 
     @Override

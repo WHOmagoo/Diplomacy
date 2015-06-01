@@ -1,35 +1,35 @@
 package command;
 
+import command.input.Input;
+import command.order.Order;
 import map.Country;
 import map.Map;
 
-import javax.swing.JComponent;
-import java.awt.Point;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class InputBanner extends ArrayList<JComponent> {
     private Map associatedMap;
-    private Country associatedCountry;
+    private Country country;
     private int numberOfItemsShowing = 0;
+    private Order orderBiulder;
 
     public InputBanner(Map associatedMap, Country associatedCountry){
         this.associatedMap = associatedMap;
-        this.associatedCountry = associatedCountry;
+        this.country = associatedCountry;
     }
 
     public InputBanner(Map associatedMap){
         this.associatedMap = associatedMap;
-    }
-
-    public void setAssociatedCountry(Country associatedCountry){
-        this.associatedCountry = associatedCountry;
+        this.country = associatedMap.getLastCountryClicked();
     }
 
     public void setLastVisible(int index) {
         if (numberOfItemsShowing < index) {
             for (int i = numberOfItemsShowing; i <= index; i++) {
                 associatedMap.add(get(i), -1);
-                get(i).revalidate();
+                get(i).validate();
                 associatedMap.repaint(get(i).getBounds());
             }
         } else {
@@ -44,6 +44,7 @@ public class InputBanner extends ArrayList<JComponent> {
     }
 
     private JComponent getPreviousItem(JComponent component){
+        //TODO delete later.
         for(int i = 0; i < size(); i++){
             if (component == get(i)){
                 return get(i - 1);
@@ -102,4 +103,25 @@ public class InputBanner extends ArrayList<JComponent> {
         return -1;
     }
 
+    public Input getFirstNotVisibile(Input[] inputs){
+        for(Input input : inputs){
+            if(!contains(input)){
+                return input;
+            }
+        }
+
+        return null;
+    }
+
+    public Map getMap(){
+        return associatedMap;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setOrderType(OrderType orderType){
+        orderBiulder = orderType.getOrder();
+    }
 }

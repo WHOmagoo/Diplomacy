@@ -1,19 +1,16 @@
 package command.input;
 
 import command.InputBanner;
-import command.OrderType;
 import constants.Scheme;
 import map.Country;
 
-import javax.swing.ComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Input extends JComboBox implements ActionListener, Comparable{
-    private Country countryAssociation;
+    private InputBanner banner;
 
     public Input() {
         new JComboBox<Country>();
@@ -26,16 +23,10 @@ public class Input extends JComboBox implements ActionListener, Comparable{
         setAutoscrolls(true);
     }
 
-    public Input(Country countryAssociation) {
+    public Input(InputBanner banner){
         this();
-        this.countryAssociation = countryAssociation;
-    }
+        this.banner = banner;
 
-    public Input(OrderType[] orderTypes, Country countryAssociation) {
-        super();
-        for(OrderType o : orderTypes){
-            addItem(o);
-        }
     }
 
     public int longestItem(){
@@ -51,16 +42,8 @@ public class Input extends JComboBox implements ActionListener, Comparable{
         return longestItem + 4;
     }
 
-    private Country getCountryAssociation() {
-        return countryAssociation;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-
-    }
-
-    private void constants() {
     }
 
     @Override
@@ -75,13 +58,28 @@ public class Input extends JComboBox implements ActionListener, Comparable{
         throw new ClassCastException("Must compare a JComponent");
     }
 
-    public void firstAction(InputBanner banner){
-        banner.setLastVisible(this);
+    public void firstAction(InputBanner banner, Input item){
         setSize(longestItem(), getHeight());
+        revalidate();
+        banner.setLastVisible(item);
     }
 
-    public void lastAction(InputBanner banner, Input newInput){
-        banner.setLastVisible(newInput);
+    public void firstAction(InputBanner banner){
+        setSize(longestItem(), getHeight());
         revalidate();
+        banner.setLastVisible(this);
+    }
+
+    public void lastAction(InputBanner banner, JComponent newInput){
+        if(newInput != null) {
+            banner.setLastVisible(newInput);
+            this.revalidate();
+        } else{
+            throw new NullPointerException("The item was null");
+        }
+    }
+
+    public InputBanner getBanner(){
+        return banner;
     }
 }

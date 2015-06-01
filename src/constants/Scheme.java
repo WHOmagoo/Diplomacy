@@ -1,7 +1,6 @@
 package constants;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 
 public enum Scheme {
     FOREGROUND (Color.BLUE), BACKGROUND(Color.ORANGE), FONT(new Font("Dialog", Font.BOLD, 12));

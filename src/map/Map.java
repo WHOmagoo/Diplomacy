@@ -10,7 +10,7 @@ public class Map extends JLabel {
     private ArrayList<Country> countries = new ArrayList<Country>();
     private JLabel text = new JLabel();
     private Country lastCountryClicked;
-    private InputBanner banner = new InputBanner(this);
+    private InputBanner banner;
 
     public Map(ArrayList<Country> countries) {
         this.countries.addAll(countries);
@@ -40,15 +40,15 @@ public class Map extends JLabel {
 
     public void setLastCountryClicked(Country countryClicked){
         lastCountryClicked = countryClicked;
+        //banner = new InputBanner(this);
     }
 
     public void clearOldInput(){
         try {
             banner.clearAll();
-            banner = new InputBanner(this);
         } catch (NullPointerException npe){
-            System.out.println("error " + npe);
         }
+        banner = new InputBanner(this);
     }
 
     public void setLastVisible(JComponent j){
