@@ -1,6 +1,7 @@
 package command.input;
 
 import command.InputBanner;
+import command.order.Order;
 import constants.Scheme;
 import map.Country;
 
@@ -11,6 +12,7 @@ import java.awt.event.ActionListener;
 
 public class Input extends JComboBox implements ActionListener, Comparable{
     private InputBanner banner;
+    private Order order;
 
     public Input() {
         new JComboBox<Country>();
@@ -81,5 +83,18 @@ public class Input extends JComboBox implements ActionListener, Comparable{
 
     public InputBanner getBanner(){
         return banner;
+    }
+
+    public void setBanner(InputBanner banner) {
+        this.banner = banner;
+    }
+
+    public void setOrder(Order order){
+        this.order = order;
+        System.out.println("no");
+    }
+
+    public Order getOrder(){
+        return order;
     }
 }

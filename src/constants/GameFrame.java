@@ -16,7 +16,7 @@ public class GameFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setUndecorated(true);
-        setIconImage(Toolkit.getDefaultToolkit().getImage("Files\\Spain\\spainarmy.png"));
+        setIconImage(Toolkit.getDefaultToolkit().getImage("files\\Spain\\spainarmy.png"));
         getContentPane().setBackground(new Color(204, 132, 63));
         setTitle("Diplomacy");
         addQuit();
@@ -25,14 +25,14 @@ public class GameFrame extends JFrame {
     }
 
     private void addQuit() {
-        JButton quit = new JButton(new ImageIcon("Files\\x.png"));
+        JButton quit = new JButton(new ImageIcon("files\\x.png"));
         quit.setLayout(null);
         quit.setBounds(getWidth() - 21, 0, 21, 21);
         quit.setRolloverEnabled(true);
         quit.setBorder(null);
         quit.setOpaque(false);
         quit.setContentAreaFilled(false);
-        quit.setRolloverIcon(new ImageIcon("Files\\xrollover.png"));
+        quit.setRolloverIcon(new ImageIcon("files\\xrollover.png"));
         quit.addActionListener(new ActionListener() {
                                    public void actionPerformed(ActionEvent e) {
                                        System.exit(0);
@@ -45,13 +45,13 @@ public class GameFrame extends JFrame {
 
     private void addMinimize() {
 
-        JButton minimize = new JButton(new ImageIcon("Files\\-.png"));
+        JButton minimize = new JButton(new ImageIcon("files\\-.png"));
         minimize.setBounds(getWidth() - 42, 0, 21, 21);
         minimize.setRolloverEnabled(true);
         minimize.setBorder(null);
         minimize.setOpaque(false);
         minimize.setContentAreaFilled(false);
-        minimize.setRolloverIcon(new ImageIcon("Files\\-rollover.png"));
+        minimize.setRolloverIcon(new ImageIcon("files\\-rollover.png"));
         minimize.addActionListener(new ActionListener() {
                                        public void actionPerformed(ActionEvent e) {
                                            setState(Frame.ICONIFIED);

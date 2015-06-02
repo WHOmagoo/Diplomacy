@@ -40,7 +40,6 @@ public class Map extends JLabel {
 
     public void setLastCountryClicked(Country countryClicked){
         lastCountryClicked = countryClicked;
-        //banner = new InputBanner(this);
     }
 
     public void clearOldInput(){

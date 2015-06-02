@@ -1,8 +1,9 @@
 import constants.Team;
-import java.awt.Point;
-import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import map.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class MapCreation {
 
@@ -12,8 +13,8 @@ public class MapCreation {
         Map map = new Map(tempCountries);
         setOccupiedBy(tempCountries);
         //Watch out for order of code execution, may cause errors later.
-        map.setMapGraphic(new ImageIcon("Files\\Map.png"));
-        map.setMapText(new ImageIcon("Files\\Map Text.png"));
+        map.setMapGraphic(new ImageIcon("files\\Map.png"));
+        map.setMapText(new ImageIcon("files\\Map Text.png"));
         map.refreshAllCountries();
         map.addAllCountries();
         return map;

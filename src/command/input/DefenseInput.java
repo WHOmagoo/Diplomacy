@@ -1,7 +1,8 @@
 package command.input;
 
 import command.InputBanner;
-import command.order.Move;
+import command.OrderType;
+import command.order.Defend;
 import command.order.Order;
 import map.Country;
 
@@ -9,17 +10,17 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MoveInput extends Input implements ActionListener{
-    private InputBanner banner = null;
-    private Move order;
+public class DefenseInput extends Input implements ActionListener{
+    private InputBanner banner;
+    private Defend order;
 
-    public MoveInput(){
+    public DefenseInput(){
     }
 
-    public MoveInput(InputBanner banner){
+    public DefenseInput(InputBanner banner){
         this.banner = banner;
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
-        model.setSelectedItem("choose where to move");
+        DefaultComboBoxModel<Country> model = new DefaultComboBoxModel();
+        model.setSelectedItem("choose who to " + OrderType.DEFEND);
 
         for (Country support : banner.getCountry().getAttackableCountries()) {
             model.addElement(support);
@@ -33,13 +34,14 @@ public class MoveInput extends Input implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) throws NullPointerException{
         firstAction(banner);
-        order.setMovingTo((Country) getSelectedItem());
+        order.setCountryBeingDefended((Country) getSelectedItem());
         Submit submit = new Submit(banner);
         lastAction(banner, submit);
         submit.startRollover();
+
     }
 
     public void setOrder(Order order) throws ClassCastException{
-        this.order = (Move) order;
+        this.order = (Defend) order;
     }
 }

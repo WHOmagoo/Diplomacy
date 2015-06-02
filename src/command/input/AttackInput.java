@@ -1,6 +1,8 @@
 package command.input;
 
 import command.InputBanner;
+import command.order.Attack;
+import command.order.Order;
 import map.Country;
 
 import javax.swing.*;
@@ -11,7 +13,8 @@ import java.awt.event.ActionListener;
  * Created by Hugh on 5/18/2015.
  */
 public class AttackInput extends Input implements ActionListener{
-    InputBanner banner;
+    private InputBanner banner;
+    private Attack attack;
 
     public AttackInput(){
     }
@@ -32,6 +35,13 @@ public class AttackInput extends Input implements ActionListener{
 
     public void actionPerformed(ActionEvent e){
         firstAction(banner, this);
-        lastAction(banner, new Submit(banner));
+        attack.setCountryToAttack((Country) getSelectedItem());
+        Submit submit = new Submit(banner);
+        lastAction(banner, submit);
+        submit.startRollover();
+    }
+
+    public void setOrder(Order order) throws ClassCastException{
+        attack = (Attack) order;
     }
 }

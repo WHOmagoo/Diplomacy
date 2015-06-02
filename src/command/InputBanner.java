@@ -121,7 +121,12 @@ public class InputBanner extends ArrayList<JComponent> {
         return country;
     }
 
-    public void setOrderType(OrderType orderType){
-        orderBiulder = orderType.getOrder();
+    public Input getLastInput() {
+        for (int i = size() - 1; i >= 0; i--){
+            if(get(i) instanceof Input){
+                return (Input) get(i);
+            }
+        }
+        throw new NullPointerException("Contains no inputs");
     }
 }

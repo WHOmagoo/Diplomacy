@@ -16,7 +16,7 @@ public class Test {
 
     public static Map writeMap() {
         try {
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File("..\\Save Files\\test.dat")));
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File("..\\Save files\\test.dat")));
             Map map = MapCreation.createMap();
             try {
                 out.writeObject(map);
@@ -40,7 +40,7 @@ public class Test {
 
     public static Map readMap() {
         try {
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream("..\\Save Files\\test.dat"));
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("..\\Save files\\test.dat"));
             try {
                 Map map = (Map) in.readObject();
                 in.close();

@@ -18,11 +18,27 @@ public enum OrderType {
         this.inputs = inputs;
     }
 
-    public Order getOrder() throws NullPointerException{
-        return orderType;
+    public static Order getOrder(Object selectedItem) throws NullPointerException, ClassCastException{
+        switch ((OrderType) selectedItem) {
+            case ATTACK: return new Attack();
+            case DEFEND: return new Defend();
+            case HOLD: return null;
+            case MOVE: return new Move();
+            case SUPPORT: return new Support();
+        }
+
+        throw new NullPointerException("The time could not be found");
     }
 
-    public Input[] getInputs(){
-        return inputs;
+    public static Input getInput(Object selectedItem, InputBanner banner) throws NullPointerException, ClassCastException{
+        switch ((OrderType) selectedItem) {
+            case ATTACK: return new AttackInput(banner);
+            case DEFEND: return new DefenseInput(banner);
+            case HOLD: return null;
+            case MOVE: return new MoveInput(banner);
+            case SUPPORT: return new SupportInput(banner);
+        }
+
+        throw new NullPointerException("Error");
     }
 }

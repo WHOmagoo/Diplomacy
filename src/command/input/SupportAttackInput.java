@@ -1,6 +1,7 @@
 package command.input;
 
 import command.InputBanner;
+import command.order.Order;
 import map.Country;
 
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.awt.event.ActionListener;
 public class SupportAttackInput extends Input implements ActionListener{
     private DefaultComboBoxModel model = new DefaultComboBoxModel();
     private InputBanner banner;
+    private Order order;
 
     public SupportAttackInput(){
 
@@ -32,7 +34,13 @@ public class SupportAttackInput extends Input implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         firstAction(banner);
-        lastAction(banner, new Submit(banner));
+        Submit submit = new Submit(banner);
+        lastAction(banner, submit);
+        submit.startRollover();
+    }
+
+    public void setOrder(Order order){
+        this.order = order;
     }
 
 }

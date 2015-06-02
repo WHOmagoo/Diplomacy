@@ -146,8 +146,8 @@ public class Country extends JButton implements ActionListener, Comparable {
     }
 
     public void increaseDefensePower(Defend order){
-        if(order.getCountryBeingDefended() == this){
-        }
+        /*if(order == this){
+        }*/
     }
 
     public boolean isOccupied() {

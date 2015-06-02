@@ -2,6 +2,8 @@ package command.input;
 
 import command.Info;
 import command.InputBanner;
+import command.order.Order;
+import command.order.Support;
 import map.Country;
 
 import javax.swing.*;
@@ -14,6 +16,7 @@ import java.awt.event.ActionListener;
 public class SupportInput extends Input implements ActionListener{
     private DefaultComboBoxModel model;
     private InputBanner banner;
+    private Support order;
 
     public SupportInput(){
 
@@ -37,8 +40,13 @@ public class SupportInput extends Input implements ActionListener{
     public void actionPerformed(ActionEvent e){
         super.firstAction(banner);
         Info supportAttackInfo = new Info("attack on");
+        order.setSupporting((Country) getSelectedItem());
         banner.add(supportAttackInfo);
         SupportAttackInput supportAttack = new SupportAttackInput((Country) getSelectedItem());
         lastAction(banner, supportAttack);
+    }
+
+    public void setOrder(Order order) throws ClassCastException{
+        this.order = (Support) order;
     }
 }
