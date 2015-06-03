@@ -2,12 +2,11 @@ package command;
 
 import command.input.Input;
 import command.order.Order;
+import java.awt.Point;
+import java.util.ArrayList;
+import javax.swing.JComponent;
 import map.Country;
 import map.Map;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 
 public class InputBanner extends ArrayList<JComponent> {
     private Map associatedMap;

@@ -3,13 +3,12 @@ package command.input;
 import command.InputBanner;
 import command.OrderType;
 import command.order.Support;
-import map.Country;
-import map.Map;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import map.Country;
+import map.Map;
 
 public class OrderInput extends Input implements ActionListener {
     private DefaultComboBoxModel<OrderType> elements = new DefaultComboBoxModel<OrderType>();

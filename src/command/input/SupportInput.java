@@ -4,11 +4,10 @@ import command.Info;
 import command.InputBanner;
 import command.order.Order;
 import command.order.Support;
-import map.Country;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultComboBoxModel;
+import map.Country;
 
 /**
  * Created by Hugh on 5/18/2015.

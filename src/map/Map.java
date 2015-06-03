@@ -1,10 +1,11 @@
 package map;
 
 import command.InputBanner;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 public class Map extends JLabel {
     private ArrayList<Country> countries = new ArrayList<Country>();
@@ -36,10 +37,6 @@ public class Map extends JLabel {
         this.text.setLocation(0, 0);
         this.text.setLayout(null);
         add(this.text, 0);
-    }
-
-    public void setLastCountryClicked(Country countryClicked){
-        lastCountryClicked = countryClicked;
     }
 
     public void clearOldInput(){
@@ -83,6 +80,10 @@ public class Map extends JLabel {
 
     public Country getLastCountryClicked(){
         return lastCountryClicked;
+    }
+
+    public void setLastCountryClicked(Country countryClicked) {
+        lastCountryClicked = countryClicked;
     }
 
     public void verifyBorders() {

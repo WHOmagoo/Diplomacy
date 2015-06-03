@@ -3,12 +3,13 @@ package command.input;
 import command.InputBanner;
 import command.order.Order;
 import constants.Scheme;
-import map.Country;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import map.Country;
 
 public class Input extends JComboBox implements ActionListener, Comparable{
     private InputBanner banner;
@@ -89,12 +90,12 @@ public class Input extends JComboBox implements ActionListener, Comparable{
         this.banner = banner;
     }
 
+    public Order getOrder() {
+        return order;
+    }
+
     public void setOrder(Order order){
         this.order = order;
         System.out.println("no");
-    }
-
-    public Order getOrder(){
-        return order;
     }
 }

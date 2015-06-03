@@ -1,7 +1,6 @@
 import constants.GameFrame;
-import map.Map;
-
 import java.io.*;
+import map.Map;
 
 public class Test {
 

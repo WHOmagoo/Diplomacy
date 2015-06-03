@@ -2,13 +2,13 @@ package command.input;
 
 import command.InputBanner;
 import constants.Scheme;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 
 public class Submit extends JButton implements ActionListener{
     private Timer timer;

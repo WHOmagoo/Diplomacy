@@ -1,9 +1,8 @@
 import constants.Team;
-import map.*;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import map.*;
 
 public class MapCreation {
 

@@ -6,13 +6,12 @@ import command.input.OrderInput;
 import command.order.Defend;
 import command.order.Order;
 import constants.Team;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.JButton;
 
 public class Country extends JButton implements ActionListener, Comparable {
     private String name;
@@ -83,6 +82,10 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     public Border getBorders() {
         return borders;
+    }
+
+    public void setBorders(Border borders) {
+        this.borders = borders;
     }
 
     public ArrayList<Country> getAttackableCountries(){
@@ -191,10 +194,6 @@ public class Country extends JButton implements ActionListener, Comparable {
 
         this.team = team;
         this.unitType = unitType;
-    }
-
-    public void setBorders(Border borders) {
-        this.borders = borders;
     }
 
     public void calculateCoastal() {

@@ -2,11 +2,10 @@ package command.input;
 
 import command.InputBanner;
 import command.order.Order;
-import map.Country;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultComboBoxModel;
+import map.Country;
 
 public class SupportAttackInput extends Input implements ActionListener{
     private DefaultComboBoxModel model = new DefaultComboBoxModel();
