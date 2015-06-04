@@ -2,65 +2,96 @@ package command;
 
 import command.order.Attack;
 import command.order.Order;
-import java.util.ArrayList;
 import map.Country;
 
-public class OrderResolver extends ArrayList<Order> {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
-    public OrderResolver(ArrayList<Country> countries) {
+public class OrderResolver extends ArrayList<Order> {
+    private static ArrayList<Order> orders = new ArrayList<Order>();
+    private static ArrayList<Order> resolvedOrders = new ArrayList<Order>();
+
+    public static void resolveOrders(ArrayList<Country> countries) {
+        HashMap<Order, Boolean> stagedOrders = new HashMap<Order, Boolean>();
+
         for (Country c : countries) {
             if (c.getOrder() != null) {
-                add(c.getOrder());
+                orders.add(c.getOrder());
+                stagedOrders.put(c.getOrder(), null);
             }
         }
 
-        ArrayList<Order> freeOrdersCalculated1 = getFreeOrders();
-        while (!allIsValid()) {
-            ArrayList<Order> freeOrdersCalculated2 = new ArrayList<Order>();
-            while (!freeOrdersCalculated1.equals(freeOrdersCalculated2)) {
-                freeOrdersCalculated1 = getFreeOrders();
-                freeOrdersCalculated2 = getFreeOrders();
-            }
-            cancelSomeOrders(freeOrdersCalculated1);
+        ArrayList<Order> invalidOrders1 = cancelSomeOrders(getUnCanceledOrders(orders));
+        ArrayList<Order> invalidOrders2 = cancelSomeOrders(getUnCanceledOrders(invalidOrders1));
+
+        while(!invalidOrders1.equals(invalidOrders2)) {
+            invalidOrders1 = cancelSomeOrders(getUnCanceledOrders(invalidOrders2));
+            invalidOrders2 = cancelSomeOrders(getUnCanceledOrders(invalidOrders1));
+            Collections.sort(invalidOrders1);
+            Collections.sort(invalidOrders2);
+            System.out.println(invalidOrders1);
+            System.out.println(invalidOrders2);
         }
 
-        System.out.println("Done!");
+
+        printCommands();
+
     }
 
-    public ArrayList<Order> getFreeOrders() {
-        ArrayList<Order> orders = new ArrayList<>();
-        for (Order order : this) {
-            if (!order.isAttacked()) {
-                for (Order otherOrder : this) {
-                    if (order.isCanceledBy(otherOrder)) {
-                        order.addAttackedBy(otherOrder.getOrderFrom());
-                    }
+    private static ArrayList<Order> getUnCanceledOrders(ArrayList<Order> orders){
+        ArrayList<Order> uncanceledOrders = new ArrayList<Order>();
+        for(Order order : orders){
+            if(!isCanceled(order)){
+                order.setValid();
+                uncanceledOrders.add(order);
+            }
+        }
+
+        return uncanceledOrders;
+    }
+
+    private static boolean isCanceled(Order order){
+        for(Order o : orders){
+            if(o instanceof Attack){
+                Attack attack = (Attack) o;
+                if(attack.getAttacking().getOrder() == order){
+                    return true;
                 }
             }
-            if (!order.isAttacked()) {
-                order.setValid();
-                orders.add(order);
-            }
-            }
-
-        return orders;
+        }
+        return false;
     }
 
-    private void cancelSomeOrders(ArrayList<Order> executableOrders) {
+    private static ArrayList<Order> cancelSomeOrders(ArrayList<Order> executableOrders) {
+        ArrayList<Order> invalidOrders = new ArrayList<Order>();
         for (Order order : executableOrders) {
             if (order instanceof Attack) {
                 if (order.isValid() == true) {
-                    ((Attack) order).cancelOtherOrder();
+                    try {
+                        ((Attack) order).getAttacking().getOrder().setInvalid();
+                    } catch (NullPointerException nullPointer){
+                    }
                 } else {
                     System.out.println("Wrong cancel");
                 }
+            } else {
+                System.out.println("Wrong order type");
             }
 
         }
+
+        for(Order order : orders){
+            if(!order.isValid()){
+                invalidOrders.add(order);
+            }
+        }
+
+        return invalidOrders;
     }
 
-    private void printCanceledOrders() {
-        for (Order o : this) {
+    private static void printCanceledOrders() {
+        for (Order o : orders) {
             try {
                 System.out.println(o + " is canceled by " + o.getAttackedBy());
             } catch (Exception e) {
@@ -68,9 +99,15 @@ public class OrderResolver extends ArrayList<Order> {
         }
     }
 
-    private boolean allIsValid() {
-        for (Order o : this) {
-            if (o.isValid() == null) {
+    private static void printCommands(){
+        for(Order order : orders){
+            System.out.println("Command: " + order + " - " + order.isValid());
+        }
+    }
+
+    private static boolean allIsValidated() {
+        for (Order o : orders) {
+            if (!o.isValid()) {
                 return false;
             }
         }

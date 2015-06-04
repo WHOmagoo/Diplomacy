@@ -1,15 +1,16 @@
 package command.order;
 
-import java.util.ArrayList;
 import map.Country;
 
-public class Order {
+import java.util.ArrayList;
+
+public class Order implements Comparable{
     int attackPower = 0;
     int defensePower = 1;
     Country orderFrom;
     Country orderCanceledBy = null;
     ArrayList<Country> attackedBy = new ArrayList<Country>();
-    Boolean valid = null;
+    boolean valid = false;
 
     public Order(Country orderFrom) {
         this.orderFrom = orderFrom;
@@ -20,7 +21,7 @@ public class Order {
     }
 
 
-    public void setCanceledBy(Country c) {
+    /*public void setCanceledBy(Country c) {
         if (c.getOrder() instanceof Attack) {
             Attack attackCanceling = (Attack) c.getOrder();
             if (attackCanceling.getAttacking() == orderFrom) {
@@ -32,7 +33,7 @@ public class Order {
             //TODO make this throw an error later when methods have been set better.
             System.out.println("Wrong order canceled by");
         }
-    }
+    }*/
 
     public void addAttackedBy(Country c) {
         attackedBy.add(c);
@@ -50,15 +51,15 @@ public class Order {
         }
     }
 
-    public boolean isCanceled() {
+   /* public boolean isCanceled() {
         if (orderCanceledBy == null) {
             return false;
         } else {
             return true;
         }
-    }
+    }*/
 
-    public boolean isCanceledBy(Order order) {
+    /*public boolean isCanceledBy(Order order) {
         if (order instanceof Attack) {
             Attack temp = (Attack) order;
             if (temp.cancels(this)) {
@@ -68,7 +69,7 @@ public class Order {
             }
         }
         return false;
-    }
+    }*/
 
     public void setValid() {
         valid = true;
@@ -82,7 +83,17 @@ public class Order {
         valid = aBoolean;
     }
 
-    public Boolean isValid() {
+    public boolean isValid() {
         return valid;
+    }
+
+    @Override
+    public int compareTo(Object obj) {
+        if (obj instanceof Order) {
+            Order o = (Order) obj;
+            return o.getOrderFrom().compareTo(this.orderFrom);
+        } else{
+            throw new ClassCastException("Wrong type");
+        }
     }
 }

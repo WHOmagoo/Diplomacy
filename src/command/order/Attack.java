@@ -23,17 +23,17 @@ public class Attack extends Order {
         return attacking;
     }
 
-    public boolean isAttacking(Country c) {
+    /*public boolean isAttacking(Country c) {
         return attacking == c;
     }
-
-    public void cancelOtherOrder() {
+*/
+    /*public void cancelOtherOrder() {
         try {
             attacking.getOrder().setCanceledBy(orderFrom);
             attacking.getOrder().setInvalid();
         } catch (NullPointerException e) {
         }
-    }
+    }*/
 
     public String toString(){
         return orderFrom + " attacks " + attacking;
