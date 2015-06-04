@@ -8,9 +8,6 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import map.Country;
 
-/**
- * Created by Hugh on 5/18/2015.
- */
 public class AttackInput extends Input implements ActionListener{
     private InputBanner banner;
     private Attack attack;

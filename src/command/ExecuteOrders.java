@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;
 import javax.swing.BorderFactory;
+import map.Country;
 import map.Map;
 
 public class ExecuteOrders extends RolloverButton implements ActionListener {
@@ -40,8 +41,16 @@ public class ExecuteOrders extends RolloverButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("Printing");
-        map.printOrders();
-        System.out.println("Finished");
+        printOrders();
+        OrderResolver resolver = new OrderResolver(map.getCountries());
+    }
+
+    //This is intended for bug testing only
+    public void printOrders() {
+        for (Country c : map.getCountries()) {
+            if (c.getOrder() != null) {
+                System.out.println(c.getOrder());
+            }
+        }
     }
 }

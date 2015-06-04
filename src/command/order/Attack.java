@@ -19,7 +19,19 @@ public class Attack extends Order {
         attacking = countryToAttack;
     }
 
+    public Country getAttacking() {
+        return attacking;
+    }
+
+    public boolean isAttacking(Country c) {
+        return attacking == c;
+    }
+
     public String toString(){
         return orderFrom + " attacks " + attacking;
+    }
+
+    public boolean cancels(Attack otherAttack) {
+        return otherAttack.getOrderFrom() == attacking;
     }
 }

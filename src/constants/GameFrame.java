@@ -8,9 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-/**
- * Created by Hugh on 5/16/2015.
- */
 public class GameFrame extends JFrame {
     public GameFrame() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

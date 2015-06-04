@@ -276,10 +276,10 @@ public class Country extends JButton implements ActionListener, Comparable {
         }
     }
 
-    //This is only for testing and is intended to show the location of all of the units.
+/*    //This is only for testing and is intended to show the location of all of the units.
     public void setVisible() {
         setIcon(Team.BALKANS.getIcon(UnitType.ARMY));
         setEnabled(true);
         setVisible(true);
-    }
+    }*/
 }

@@ -2,9 +2,6 @@ package command.order;
 
 import map.Country;
 
-/**
- * Created by Hugh on 5/30/2015.
- */
 public class Support extends Order {
     private Country supporting;
     private Country attacking;

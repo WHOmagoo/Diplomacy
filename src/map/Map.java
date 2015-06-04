@@ -104,7 +104,6 @@ public class Map extends JLabel {
     public void refreshAllCountries() {
         for (Country c : countries) {
             c.refreshGraphics();
-            c.setVisible();
         }
     }
 

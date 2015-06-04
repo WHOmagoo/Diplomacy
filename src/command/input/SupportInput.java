@@ -9,9 +9,6 @@ import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import map.Country;
 
-/**
- * Created by Hugh on 5/18/2015.
- */
 public class SupportInput extends Input implements ActionListener{
     private DefaultComboBoxModel model;
     private InputBanner banner;
