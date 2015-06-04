@@ -2,22 +2,13 @@ import constants.GameFrame;
 import map.Map;
 
 import java.io.*;
-import java.util.ArrayList;
 
 public class Test {
 
     public static void main(String[] args) {
-        ArrayList<Integer> ints = new ArrayList<Integer>();
-        ArrayList<Integer> ints2 = new ArrayList<Integer>();
-        ints.add(2);
-        ints.add(3);
-        ints2.add(2);
-        ints2.add(3);
-        System.out.println(ints.equals(ints2));
-
-
         GameFrame frame = new GameFrame();
         Map map = MapCreation.createMap();
+        map.setCountryOccupied("Ruhr");
 
         frame.addComponentCentered(map);
         frame.repaint();

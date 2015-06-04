@@ -6,35 +6,27 @@ import map.Country;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 public class OrderResolver extends ArrayList<Order> {
     private static ArrayList<Order> orders = new ArrayList<Order>();
-    private static ArrayList<Order> resolvedOrders = new ArrayList<Order>();
 
     public static void resolveOrders(ArrayList<Country> countries) {
-        HashMap<Order, Boolean> stagedOrders = new HashMap<Order, Boolean>();
 
         for (Country c : countries) {
             if (c.getOrder() != null) {
                 orders.add(c.getOrder());
-                stagedOrders.put(c.getOrder(), null);
             }
         }
 
         ArrayList<Order> invalidOrders1 = cancelSomeOrders(getUnCanceledOrders(orders));
         ArrayList<Order> invalidOrders2 = cancelSomeOrders(getUnCanceledOrders(invalidOrders1));
 
-        while(!invalidOrders1.equals(invalidOrders2)) {
+        while (!invalidOrders1.equals(invalidOrders2)) {
             invalidOrders1 = cancelSomeOrders(getUnCanceledOrders(invalidOrders2));
             invalidOrders2 = cancelSomeOrders(getUnCanceledOrders(invalidOrders1));
             Collections.sort(invalidOrders1);
             Collections.sort(invalidOrders2);
-            System.out.println(invalidOrders1);
-            System.out.println(invalidOrders2);
         }
-
-
         printCommands();
 
     }
@@ -106,6 +98,7 @@ public class OrderResolver extends ArrayList<Order> {
     }
 
     private static boolean allIsValidated() {
+        System.out.println("Here's the order resolution");
         for (Order o : orders) {
             if (!o.isValid()) {
                 return false;

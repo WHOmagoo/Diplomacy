@@ -3,11 +3,11 @@ package map;
 import command.ExecuteOrders;
 import command.InputBanner;
 import constants.RolloverButton;
+import constants.Team;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 
 public class Map extends JLabel {
     private ArrayList<Country> countries = new ArrayList<Country>();
@@ -28,7 +28,6 @@ public class Map extends JLabel {
         setLayout(null);
         setSize(1024, 768);
         add(executeOrders);
-        //executeOrders.setRolloverEnabled(true);
     }
 
     public void setMapGraphic(ImageIcon map) {
@@ -65,7 +64,7 @@ public class Map extends JLabel {
 
     public Country getCountry(String nameOfCountry) throws NullPointerException {
         for (Country country : countries) {
-            if (country.getName() == nameOfCountry) {
+            if (country.getName().equalsIgnoreCase(nameOfCountry)) {
                 return country;
             }
         }
@@ -164,6 +163,16 @@ public class Map extends JLabel {
         super.remove(component);
         if (component instanceof RolloverButton) {
             ((RolloverButton) component).removed();
+        }
+    }
+
+    public void setCountryOccupied(String name){
+        try {
+            getCountry(name).setOccupiedBy(Team.EGYPT, UnitType.ARMY);
+            refreshAllCountries();
+            getCountry(name).setEnabled(true);
+        } catch (NullPointerException e){
+            System.out.println("wrong country added");
         }
     }
 }

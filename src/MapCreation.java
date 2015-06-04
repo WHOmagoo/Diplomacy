@@ -1,8 +1,9 @@
 import constants.Team;
-import java.awt.Point;
-import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import map.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class MapCreation {
 
@@ -25,7 +26,7 @@ public class MapCreation {
 /*5-9*/     "London", "Norway", "Sweden", "Finland", "Vologda",
 /*10-14*/   "Leningrad", "Smolensk", "Moscow", "Bellorussia", "Presov",
 /*15-19*/   "Kiev", "Holland", "Kiel", "Berlin", "Siliesia",
-/*20-24*/   "Rurh", "Munich", "Belgium", "Picardy", "Brest",
+/*20-24*/   "Ruhr", "Munich", "Belgium", "Picardy", "Brest",
 /*25-29*/   "Paris", "Marseille", "Gacony", "Bilboa", "Lugo",
 /*30-34*/   "Portugal", "Seville", "Valancia", "Barcelona", "Ust",
 /*35-39*/   "Pechora", "Komi", "Gorki", "Crimea", "Rostov",
