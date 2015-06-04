@@ -144,10 +144,6 @@ public class Country extends JButton implements ActionListener, Comparable {
         return unitType;
     }
 
-    public void setOrder(Order order){
-        this.order = order;
-    }
-
     public void increaseDefensePower(Defend order){
         /*if(order == this){
         }*/
@@ -264,5 +260,26 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     public Map getMap() {
         return mapAssociation;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        mapAssociation.updateOrderTotal();
+        if (this == order.getOrderFrom()) {
+            this.order = order;
+        } else {
+            throw new IllegalArgumentException("The wrong order has been added to " + this +
+                    "\n" + order);
+        }
+    }
+
+    //This is only for testing and is intended to show the location of all of the units.
+    public void setVisible() {
+        setIcon(Team.BALKANS.getIcon(UnitType.ARMY));
+        setEnabled(true);
+        setVisible(true);
     }
 }

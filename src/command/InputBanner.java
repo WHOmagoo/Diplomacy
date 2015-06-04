@@ -12,7 +12,6 @@ public class InputBanner extends ArrayList<JComponent> {
     private Map associatedMap;
     private Country country;
     private int numberOfItemsShowing = 0;
-    private Order orderBiulder;
 
     public InputBanner(Map associatedMap, Country associatedCountry){
         this.associatedMap = associatedMap;
@@ -68,10 +67,10 @@ public class InputBanner extends ArrayList<JComponent> {
 
     private Point getNextLocation() {
         if (size() == 1) {
-            return new Point(0, 0);
+            return new Point(57, 17);
         } else {
             int xLocation = get(size() - 2).getX() + 5 + get(size() - 2).getWidth();
-            int yLocation = get(size() - 1).getY();
+            int yLocation = get(size() - 2).getY();
             return new Point(xLocation, yLocation);
         }
     }
@@ -120,12 +119,16 @@ public class InputBanner extends ArrayList<JComponent> {
         return country;
     }
 
-    public Input getLastInput() {
+    private Input getLastInput() {
         for (int i = size() - 1; i >= 0; i--){
             if(get(i) instanceof Input){
                 return (Input) get(i);
             }
         }
         throw new NullPointerException("Contains no inputs");
+    }
+
+    public Order getOrder() {
+        return getLastInput().getOrder();
     }
 }

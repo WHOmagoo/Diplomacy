@@ -42,7 +42,12 @@ public class SupportInput extends Input implements ActionListener{
         order.setSupporting((Country) getSelectedItem());
         banner.add(supportAttackInfo);
         SupportAttackInput supportAttack = new SupportAttackInput((Country) getSelectedItem());
+        supportAttack.setOrder(order);
         lastAction(banner, supportAttack);
+    }
+
+    public Order getOrder() {
+        return order;
     }
 
     public void setOrder(Order order) throws ClassCastException{

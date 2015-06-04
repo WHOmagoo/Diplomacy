@@ -37,7 +37,10 @@ public class AttackInput extends Input implements ActionListener{
         attack.setCountryToAttack((Country) getSelectedItem());
         Submit submit = new Submit(banner);
         lastAction(banner, submit);
-        submit.startRollover();
+    }
+
+    public Order getOrder() {
+        return attack;
     }
 
     public void setOrder(Order order) throws ClassCastException{

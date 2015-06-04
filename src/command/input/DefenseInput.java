@@ -36,8 +36,12 @@ public class DefenseInput extends Input implements ActionListener{
         order.setCountryBeingDefended((Country) getSelectedItem());
         Submit submit = new Submit(banner);
         lastAction(banner, submit);
-        submit.startRollover();
+        //submit.startRollover();
 
+    }
+
+    public Order getOrder() {
+        return order;
     }
 
     public void setOrder(Order order) throws ClassCastException{

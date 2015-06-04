@@ -43,105 +43,104 @@ public class MapCreation {
 /*95-97*/   "Lake Cherkassy", "West Black Sea", "East Black Sea"};
 
         final Point[] locations = new Point[]{
-                new Point(0, 0),
-                new Point(202, 103),
-                new Point(83, 213),
-                new Point(201, 166),
-                new Point(249, 89),
-                new Point(261, 151),
-                new Point(368, 48),
-                new Point(457, 59),
-                new Point(576, 72),
-                new Point(665, 99),
-                new Point(584, 122),
-                new Point(660, 158),
-                new Point(727, 167),
-                new Point(581, 171),
-                new Point(584, 221),
-                new Point(643, 218),
-                new Point(367, 182),
-                new Point(423, 167),
-                new Point(483, 166),
-                new Point(487, 206),
-                new Point(389, 239),
-                new Point(435, 255),
-                new Point(325, 232),
-                new Point(280, 262),
-                new Point(217, 280),
-                new Point(295, 324),
-                new Point(289, 376),
-                new Point(226, 351),
-                new Point(173, 383),
-                new Point(127, 412),
-                new Point(77, 449),
-                new Point(182, 481),
-                new Point(182, 464),
-                new Point(237, 414),
-                new Point(741, 83),
-                new Point(893, 68),
-                new Point(821, 106),
-                new Point(823, 153),
-                new Point(764, 220),
-                new Point(868, 216),
-                new Point(497, 248),
-                new Point(471, 294),
-                new Point(577, 270),
-                new Point(533, 296),
-                new Point(569, 395),
-                new Point(581, 348),
-                new Point(625, 298),
-                new Point(679, 307),
-                new Point(693, 355),
-                new Point(636, 378),
-                new Point(632, 448),
-                new Point(764, 372),
-                new Point(841, 349),
-                new Point(901, 356),
-                new Point(763, 426),
-                new Point(879, 464),
-                new Point(833, 538),
-                new Point(867, 592),
-                new Point(386, 353),
-                new Point(444, 379),
-                new Point(406, 398),
-                new Point(449, 429),
-                new Point(513, 423),
-                new Point(509, 468),
-                new Point(495, 536),
-                new Point(344, 468),
-                new Point(117, 597),
-                new Point(241, 565),
-                new Point(358, 553),
-                new Point(185, 635),
-                new Point(320, 653),
-                new Point(388, 648),
-                new Point(473, 657),
-                new Point(446, 598),
-                new Point(544, 612),
-                new Point(625, 567),
-                new Point(714, 592),
-                new Point(711, 634),
-                new Point(613, 661),
-                new Point(1, 1),
-                new Point(107, 92),
-                new Point(315, 98),
-                new Point(516, 99),
-                new Point(211, 229),
-                new Point(79, 295),
-                new Point(151, 314),
-                new Point(61, 549),
-                new Point(261, 495),
-                new Point(271, 446),
-                new Point(416, 475),
-                new Point(562, 488),
-                new Point(481, 347),
-                new Point(692, 420),
-                new Point(800, 474),
-                new Point(788, 646),
-                new Point(696, 245),
-                new Point(782, 313),
-                new Point(841, 283),
-                new Point(0, 0)};
+                new Point(15, 75),      /*Off Map*/
+                new Point(202, 103),    /*Liverpool*/
+                new Point(83, 213),     /*Ireland*/
+                new Point(201, 166),    /*Wales*/
+                new Point(249, 89),     /*Edinburgh*/
+                new Point(261, 151),    /*London*/
+                new Point(368, 48),     /*Norway*/
+                new Point(457, 59),     /*Sweden*/
+                new Point(576, 72),     /*Finland*/
+                new Point(665, 99),     /*Vologda*/
+                new Point(584, 122),    /*Leningrad*/
+                new Point(660, 158),    /*Smolensk*/
+                new Point(727, 167),    /*Moscow*/
+                new Point(581, 171),    /*Bellorussia*/
+                new Point(584, 221),    /*Presov*/
+                new Point(643, 218),    /*Kiev*/
+                new Point(367, 182),    /*Holland*/
+                new Point(423, 167),    /*Kiel*/
+                new Point(483, 166),    /*Berlin*/
+                new Point(487, 206),    /*Siliesia*/
+                new Point(389, 239),    /*Rurh*/
+                new Point(435, 255),    /*Munich*/
+                new Point(325, 232),    /*Belgium*/
+                new Point(280, 262),    /*Picardy*/
+                new Point(217, 280),    /*Brest*/
+                new Point(295, 324),    /*Paris*/
+                new Point(289, 376),    /*Marseille*/
+                new Point(226, 351),    /*Gacony*/
+                new Point(173, 383),    /*Bilboa*/
+                new Point(127, 412),    /*Lugo*/
+                new Point(77, 449),     /*Portugal*/
+                new Point(125, 500),    /*Seville*/
+                new Point(182, 464),    /*Valancia*/
+                new Point(237, 414),    /*Barcelona*/
+                new Point(741, 83),     /*Ust*/
+                new Point(893, 68),     /*Pechora*/
+                new Point(821, 106),    /*Komi*/
+                new Point(823, 153),    /*Gorki*/
+                new Point(764, 220),    /*Crimea*/
+                new Point(868, 216),    /*Rostov*/
+                new Point(497, 248),    /*Czechoslovakia*/
+                new Point(471, 294),    /*Austria*/
+                new Point(577, 270),    /*Hungary*/
+                new Point(533, 296),    /*Bosnia*/
+                new Point(569, 395),    /*Albania*/
+                new Point(581, 348),    /*Serbia*/
+                new Point(625, 298),    /*Banat*/
+                new Point(679, 307),    /*Romania*/
+                new Point(693, 355),    /*Bulgaria*/
+                new Point(636, 378),    /*Macedonia*/
+                new Point(632, 448),    /*Greece*/
+                new Point(764, 372),    /*Istanbul*/
+                new Point(841, 349),    /*Samsun*/
+                new Point(901, 356),    /*Kras*/
+                new Point(763, 426),    /*Izmir*/
+                new Point(879, 464),    /*Lebanon*/
+                new Point(833, 538),    /*Israel*/
+                new Point(867, 592),    /*Jordan*/
+                new Point(386, 353),    /*Piedmont*/
+                new Point(444, 379),    /*Venice*/
+                new Point(406, 398),    /*Tuscany*/
+                new Point(449, 429),    /*Rome*/
+                new Point(513, 423),    /*Apulia*/
+                new Point(509, 468),    /*Naples*/
+                new Point(495, 536),    /*Sicily*/
+                new Point(344, 468),    /*Sardinia*/
+                new Point(117, 597),    /*Casablanca*/
+                new Point(241, 565),    /*Algiers*/
+                new Point(358, 553),    /*Setif*/
+                new Point(185, 635),    /*Aflou*/
+                new Point(320, 653),    /*Sahara*/
+                new Point(388, 648),    /*Fazzar*/
+                new Point(473, 657),    /*Murzq*/
+                new Point(446, 598),    /*Bengasi*/
+                new Point(544, 612),    /*Sallum*/
+                new Point(625, 567),    /*Tobruk*/
+                new Point(714, 592),    /*Cairo*/
+                new Point(711, 634),    /*Nile*/
+                new Point(613, 661),    /*Sawhaj*/
+                new Point(710, 516),    /*Crete*/
+                new Point(107, 92),     /*Irish Sea*/
+                new Point(315, 98),     /*North Sea*/
+                new Point(516, 99),     /*Baltic Sea*/
+                new Point(211, 229),    /*English  Channel*/
+                new Point(79, 295),     /*Atlantic Ocean*/
+                new Point(151, 314),    /*Bay of Biscay*/
+                new Point(61, 549),     /*Gibraltar*/
+                new Point(261, 495),    /*Western Mediterranean*/
+                new Point(271, 446),    /*Gulf of Lyons*/
+                new Point(416, 475),    /*Tyrrhenian Sea*/
+                new Point(562, 488),    /*Ionian Sea*/
+                new Point(481, 347),    /*Adriatic Sea*/
+                new Point(692, 420),    /*Agean Sea*/
+                new Point(800, 474),    /*Eastern Mediterranean*/
+                new Point(788, 646),    /*Red Sea*/
+                new Point(696, 245),    /*Lake Cherkassy*/
+                new Point(782, 313),    /*West Black Sea*/
+                new Point(841, 283)};   /*East Black Sea*/
 
         ArrayList<Country> tempCountries = new ArrayList<Country>();
         for (int i = 0; i < COUNTRY_NAME_LIST.length; i++) {

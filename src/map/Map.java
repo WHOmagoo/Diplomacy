@@ -1,6 +1,8 @@
 package map;
 
+import command.ExecuteOrders;
 import command.InputBanner;
+import constants.RolloverButton;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.ImageIcon;
@@ -12,6 +14,7 @@ public class Map extends JLabel {
     private JLabel text = new JLabel();
     private Country lastCountryClicked;
     private InputBanner banner;
+    private ExecuteOrders executeOrders = new ExecuteOrders(this);
 
     public Map(ArrayList<Country> countries) {
         this.countries.addAll(countries);
@@ -24,7 +27,8 @@ public class Map extends JLabel {
 
         setLayout(null);
         setSize(1024, 768);
-
+        add(executeOrders);
+        //executeOrders.setRolloverEnabled(true);
     }
 
     public void setMapGraphic(ImageIcon map) {
@@ -100,6 +104,7 @@ public class Map extends JLabel {
     public void refreshAllCountries() {
         for (Country c : countries) {
             c.refreshGraphics();
+            c.setVisible();
         }
     }
 
@@ -116,6 +121,50 @@ public class Map extends JLabel {
     public void removeAllCountries() {
         for (Country c : countries) {
             remove(c);
+        }
+    }
+
+    public void updateOrderTotal() {
+        int counter = 0;
+        for (Country c : countries) {
+            if (c.getOrder() != null) {
+                counter++;
+            }
+        }
+
+        if (counter == 13) {
+            executeOrders.setEnabled(false);
+        } else {
+            executeOrders.setEnabled(true);
+        }
+    }
+
+    public void printOrders() {
+        for (Country c : countries) {
+            if (c.getOrder() != null) {
+                System.out.println(c.getOrder());
+            }
+        }
+    }
+
+    public void add(JComponent component) {
+        super.add(component);
+        if (component instanceof RolloverButton) {
+            ((RolloverButton) component).added();
+        }
+    }
+
+    public void add(JComponent component, int i) {
+        super.add(component, i);
+        if (component instanceof RolloverButton) {
+            ((RolloverButton) component).added();
+        }
+    }
+
+    public void remove(JComponent component) {
+        super.remove(component);
+        if (component instanceof RolloverButton) {
+            ((RolloverButton) component).removed();
         }
     }
 }

@@ -1,32 +1,14 @@
 package command.input;
 
 import command.InputBanner;
+import constants.RolloverButton;
 import constants.Scheme;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
-import java.util.TimerTask;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 
-public class Submit extends JButton implements ActionListener{
-    private Timer timer;
-    private final TimerTask rollOver = new TimerTask() {
-        @Override
-        public void run() {
-            if(isShowing()) {
-                if (getModel().isRollover()) {
-                    setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
-                } else {
-                    setBorder(BorderFactory.createLineBorder(Color.GRAY));
-                }
-            } else{
-                timer.cancel();
-            }
-        }
-    };
-
+public class Submit extends RolloverButton implements ActionListener {
     private InputBanner banner;
 
     public Submit(InputBanner banner) {
@@ -43,15 +25,9 @@ public class Submit extends JButton implements ActionListener{
         addActionListener(this);
     }
 
-    public void startRollover(){
-        timer = new Timer();
-        timer.schedule(rollOver, 0, 5);
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        timer.cancel();
-        System.out.println(banner.getLastInput().getOrder()); //TODO make this not null
+        banner.getCountry().setOrder(banner.getOrder());
         banner.clearAll();
     }
 }

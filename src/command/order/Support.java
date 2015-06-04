@@ -9,13 +9,14 @@ public class Support extends Order {
     private Country supporting;
     private Country attacking;
 
-    public Support(){
-
-    }
-
-    public Support(Country supporting, Country attacking){
+    public Support(Country orderFrom, Country supporting, Country attacking) {
+        super(orderFrom);
         this.supporting = supporting;
         this.attacking = attacking;
+    }
+
+    public Support(Country orderFrom) {
+        super(orderFrom);
     }
 
     public void setSupporting(Country countryToSupport){
@@ -24,5 +25,10 @@ public class Support extends Order {
 
     public void setAttacking(Country countryToAttack){
         this.attacking = countryToAttack;
+    }
+
+    @Override
+    public String toString() {
+        return orderFrom + " supports " + supporting + "'s attack on " + attacking;
     }
 }

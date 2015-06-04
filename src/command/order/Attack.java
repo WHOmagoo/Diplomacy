@@ -5,12 +5,14 @@ import map.Country;
 public class Attack extends Order {
     private Country attacking;
 
-    public Attack(Country attacking){
+    public Attack(Country orderFrom, Country attacking) {
+        super(orderFrom);
         this.attacking = attacking;
         attackPower++;
     }
 
-    public Attack(){
+    public Attack(Country orderFrom) {
+        super(orderFrom);
     }
 
     public void setCountryToAttack(Country countryToAttack){
@@ -18,6 +20,6 @@ public class Attack extends Order {
     }
 
     public String toString(){
-        return attacking.toString();
+        return orderFrom + " attacks " + attacking;
     }
 }
