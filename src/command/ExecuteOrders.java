@@ -41,7 +41,7 @@ public class ExecuteOrders extends RolloverButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        printOrders();
+        //printOrders();
         OrderResolver resolver = new OrderResolver(map.getCountries());
     }
 

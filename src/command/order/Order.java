@@ -1,5 +1,6 @@
 package command.order;
 
+import java.util.ArrayList;
 import map.Country;
 
 public class Order {
@@ -7,6 +8,8 @@ public class Order {
     int defensePower = 1;
     Country orderFrom;
     Country orderCanceledBy = null;
+    ArrayList<Country> attackedBy = new ArrayList<Country>();
+    Boolean valid = null;
 
     public Order(Country orderFrom) {
         this.orderFrom = orderFrom;
@@ -16,9 +19,6 @@ public class Order {
         return orderFrom;
     }
 
-    public Country canceledBy() {
-        return orderCanceledBy;
-    }
 
     public void setCanceledBy(Country c) {
         if (c.getOrder() instanceof Attack) {
@@ -34,15 +34,55 @@ public class Order {
         }
     }
 
-    public void setValid() {
-
+    public void addAttackedBy(Country c) {
+        attackedBy.add(c);
     }
 
-    public boolean isValid() {
-        if (orderCanceledBy == null) {
-            return true;
-        } else {
+    public ArrayList<Country> getAttackedBy() {
+        return attackedBy;
+    }
+
+    public boolean isAttacked() {
+        if (attackedBy.size() == 0) {
             return false;
+        } else {
+            return true;
         }
+    }
+
+    public boolean isCanceled() {
+        if (orderCanceledBy == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean isCanceledBy(Order order) {
+        if (order instanceof Attack) {
+            Attack temp = (Attack) order;
+            if (temp.cancels(this)) {
+                if (!temp.isCanceled()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void setValid() {
+        valid = true;
+    }
+
+    public void setInvalid() {
+        valid = false;
+    }
+
+    public void setValid(Boolean aBoolean) {
+        valid = aBoolean;
+    }
+
+    public Boolean isValid() {
+        return valid;
     }
 }

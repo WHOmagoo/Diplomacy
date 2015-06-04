@@ -27,11 +27,19 @@ public class Attack extends Order {
         return attacking == c;
     }
 
+    public void cancelOtherOrder() {
+        try {
+            attacking.getOrder().setCanceledBy(orderFrom);
+            attacking.getOrder().setInvalid();
+        } catch (NullPointerException e) {
+        }
+    }
+
     public String toString(){
         return orderFrom + " attacks " + attacking;
     }
 
-    public boolean cancels(Attack otherAttack) {
-        return otherAttack.getOrderFrom() == attacking;
+    public boolean cancels(Order order) {
+        return order.getOrderFrom() == attacking;
     }
 }

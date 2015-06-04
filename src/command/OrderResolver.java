@@ -5,56 +5,76 @@ import command.order.Order;
 import java.util.ArrayList;
 import map.Country;
 
-public class OrderResolver {
-    private ArrayList<Order> orders = new ArrayList<Order>();
-    private ArrayList<Country> countries;
+public class OrderResolver extends ArrayList<Order> {
 
     public OrderResolver(ArrayList<Country> countries) {
-        this.countries = countries;
         for (Country c : countries) {
-            orders.add(c.getOrder());
+            if (c.getOrder() != null) {
+                add(c.getOrder());
+            }
         }
-        ;
+
         ArrayList<Order> freeOrdersCalculated1 = getFreeOrders();
-        ArrayList<Order> freeOrdersCalculated2 = new ArrayList<Order>();
-        while (!freeOrdersCalculated1.equals(freeOrdersCalculated2)) {
-            freeOrdersCalculated1 = getFreeOrders();
-            freeOrdersCalculated2 = getFreeOrders();
+        while (!allIsValid()) {
+            ArrayList<Order> freeOrdersCalculated2 = new ArrayList<Order>();
+            while (!freeOrdersCalculated1.equals(freeOrdersCalculated2)) {
+                freeOrdersCalculated1 = getFreeOrders();
+                freeOrdersCalculated2 = getFreeOrders();
+            }
+            cancelSomeOrders(freeOrdersCalculated1);
         }
 
-        System.out.println("Finished");
-        System.out.println(freeOrdersCalculated1);
-
+        System.out.println("Done!");
     }
 
     public ArrayList<Order> getFreeOrders() {
         ArrayList<Order> orders = new ArrayList<>();
-        for (Order order : this.orders) {
-            if (order instanceof Attack) {
-                Attack attack = (Attack) order;
-                if (attack.isValid()) {
-                    for (Order otherOrder : this.orders) {
-                        if (otherOrder instanceof Attack) {
-                            Attack otherAttack = (Attack) otherOrder;
-                            if (otherAttack.cancels(attack)) {
-                                attack.setCanceledBy(otherAttack.getOrderFrom());
-                                break;
-                            }
-                        }
+        for (Order order : this) {
+            if (!order.isAttacked()) {
+                for (Order otherOrder : this) {
+                    if (order.isCanceledBy(otherOrder)) {
+                        order.addAttackedBy(otherOrder.getOrderFrom());
                     }
                 }
-                if (attack.isValid() == true) {
-                    orders.add(attack);
-                }
             }
-        }
+            if (!order.isAttacked()) {
+                order.setValid();
+                orders.add(order);
+            }
+            }
 
         return orders;
     }
 
-    private void cancelOrders(ArrayList<Order> executableOrders) {
+    private void cancelSomeOrders(ArrayList<Order> executableOrders) {
         for (Order order : executableOrders) {
+            if (order instanceof Attack) {
+                if (order.isValid() == true) {
+                    ((Attack) order).cancelOtherOrder();
+                } else {
+                    System.out.println("Wrong cancel");
+                }
+            }
 
         }
+    }
+
+    private void printCanceledOrders() {
+        for (Order o : this) {
+            try {
+                System.out.println(o + " is canceled by " + o.getAttackedBy());
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    private boolean allIsValid() {
+        for (Order o : this) {
+            if (o.isValid() == null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
