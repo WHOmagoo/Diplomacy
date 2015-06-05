@@ -1,7 +1,6 @@
 import constants.GameFrame;
-import map.Map;
-
 import java.io.*;
+import map.Map;
 
 public class Test {
 
@@ -9,6 +8,7 @@ public class Test {
         GameFrame frame = new GameFrame();
         Map map = MapCreation.createMap();
         map.setCountryOccupied("Ruhr");
+        map.setCountryOccupied("Berlin");
 
         frame.addComponentCentered(map);
         frame.repaint();

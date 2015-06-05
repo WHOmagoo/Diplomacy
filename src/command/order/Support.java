@@ -16,12 +16,35 @@ public class Support extends Order {
         super(orderFrom);
     }
 
+    public Country getSupporting() {
+        return supporting;
+    }
+
     public void setSupporting(Country countryToSupport){
         this.supporting = countryToSupport;
     }
 
+    public Country getAttacking() {
+        return attacking;
+    }
+
     public void setAttacking(Country countryToAttack){
         this.attacking = countryToAttack;
+    }
+
+    public void increaseAttackPower() throws NullPointerException {
+        try {
+            if (valid) {
+                if (supporting.getOrder() instanceof Attack) {
+                    Attack temp = (Attack) supporting.getOrder();
+                    if (temp.getAttacking() == attacking) {
+                        temp.addAttackPower(this);
+                    }
+                }
+            }
+        } catch (NullPointerException np) {
+            throw new NullPointerException("This order has not yet been validated (" + this + ")");
+        }
     }
 
     @Override

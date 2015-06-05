@@ -7,7 +7,6 @@ public class Move extends Order{
 
     public Move(Country orderFrom, Country movingTo) {
         super(orderFrom);
-        attackPower = 0;
         this.movingTo = movingTo;
     }
 

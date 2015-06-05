@@ -3,7 +3,6 @@ package map;
 import command.Info;
 import command.OrderType;
 import command.input.OrderInput;
-import command.order.Defend;
 import command.order.Order;
 import constants.Team;
 import java.awt.Point;
@@ -40,6 +39,12 @@ public class Country extends JButton implements ActionListener, Comparable {
         this.tileType = tileType;
         originalLocation = location;
         setLocation(location);
+    }
+
+    //Used for testing
+    @Deprecated
+    public Country(String s) {
+        name = s;
     }
 
     public ArrayList<Country> getOccupiedNeighbors() {
@@ -142,11 +147,6 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     public UnitType getUnitType() {
         return unitType;
-    }
-
-    public void increaseDefensePower(Defend order){
-        /*if(order == this){
-        }*/
     }
 
     public boolean isOccupied() {
@@ -276,10 +276,10 @@ public class Country extends JButton implements ActionListener, Comparable {
         }
     }
 
-/*    //This is only for testing and is intended to show the location of all of the units.
+    //This is only for testing and is intended to show the location of all of the units.
     public void setVisible() {
         setIcon(Team.BALKANS.getIcon(UnitType.ARMY));
         setEnabled(true);
         setVisible(true);
-    }*/
+    }
 }

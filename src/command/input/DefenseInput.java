@@ -33,7 +33,7 @@ public class DefenseInput extends Input implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) throws NullPointerException{
         firstAction(banner);
-        order.setCountryBeingDefended((Country) getSelectedItem());
+        order.setDefending((Country) getSelectedItem());
         Submit submit = new Submit(banner);
         lastAction(banner, submit);
         //submit.startRollover();

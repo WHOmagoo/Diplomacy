@@ -3,6 +3,7 @@ package command.order;
 import map.Country;
 
 public class Attack extends Order {
+    int attackPower = 0;
     private Country attacking;
 
     public Attack(Country orderFrom, Country attacking) {
@@ -23,20 +24,22 @@ public class Attack extends Order {
         return attacking;
     }
 
-    /*public boolean isAttacking(Country c) {
-        return attacking == c;
-    }
-*/
-    /*public void cancelOtherOrder() {
-        try {
-            attacking.getOrder().setCanceledBy(orderFrom);
-            attacking.getOrder().setInvalid();
-        } catch (NullPointerException e) {
-        }
-    }*/
-
     public String toString(){
         return orderFrom + " attacks " + attacking;
+    }
+
+    public void addAttackPower(Support orderSupporting) {
+        if (orderSupporting.getAttacking() == attacking) {
+            if (orderSupporting.getSupporting() == orderFrom) {
+                if (orderSupporting.getAttacking().contains(orderSupporting.getOrderFrom())) {
+                    attackPower++;
+                }
+            }
+        }
+    }
+
+    public int getAttackPower() {
+        return attackPower;
     }
 
     public boolean cancels(Order order) {
