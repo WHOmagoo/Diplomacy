@@ -21,4 +21,8 @@ public class Move extends Order{
     public String toString() {
         return orderFrom + " moves to " + movingTo;
     }
+
+    public boolean moves() {
+        return false;
+    }
 }

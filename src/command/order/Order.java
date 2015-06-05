@@ -56,11 +56,15 @@ public class Order implements Comparable{
         }
     }
 
-    void setSucceded() {
-        succeded = true;
+    public void setSucceded(boolean succeded) {
+        this.succeded = succeded;
     }
 
-    public boolean succeded() {
+    public boolean succededs() {
         return succeded;
+    }
+
+    public int getDefensePower(){
+        return defensePower;
     }
 }

@@ -6,8 +6,8 @@ import constants.Scheme;
 import map.Country;
 import map.Map;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BorderFactory;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;

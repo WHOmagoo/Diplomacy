@@ -1,12 +1,10 @@
 package command;
 
-import command.order.Attack;
-import command.order.Defend;
-import command.order.Order;
-import command.order.Support;
+import command.order.*;
+import map.Country;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import map.Country;
 
 public class OrderResolver extends ArrayList<Order> {
     private static final Boolean trueBoolean = new Boolean(true);
@@ -109,6 +107,16 @@ public class OrderResolver extends ArrayList<Order> {
         return true;
     }
 
+    public void catchMoveLoop(){
+        for(Order order : orders){
+            if(order instanceof Move){
+                Move move = (Move) order;
+                Country originalMove = move.getOrderFrom();
+
+            }
+        }
+    }
+
     private static void calculateAttackPowers() {
         for (Order order : orders) {
             if (trueBoolean.equals(order.isValid())) {
@@ -124,9 +132,10 @@ public class OrderResolver extends ArrayList<Order> {
 
         //This is to see if an attack overpowers a country.
         for (Order order : orders) {
-            if (trueBoolean.equals(order.isValid())) {
-                if (order instanceof Attack) {
-
+            if (order instanceof Attack) {
+                Attack attack = (Attack) order;
+                if(attack.overpowers()){
+                    attack.setSucceded(true);
                 }
             }
         }

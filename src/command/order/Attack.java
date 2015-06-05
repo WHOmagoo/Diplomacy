@@ -45,4 +45,24 @@ public class Attack extends Order {
     public boolean cancels(Order order) {
         return order.getOrderFrom() == attacking;
     }
+
+    public boolean overpowers() {
+        try {
+            if (attackPower > attacking.getOrder().getDefensePower()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (NullPointerException np){
+            if(attacking.isOccupied()){
+                if(attackPower > 1){
+                    return true;
+                } else{
+                    return false;
+                }
+            } else{
+                return true;
+            }
+        }
+    }
 }
