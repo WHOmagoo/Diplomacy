@@ -11,7 +11,7 @@ public class Test {
         map.setCountryOccupied("Berlin");
 
         frame.addComponentCentered(map);
-        frame.repaint();
+        frame.setVisible(true);
     }
 
     public static Map writeMap() {

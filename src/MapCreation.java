@@ -1,9 +1,8 @@
 import constants.Team;
-import map.*;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import map.*;
 
 public class MapCreation {
 
@@ -307,20 +306,20 @@ public class MapCreation {
         countries.get(39).setOccupiedBy(Team.NULL, UnitType.EMPTY);
         countries.get(40).setOccupiedBy(Team.NULL, UnitType.EMPTY);
         countries.get(41).setOccupiedBy(Team.NULL, UnitType.EMPTY);
-        countries.get(42).setOccupiedBy(Team.AUSTRIA, UnitType.ARMY);
+        countries.get(42).setOccupiedBy(Team.BALKANS, UnitType.ARMY);
         countries.get(43).setOccupiedBy(Team.NULL, UnitType.EMPTY);
-        countries.get(44).setOccupiedBy(Team.AUSTRIA, UnitType.ARMY);
+        countries.get(44).setOccupiedBy(Team.BALKANS, UnitType.ARMY);
         countries.get(45).setOccupiedBy(Team.NULL, UnitType.EMPTY);
         countries.get(46).setOccupiedBy(Team.NULL, UnitType.EMPTY);
-        countries.get(47).setOccupiedBy(Team.BALKANS, UnitType.ARMY);
-        countries.get(48).setOccupiedBy(Team.BALKANS, UnitType.NAVY);
+        countries.get(47).setOccupiedBy(Team.EASTERN_EUROPE, UnitType.ARMY);
+        countries.get(48).setOccupiedBy(Team.EASTERN_EUROPE, UnitType.NAVY);
         countries.get(49).setOccupiedBy(Team.NULL, UnitType.EMPTY);
         countries.get(50).setOccupiedBy(Team.NULL, UnitType.EMPTY);
         countries.get(51).setOccupiedBy(Team.NULL, UnitType.EMPTY);
-        countries.get(52).setOccupiedBy(Team.OTTOMAN, UnitType.NAVY);
+        countries.get(52).setOccupiedBy(Team.MIDDLE_EAST, UnitType.NAVY);
         countries.get(53).setOccupiedBy(Team.NULL, UnitType.EMPTY);
-        countries.get(54).setOccupiedBy(Team.OTTOMAN, UnitType.NAVY);
-        countries.get(55).setOccupiedBy(Team.OTTOMAN, UnitType.ARMY);
+        countries.get(54).setOccupiedBy(Team.MIDDLE_EAST, UnitType.NAVY);
+        countries.get(55).setOccupiedBy(Team.MIDDLE_EAST, UnitType.ARMY);
         countries.get(56).setOccupiedBy(Team.NULL, UnitType.EMPTY);
         countries.get(57).setOccupiedBy(Team.NULL, UnitType.EMPTY);
         countries.get(58).setOccupiedBy(Team.NULL, UnitType.EMPTY);

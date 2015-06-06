@@ -4,6 +4,7 @@ import map.Country;
 
 public class Move extends Order{
     private Country movingTo;
+    private boolean moveLooped = false;
 
     public Move(Country orderFrom, Country movingTo) {
         super(orderFrom);
@@ -14,15 +15,23 @@ public class Move extends Order{
         super(orderFrom);
     }
 
-    public void setMovingTo(Country movingTo) {
-        this.movingTo = movingTo;
-    }
-
     public String toString() {
         return orderFrom + " moves to " + movingTo;
     }
 
-    public boolean moves() {
-        return false;
+    public Country getMovingTo() {
+        return movingTo;
+    }
+
+    public void setMovingTo(Country movingTo) {
+        this.movingTo = movingTo;
+    }
+
+    public boolean isMoveLooped() {
+        return moveLooped;
+    }
+
+    public void setMoveLooped() {
+        moveLooped = true;
     }
 }

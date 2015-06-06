@@ -14,14 +14,14 @@ public enum Team {
     }),
 
 
-    AUSTRIA(new ImageIcon[]
+    EASTERN_EUROPE(new ImageIcon[]
             {
-                    new ImageIcon("files\\Austria\\Austriaarmy.png"),
-                    new ImageIcon("files\\Austria\\Austriaarmyrollover.png"),
-                    new ImageIcon("files\\Austria\\Austriaarmyclick.png"),
-                    new ImageIcon("files\\Austria\\Austrianavy.png"),
-                    new ImageIcon("files\\Austria\\Austrianavyrollover.png"),
-                    new ImageIcon("files\\Austria\\Austrianavyclick.png")
+                    new ImageIcon("files\\Austria\\EasterEuropearmy.png"),
+                    new ImageIcon("files\\Austria\\EasternEuropearmyrollover.png"),
+                    new ImageIcon("files\\Austria\\EasternEuropearmyclick.png"),
+                    new ImageIcon("files\\Austria\\EasternEuropenavy.png"),
+                    new ImageIcon("files\\Austria\\EasternEuropenavyrollover.png"),
+                    new ImageIcon("files\\Austria\\EasternEuropenavyclick.png")
             }),
 
     BALKANS(new ImageIcon[]
@@ -104,14 +104,14 @@ public enum Team {
                     new ImageIcon("files\\North Africa\\NAfricanavyclick.png")
             }),
 
-    OTTOMAN(new ImageIcon[]
+    MIDDLE_EAST(new ImageIcon[]
             {
-                    new ImageIcon("files\\Ottoman\\Ottomanarmy.png"),
-                    new ImageIcon("files\\Ottoman\\Ottomanarmyrollover.png"),
-                    new ImageIcon("files\\Ottoman\\Ottomanarmyclick.png"),
-                    new ImageIcon("files\\Ottoman\\Ottomannavy.png"),
-                    new ImageIcon("files\\Ottoman\\Ottomannavyrollover.png"),
-                    new ImageIcon("files\\Ottoman\\Ottomannavyclick.png")
+                    new ImageIcon("files\\Ottoman\\MiddleEastarmy.png"),
+                    new ImageIcon("files\\Ottoman\\MiddleEastarmyrollover.png"),
+                    new ImageIcon("files\\Ottoman\\MiddleEastarmyclick.png"),
+                    new ImageIcon("files\\Ottoman\\MiddleEastnavy.png"),
+                    new ImageIcon("files\\Ottoman\\MiddleEastnavyrollover.png"),
+                    new ImageIcon("files\\Ottoman\\MiddleEastnavyclick.png")
             }),
 
     RUSSIA(new ImageIcon[]

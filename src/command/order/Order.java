@@ -6,7 +6,8 @@ public class Order implements Comparable{
     int defensePower = 1;
     Country orderFrom;
     Boolean valid = null;
-    boolean succeded = false;
+    boolean succeeded = false;
+    boolean isBounced = false;
 
     public Order(Country orderFrom) {
         this.orderFrom = orderFrom;
@@ -56,15 +57,28 @@ public class Order implements Comparable{
         }
     }
 
-    public void setSucceded(boolean succeded) {
-        this.succeded = succeded;
+    public void setSucceeded(boolean succeeded) {
+        if (valid) {
+            this.succeeded = succeeded;
+        }
+        //May change this to a println if it is the wrong type.
+        throw new NullPointerException("Cannot set this order as successful with false validity.\n"
+                + this);
     }
 
-    public boolean succededs() {
-        return succeded;
+    public boolean succeeds() {
+        return succeeded;
     }
 
     public int getDefensePower(){
         return defensePower;
+    }
+
+    public boolean isBounced() {
+        return isBounced;
+    }
+
+    public void setBounced(boolean aBoolean) {
+        isBounced = aBoolean;
     }
 }

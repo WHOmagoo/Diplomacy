@@ -21,7 +21,6 @@ public class GameFrame extends JFrame {
         setTitle("Diplomacy");
         addQuit();
         addMinimize();
-        setVisible(true);
     }
 
     private void addQuit() {
