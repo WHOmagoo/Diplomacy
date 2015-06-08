@@ -21,7 +21,7 @@ public class Input extends JComboBox implements ActionListener, Comparable{
         setRequestFocusEnabled(false);
         setBackground(Color.ORANGE);
         setForeground(Color.BLUE);
-        setFont(Scheme.FONT.getFont());
+        setFont(Scheme.getFont());
         setLocation(0, 0);
         setAutoscrolls(true);
     }
@@ -96,6 +96,6 @@ public class Input extends JComboBox implements ActionListener, Comparable{
 
     public void setOrder(Order order){
         this.order = order;
-        System.out.println("no");
+        throw new Error("The wrong order was set incorrectly");
     }
 }

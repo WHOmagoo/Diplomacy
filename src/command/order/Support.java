@@ -32,19 +32,17 @@ public class Support extends Order {
         this.attacking = countryToAttack;
     }
 
-    public void increaseAttackPower() throws NullPointerException {
-        try {
-            if (valid) {
-                if (supporting.getOrder() instanceof Attack) {
-                    Attack temp = (Attack) supporting.getOrder();
-                    if (temp.getAttacking() == attacking) {
-                        temp.addAttackPower(this);
-                    }
+    public boolean increaseAttackPower() throws NullPointerException {
+        if (valid) {
+            if (supporting.getOrder() instanceof Attack) {
+                Attack temp = (Attack) supporting.getOrder();
+                if (temp.getAttacking() == attacking) {
+                    temp.addAttackPower(this);
+                    return true;
                 }
             }
-        } catch (NullPointerException np) {
-            throw new NullPointerException("This order has not yet been validated (" + this + ")");
         }
+        return false;
     }
 
     @Override

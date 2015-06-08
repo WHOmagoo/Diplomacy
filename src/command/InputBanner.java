@@ -81,6 +81,8 @@ public class InputBanner extends ArrayList<JComponent> {
             associatedMap.repaint(get(0).getBounds());
             remove(0);
         }
+
+        numberOfItemsShowing = 0;
     }
 
     public void setLastVisible(JComponent item){
@@ -119,7 +121,7 @@ public class InputBanner extends ArrayList<JComponent> {
         return country;
     }
 
-    private Input getLastInput() {
+    public Input getLastInput() {
         for (int i = size() - 1; i >= 0; i--){
             if(get(i) instanceof Input){
                 return (Input) get(i);

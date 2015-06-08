@@ -14,7 +14,7 @@ public class MapCreation {
         //Watch out for order of code execution, may cause errors later.
         map.setMapGraphic(new ImageIcon("files\\Map.png"));
         map.setMapText(new ImageIcon("files\\Map Text.png"));
-        map.refreshAllCountries();
+        map.updateGraphics();
         map.addAllCountries();
         return map;
     }

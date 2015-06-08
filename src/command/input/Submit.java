@@ -14,11 +14,11 @@ public class Submit extends RolloverButton implements ActionListener {
     public Submit(InputBanner banner) {
         super("Submit");
         this.banner = banner;
-        setFont(Scheme.FONT.getFont());
-        setSize(getFontMetrics(Scheme.FONT.getFont()).stringWidth(getText()) + 13, 25);
+        setFont(Scheme.getFont());
+        setSize(getFontMetrics(Scheme.getFont()).stringWidth(getText()) + 13, 25);
         setHorizontalAlignment(CENTER);
-        setBackground(Scheme.BACKGROUND.getColor());
-        setForeground(Scheme.FOREGROUND.getColor());
+        setBackground(Scheme.getBackgroundColor());
+        setForeground(Scheme.getForegroundColor());
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
         setFocusPainted(false);
         setRolloverEnabled(true);

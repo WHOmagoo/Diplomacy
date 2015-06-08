@@ -3,8 +3,9 @@ package command.order;
 import map.Country;
 
 public class Attack extends Order {
-    int attackPower = 0;
+    int attackPower = 1;
     private Country attacking;
+    private boolean isAttackLooped = false;
 
     public Attack(Country orderFrom, Country attacking) {
         super(orderFrom);
@@ -31,7 +32,7 @@ public class Attack extends Order {
     public void addAttackPower(Support orderSupporting) {
         if (orderSupporting.getAttacking() == attacking) {
             if (orderSupporting.getSupporting() == orderFrom) {
-                if (orderSupporting.getAttacking().contains(orderSupporting.getOrderFrom())) {
+                if (orderSupporting.getAttacking().contains(orderSupporting.orderFrom())) {
                     attackPower++;
                 }
             }
@@ -43,26 +44,26 @@ public class Attack extends Order {
     }
 
     public boolean cancels(Order order) {
-        return order.getOrderFrom() == attacking;
+        return order.orderFrom() == attacking;
     }
 
     public boolean overpowers() {
-        try {
+        if (attacking.isOccupied()) {
             if (attackPower > attacking.getOrder().getDefensePower()) {
                 return true;
             } else {
                 return false;
             }
-        } catch (NullPointerException np){
-            if(attacking.isOccupied()){
-                if(attackPower > 1){
-                    return true;
-                } else{
-                    return false;
-                }
-            } else{
-                return true;
-            }
+        } else {
+            return true;
         }
+    }
+
+    public boolean isAttackLooped() {
+        return isAttackLooped;
+    }
+
+    public void setAttackLooped(Boolean aBoolean) {
+        isAttackLooped = aBoolean;
     }
 }

@@ -19,10 +19,10 @@ public class OrderInput extends Input implements ActionListener {
     private Order order;
 
     public OrderInput(ArrayList<OrderType> possibleOrders, Map map) {
-        this((OrderType[]) possibleOrders.toArray(), map);
+        this(map, (OrderType[]) possibleOrders.toArray());
     }
 
-    public OrderInput(OrderType[] possibleOrders, Map map){
+    public OrderInput(Map map, OrderType... possibleOrders) {
         super();
         banner = map.getBanner();
         countryAssociation = map.getLastCountryClicked();
@@ -48,11 +48,9 @@ public class OrderInput extends Input implements ActionListener {
             lastAction(banner, temp);
         } catch (NullPointerException exception){
             Submit submit = new Submit(banner);
-            //submit.startRollover();
             order = new Hold(banner.getCountry());
             banner.getCountry().setOrder(order);
             lastAction(banner, submit);
-            //System.out.println("The Item was not  the correct type");
         }
     }
 

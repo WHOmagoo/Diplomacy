@@ -7,8 +7,7 @@ public class Test {
     public static void main(String[] args) {
         GameFrame frame = new GameFrame();
         Map map = MapCreation.createMap();
-        map.setCountryOccupied("Ruhr");
-        map.setCountryOccupied("Berlin");
+        map.setSomeOccupied();
 
         frame.addComponentCentered(map);
         frame.setVisible(true);
@@ -58,5 +57,9 @@ public class Test {
 
         return null;
 
+    }
+
+    public static Map moip() {
+        return null;
     }
 }

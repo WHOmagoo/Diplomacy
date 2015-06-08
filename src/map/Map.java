@@ -2,12 +2,19 @@ package map;
 
 import command.ExecuteOrders;
 import command.InputBanner;
+import command.OrderType;
+import command.input.OrderInput;
+import command.input.RelocateInput;
+import command.order.Attack;
+import command.order.Move;
+import command.order.Order;
 import constants.RolloverButton;
 import constants.Team;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 public class Map extends JLabel {
     private ArrayList<Country> countries = new ArrayList<Country>();
@@ -89,6 +96,7 @@ public class Map extends JLabel {
         lastCountryClicked = countryClicked;
     }
 
+    @Deprecated //This is intended for bug testing
     public void verifyBorders() {
         for (Country country : countries) {
             for (Country borderCountry : country.getBorders()) {
@@ -100,10 +108,22 @@ public class Map extends JLabel {
         }
     }
 
-    public void refreshAllCountries() {
+    public void updateGraphics() {
         for (Country c : countries) {
-            c.refreshGraphics();
+            if (c.needsRelocation() && c.getMovingTo() == null) {
+                displayRelocation(c);
+            } else if (c.needsRelocation()) {
+                c.getMovingTo().setOccupiedBy(c.getTeam(), c.getUnitType());
+                c.refreshGraphics();
+            } else {
+                c.refreshGraphics();
+            }
         }
+    }
+
+    private void displayRelocation(Country c) {
+        clearOldInput();
+        OrderInput orderInput = new OrderInput(this, OrderType.MOVE);
     }
 
     public ArrayList<Country> getCountries() {
@@ -129,18 +149,13 @@ public class Map extends JLabel {
                 counter++;
             }
         }
-
-        if (counter == 13) {
-            executeOrders.setEnabled(false);
-        } else {
-            executeOrders.setEnabled(true);
-        }
     }
 
+    @Deprecated //Only inteded for bug testing
     public void printOrders() {
         for (Country c : countries) {
-            if (c.getOrder() != null) {
-                System.out.println(c.getOrder());
+            if (c.getOrder() != null && c.getOrder().isValid() == Boolean.TRUE) {
+                System.out.println(c.getOrder() + " - " + c.getOrder().succeeds());
             }
         }
     }
@@ -169,10 +184,65 @@ public class Map extends JLabel {
     public void setCountryOccupied(String name){
         try {
             getCountry(name).setOccupiedBy(Team.EGYPT, UnitType.ARMY);
-            refreshAllCountries();
+            updateGraphics();
             getCountry(name).setEnabled(true);
         } catch (NullPointerException e){
-            System.out.println("wrong country added");
+            throw new Error("Wrong country added");
         }
+    }
+
+    public void setSomeOccupied() {
+        int i = 0;
+        for (Country c : countries) {
+            if (c.getTileType() != TileType.Water) {
+                if (i % 3 == 0)
+                    c.setOccupiedBy(Team.EGYPT, UnitType.ARMY);
+            } else {
+                if (i % 3 == 0)
+                    c.setOccupiedBy(Team.BRITAIN, UnitType.NAVY);
+            }
+
+            if (i % 3 == 0)
+                c.setEnabled(true);
+            i++;
+        }
+
+        updateGraphics();
+    }
+
+    public void removeOldOrders() {
+        for (Country c : countries) {
+            c.removeOrder();
+        }
+    }
+
+    public void relocatePrompts(ArrayList<Country> needMove) {
+        banner.clearAll();
+        RelocateInput relocate = new RelocateInput(0, needMove);
+    }
+
+    public void moveUnits(ArrayList<Country> countriesToMove) {
+        for (Country c : countriesToMove) {
+            Order order = c.getOrder();
+            if (order instanceof Move) {
+                Country movingTo = ((Move) order).getMovingTo();
+                if (!movingTo.isOccupied()) {
+                    movingTo.setOccupiedBy(c.getTeam(), c.getUnitType());
+                    c.setOccupiedBy(Team.NULL, UnitType.EMPTY);
+                    c.resetForNewTurn();
+                } else throw new Error("Moving to occupied area " + order);
+            } else if (order instanceof Attack) {
+                Country movingTo = ((Attack) order).getAttacking();
+                if (!movingTo.isOccupied()) {
+                    ((Attack) order).getAttacking().setOccupiedBy(c.getTeam(), c.getUnitType());
+                    c.setOccupiedBy(Team.NULL, UnitType.EMPTY);
+                    c.resetForNewTurn();
+                } else throw new Error("Moving to occupied area " + order);
+            }
+        }
+    }
+
+    public void moveUnits() {
+        moveUnits(countries);
     }
 }

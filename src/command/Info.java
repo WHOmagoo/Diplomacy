@@ -10,11 +10,11 @@ public class Info extends JLabel {
     public Info(String text) {
         //new JTextArea(text);
         super(text, SwingConstants.CENTER);
-        setFont(Scheme.FONT.getFont());
+        setFont(Scheme.getFont());
         setOpaque(true);
-        setSize(getFontMetrics(Scheme.FONT.getFont()).stringWidth(getText()) + 13, 25);
-        setBackground(Scheme.BACKGROUND.getColor());
-        setForeground(Scheme.FOREGROUND.getColor());
+        setSize(getFontMetrics(Scheme.getFont()).stringWidth(getText()) + 13, 25);
+        setBackground(Scheme.getBackgroundColor());
+        setForeground(Scheme.getForegroundColor());
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
     }
 }

@@ -13,7 +13,7 @@ public class Order implements Comparable{
         this.orderFrom = orderFrom;
     }
 
-    public Country getOrderFrom() {
+    public Country orderFrom() {
         return orderFrom;
     }
 
@@ -51,19 +51,19 @@ public class Order implements Comparable{
     public int compareTo(Object obj) {
         if (obj instanceof Order) {
             Order o = (Order) obj;
-            return o.getOrderFrom().compareTo(this.orderFrom);
+            return o.orderFrom().compareTo(this.orderFrom);
         } else{
             throw new ClassCastException("Wrong type");
         }
     }
 
     public void setSucceeded(boolean succeeded) {
-        if (valid) {
-            this.succeeded = succeeded;
-        }
-        //May change this to a println if it is the wrong type.
-        throw new NullPointerException("Cannot set this order as successful with false validity.\n"
-                + this);
+        this.succeeded = succeeded;
+        /*} else {
+            //May change this to a println if it is the wrong type.
+            throw new NullPointerException("Cannot set this order as successful with false validity.\n"
+                    + this);
+        }*/
     }
 
     public boolean succeeds() {
@@ -80,5 +80,10 @@ public class Order implements Comparable{
 
     public void setBounced(boolean aBoolean) {
         isBounced = aBoolean;
+    }
+
+    @Override
+    public String toString() {
+        return orderFrom + " holds";
     }
 }

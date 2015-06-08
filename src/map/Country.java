@@ -3,6 +3,7 @@ package map;
 import command.Info;
 import command.OrderType;
 import command.input.OrderInput;
+import command.order.Hold;
 import command.order.Order;
 import constants.Team;
 import java.awt.Point;
@@ -22,7 +23,9 @@ public class Country extends JButton implements ActionListener, Comparable {
     private Point originalLocation;
     private javax.swing.border.Border border = null;
     private Map mapAssociation;
-    private Order order;
+    private Order order = new Hold(this);
+    private boolean needsRelocation = false;
+    private Country countryMovingTo = null;
 
     private Country() {
         setSize(40, 40);
@@ -30,7 +33,6 @@ public class Country extends JButton implements ActionListener, Comparable {
         setBorder(border);
         setContentAreaFilled(false);
         addActionListener(this);
-        setDisabledIcon(null);
     }
 
     public Country(String name, Point location, TileType tileType) {
@@ -39,12 +41,6 @@ public class Country extends JButton implements ActionListener, Comparable {
         this.tileType = tileType;
         originalLocation = location;
         setLocation(location);
-    }
-
-    //Used for testing
-    @Deprecated
-    public Country(String s) {
-        name = s;
     }
 
     public ArrayList<Country> getOccupiedNeighbors() {
@@ -64,7 +60,9 @@ public class Country extends JButton implements ActionListener, Comparable {
             if (!occupiedSecondBorders.contains(country) &&
                 country != this &&
                 country.isOccupied()) {
-                occupiedSecondBorders.add(country);
+                if (getSupportableInCommon(country).size() > 0) {
+                    occupiedSecondBorders.add(country);
+                }
             }
             //TODO check ahead of time if there is a common country that is accessible by both units.
         }
@@ -96,25 +94,12 @@ public class Country extends JButton implements ActionListener, Comparable {
     public ArrayList<Country> getAttackableCountries(){
         ArrayList<Country> attackableCountries = new ArrayList<Country>();
         for (Country otherCountry : getBorders()) {
-            boolean correctLandType = false;
-                if (unitType == UnitType.NAVY && otherCountry.getTileType() != TileType.Landlocked) {
-                    if(otherCountry.tileType == TileType.Water){
-                        correctLandType = true;
-                    } else {
-                        for (Country c : otherCountry.getWaterBorders()) {
-                            if (contains(c)) {
-                                correctLandType = true;
-                                break;
-                            }
-                        }
-                    }
-                } else if (unitType == UnitType.ARMY && otherCountry.getTileType() != TileType.Water) {
-                    correctLandType = true;
-                }
-            if(correctLandType){
+            if (isCorrectTypes(otherCountry)) {
                 attackableCountries.add(otherCountry);
             }
         }
+
+        Collections.sort(attackableCountries);
         return attackableCountries;
     }
 
@@ -212,6 +197,7 @@ public class Country extends JButton implements ActionListener, Comparable {
         setIcon(team.getIcon(unitType));
         setRolloverIcon(team.getRolloverIcon(unitType));
         setPressedIcon(team.getPressedIcon(unitType));
+        setDisabledIcon(getIcon());
         if (team == Team.NULL) {
             setEnabled(false);
         }
@@ -228,7 +214,7 @@ public class Country extends JButton implements ActionListener, Comparable {
         Info infoCountry = new Info(getName());
         infoCountry.validate();
 
-        OrderInput orderInput = new OrderInput(OrderType.values(), mapAssociation);
+        OrderInput orderInput = new OrderInput(mapAssociation, OrderType.values());
         orderInput.validate();
 
         mapAssociation.addToInputBanner(infoCountry);
@@ -268,7 +254,7 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     public void setOrder(Order order) {
         mapAssociation.updateOrderTotal();
-        if (this == order.getOrderFrom()) {
+        if (this == order.orderFrom()) {
             this.order = order;
         } else {
             throw new IllegalArgumentException("The wrong order has been added to " + this +
@@ -281,5 +267,102 @@ public class Country extends JButton implements ActionListener, Comparable {
         setIcon(Team.BALKANS.getIcon(UnitType.ARMY));
         setEnabled(true);
         setVisible(true);
+    }
+
+    public void removeOrder() {
+        order = null;
+    }
+
+    public void resetForNewTurn() {
+        removeOrder();
+        needsRelocation = false;
+        setLocation(originalLocation);
+    }
+
+    public void setNeedsRelocation(boolean needsRelocation) {
+        this.needsRelocation = needsRelocation;
+    }
+
+    public boolean needsRelocation() {
+        return needsRelocation;
+    }
+
+    public Country getMovingTo() {
+        return countryMovingTo;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public ArrayList<Country> getRelocateableNeighbors() {
+        ArrayList<Country> relocateableTo = new ArrayList<Country>();
+        ArrayList<Country> countriesLookedAt = new ArrayList<Country>();
+
+        for (Country c : getAttackableCountries()) {
+            if (!c.isOccupied()) {
+                relocateableTo.add(c);
+            }
+            countriesLookedAt.add(c);
+        }
+
+        while (relocateableTo.size() == 0) {
+            for (Country c : countriesLookedAt) {
+                for (Country possibleMoveTo : c.getBorders()) {
+                    if (possibleMoveTo.isCorrectTypes(this) && !possibleMoveTo.isOccupied()) {
+                        relocateableTo.add(possibleMoveTo);
+                    }
+                    countriesLookedAt.add(possibleMoveTo);
+                }
+            }
+        }
+
+        Collections.sort(relocateableTo);
+        return relocateableTo;
+    }
+
+    public boolean isCorrectTypes(Country countryAttacking) {
+        if (borders.contains(countryAttacking)) {
+            if (tileType == TileType.Costal) {
+                if (unitType == UnitType.NAVY) {
+                    if (countryAttacking.getTileType() == TileType.Costal) {
+                        if (countryAttacking == mapAssociation.getCountry("Edinburgh")
+                                && this == mapAssociation.getCountry("Wales")) {
+                            return false;
+                        } else if (countryAttacking == mapAssociation.getCountry("Wales")
+                                && this == mapAssociation.getCountry("Edinburgh")) {
+                            return false;
+                        } else {
+                            return countryAttacking.hasWaterInCommon(this);
+                        }
+                    } else {
+                        return countryAttacking.getTileType() == TileType.Water;
+                    }
+                } else {
+                    return countryAttacking.getTileType() == TileType.Landlocked
+                            || countryAttacking.getTileType() == TileType.Costal;
+                }
+            } else if (tileType == countryAttacking.getTileType()) {
+                return true;
+            } else if (tileType == TileType.Water) {
+                return countryAttacking.getTileType() == TileType.Costal;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public boolean hasWaterInCommon(Country otherCountry) {
+        for (Country c : borders) {
+            if (c.tileType == TileType.Water) {
+                if (otherCountry.getBorders().contains(c)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

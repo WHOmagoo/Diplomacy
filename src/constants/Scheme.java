@@ -4,24 +4,17 @@ import java.awt.Color;
 import java.awt.Font;
 
 public enum Scheme {
-    FOREGROUND (Color.BLUE), BACKGROUND(Color.ORANGE), FONT(new Font("Dialog", Font.BOLD, 12));
+    ;
 
-    Color color;
-    Font font;
-
-    Scheme(Color color) {
-        this.color = color;
+    public static Color getForegroundColor() {
+        return Color.BLUE;
     }
 
-    Scheme(Font font){
-        this.font = font;
+    public static Color getBackgroundColor() {
+        return Color.ORANGE;
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public Font getFont() {
-        return font;
+    public static Font getFont() {
+        return new Font("Dialog", Font.BOLD, 12);
     }
 }
