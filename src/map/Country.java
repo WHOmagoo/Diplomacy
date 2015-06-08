@@ -25,10 +25,8 @@ public class Country extends JButton implements ActionListener, Comparable {
     private javax.swing.border.Border border = null;
     private Map mapAssociation;
     private Order order = new Hold(this);
-    private boolean needsRelocation = false;
-    private Country countryMovingTo = this;
 
-    private Country() {
+    Country() {
         setSize(40, 40);
         setOpaque(true);
         setBorder(border);
@@ -276,7 +274,6 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     public void resetForNewTurn() {
         removeOrder();
-        needsRelocation = false;
         setLocation(originalLocation);
     }
 

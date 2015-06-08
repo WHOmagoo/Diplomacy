@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.Timer;
 
 public class ExecuteOrders extends RolloverButton implements ActionListener, Runnable {
-    volatile Thread ted;
+    volatile Thread ted = new Thread(this);
     private volatile Map map;
 
     public ExecuteOrders(Map map) {

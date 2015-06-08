@@ -1,8 +1,9 @@
 import constants.Team;
+import map.*;
+
+import javax.swing.ImageIcon;
 import java.awt.Point;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
-import map.*;
 
 public class MapCreation {
 
@@ -142,6 +143,107 @@ public class MapCreation {
                 new Point(782, 313),    /*West Black Sea*/
                 new Point(841, 283)};   /*East Black Sea*/
 
+        boolean[] scoresPoints = new boolean[]{
+        false,  /*Off Map*/
+        true,   /*Liverpool*/
+        false,  /*Ireland*/
+        true,   /*Wales*/
+        true,   /*Edinburgh*/
+        true,   /*London*/
+        false,  /*Norway*/
+        false,  /*Sweden*/
+        true,   /*Finland*/
+        true,   /*Vologda*/
+        true,   /*Leningrad*/
+        true,   /*Smolensk*/
+        false,  /*Moscow*/
+        false,  /*Bellorussia*/
+        false,  /*Presov*/
+        false,  /*Kiev*/
+        true,   /*Holland*/
+        true,   /*Kiel*/
+        true,   /*Berlin*/
+        true,   /*Siliesia*/
+        true,   /*Rurh*/
+        false,  /*Munich*/
+        false,  /*Belgium*/
+        true,   /*Picardy*/
+        true,   /*Brest*/
+        true,   /*Paris*/
+        true,   /*Marseille*/
+        false,  /*Gacony*/
+        true,   /*Bilboa*/
+        true,   /*Lugo*/
+        false,  /*Portugal*/
+        true,   /*Seville*/
+        true,   /*Valancia*/
+        false,  /*Barcelona*/
+        false,  /*Ust*/
+        false,  /*Pechora*/
+        true,   /*Komi*/
+        true,   /*Gorki*/
+        true,   /*Crimea*/
+        true,   /*Rostov*/
+        false,  /*Czechoslovakia*/
+        true,   /*Austria*/
+        true,   /*Hungary*/
+        true,   /*Bosnia*/
+        true,   /*Albania*/
+        false,  /*Serbia*/
+        false,  /*Banat*/
+        true,   /*Romania*/
+        true,   /*Bulgaria*/
+        true,   /*Macedonia*/
+        true,   /*Greece*/
+        true,   /*Istanbul*/
+        true,   /*Samsun*/
+        false,  /*Kras*/
+        true,   /*Izmir*/
+        true,   /*Lebanon*/
+        true,   /*Israel*/
+        false,  /*Jordan*/
+        false,  /*Piedmont*/
+        false,  /*Venice*/
+        false,  /*Tuscany*/
+        true,   /*Rome*/
+        true,   /*Apulia*/
+        true,   /*Naples*/
+        true,   /*Sicily*/
+        true,   /*Sardinia*/
+        false,  /*Casablanca*/
+        true,   /*Algiers*/
+        true,   /*Setif*/
+        true,   /*Aflou*/
+        false,  /*Sahara*/
+        false,  /*Fazzar*/
+        false,  /*Murzq*/
+        false,  /*Bengasi*/
+        true,   /*Sallum*/
+        true,   /*Tobruk*/
+        false,  /*Cairo*/
+        true,   /*Nile*/
+        false,  /*Sawhaj*/
+        true,   /*Crete*/
+        false,  /*Irish Sea*/
+        false,  /*North Sea*/
+        false,  /*Baltic Sea*/
+        false,  /*English  Channel*/
+        false,  /*Atlantic Ocean*/
+        false,  /*Bay of Biscay*/
+        false,  /*Gibraltar*/
+        false,  /*Western Mediterranean*/
+        false,  /*Gulf of Lyons*/
+        false,  /*Tyrrhenian Sea*/
+        false,  /*Ionian Sea*/
+        false,  /*Adriatic Sea*/
+        false,  /*Agean Sea*/
+        false,  /*Eastern Mediterranean*/
+        false,  /*Red Sea*/
+        false,  /*Lake Cherkassy*/
+        false,  /*West Black Sea*/
+        false   /*East Black Sea*/
+        };
+
         ArrayList<Country> tempCountries = new ArrayList<Country>();
         for (int i = 0; i < COUNTRY_NAME_LIST.length; i++) {
             TileType tileType;
@@ -150,7 +252,11 @@ public class MapCreation {
             } else {
                 tileType = TileType.Water;
             }
-            tempCountries.add(new Country(COUNTRY_NAME_LIST[i], locations[i], tileType));
+            if(scoresPoints[i]) {
+                tempCountries.add(new ScoringCountry(COUNTRY_NAME_LIST[i], locations[i], tileType));
+            } else {
+                tempCountries.add(new Country(COUNTRY_NAME_LIST[i], locations[i], tileType));
+            }
         }
         return tempCountries;
     }

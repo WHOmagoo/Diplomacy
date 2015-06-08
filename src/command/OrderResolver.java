@@ -339,6 +339,7 @@ public class OrderResolver extends ArrayList<Order> {
         }
 
         updateGraphics(movesFirst);
+        sort(movesSecond);
         updateGraphics(movesSecond);
         for (Country c : movesThird) {
             Map map = c.getMap();
@@ -362,6 +363,30 @@ public class OrderResolver extends ArrayList<Order> {
             OrderResolver resolver = new OrderResolver(movesThird);
             resolver.resolve();
         }
+    }
+
+    private ArrayList<Country> sort(ArrayList<Country> movesSecond) {
+
+        ArrayList<Country> temp = new ArrayList<Country>();
+        do {
+            temp = new ArrayList<Country>();
+            for (int i = 0; i < movesSecond.size(); i++) {
+                Country c = movesSecond.get(i);
+                if (c.getOrder() instanceof Move) {
+                    Move move = (Move) c.getOrder();
+                    if (move.getMovingTo().isOccupied()) {
+                        System.out.println("Adding");
+                        temp.add(0, c);
+                        movesSecond.remove(c);
+                        i--;
+                    }
+                }
+            }
+            updateGraphics(temp);
+            System.out.println(temp.size());
+        } while (temp.size() != 0);
+
+        return null;
     }
 
     @Deprecated //This is only intended for bug testing

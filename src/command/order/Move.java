@@ -3,7 +3,7 @@ package command.order;
 import map.Country;
 
 public class Move extends Order{
-    private Country movingTo;
+    private volatile Country movingTo;
     private boolean moveLooped = false;
 
     public Move(Country orderFrom, Country movingTo) {

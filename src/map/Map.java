@@ -9,11 +9,12 @@ import command.order.Move;
 import command.order.Order;
 import constants.RolloverButton;
 import constants.Team;
-import java.util.ArrayList;
-import java.util.Collections;
+
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Map extends JLabel {
     ExecuteOrders executeOrders = new ExecuteOrders(this);
@@ -261,5 +262,17 @@ public class Map extends JLabel {
             System.out.println("wrong ;(");
             return false;
         }
+    }
+
+    public void clearAll() {
+        for(Country c : countries){
+            c.setOccupiedBy(Team.NULL, UnitType.EMPTY);
+            c.refreshGraphics();
+        }
+    }
+
+    public void setCountryOccupied(String liverpool, Team britain, UnitType navy) {
+        Country c = getCountry(liverpool);
+        c.setOccupiedBy(britain, navy);
     }
 }
