@@ -6,16 +6,17 @@ import command.input.OrderInput;
 import command.order.Hold;
 import command.order.Order;
 import constants.Team;
-import java.awt.Point;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import javax.swing.JButton;
 
 public class Country extends JButton implements ActionListener, Comparable {
     private String name;
-    private Border borders;
+    private volatile Border borders;
     private SecondDegreeBorder secondDegreeBorders;
     private volatile Team team = Team.NULL;
     private volatile UnitType unitType = UnitType.EMPTY;
@@ -135,7 +136,7 @@ public class Country extends JButton implements ActionListener, Comparable {
     }
 
     public boolean isOccupied() {
-        if (this.team == Team.NULL || unitType == UnitType.EMPTY) {
+        if (this.team.equals(Team.NULL) || unitType.equals(UnitType.EMPTY)) {
             return false;
         } else {
             return true;
@@ -279,10 +280,6 @@ public class Country extends JButton implements ActionListener, Comparable {
         setLocation(originalLocation);
     }
 
-    public Country getMovingTo() {
-        return countryMovingTo;
-    }
-
     public Team getTeam() {
         return team;
     }
@@ -307,11 +304,10 @@ public class Country extends JButton implements ActionListener, Comparable {
                             if (unitType == UnitType.NAVY
                                     && (possibleMoveTo.getTileType() == TileType.Water
                                     || possibleMoveTo.getTileType() == TileType.Costal)) {
-                                relocateableTo.add(c);
-                                System.out.println("adding " + c + " - " + possibleMoveTo.isOccupied());
+                                relocateableTo.add(possibleMoveTo);
                             } else if (possibleMoveTo.getTileType() == TileType.Costal
                                     || possibleMoveTo.getTileType() == TileType.Landlocked) {
-                                relocateableTo.add(c);
+                                relocateableTo.add(possibleMoveTo);
                             }
                         }
                     }
@@ -319,11 +315,9 @@ public class Country extends JButton implements ActionListener, Comparable {
                 }
             }
             countriesLookedAt.addAll(temp);
-            System.out.println("Still going");
         }
 
         Collections.sort(relocateableTo);
-        System.out.println("out");
         return relocateableTo;
     }
 
