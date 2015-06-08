@@ -293,7 +293,7 @@ public class OrderResolver extends ArrayList<Order> {
         }
     }
 
-    private boolean moveLoopIsValid(Move move) {
+    public boolean moveLoopIsValid(Move move) {
         Country original = move.orderFrom();
         Country other = move.getMovingTo();
         while (original != other && other.getOrder() instanceof Move) {
