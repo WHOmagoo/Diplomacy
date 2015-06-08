@@ -14,7 +14,11 @@ public class RolloverButton extends JButton {
 
     public void added() {
         isAdded = true;
-        timer.schedule(new ButtonRollover(this), 0, 5);
+        try {
+            timer.schedule(new ButtonRollover(this), 0, 5);
+        } catch (IllegalStateException e) {
+            System.out.println(e);
+        }
     }
 
     public boolean isAdded() {

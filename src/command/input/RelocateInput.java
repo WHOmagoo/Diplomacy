@@ -1,28 +1,23 @@
 package command.input;
 
-import command.Info;
 import command.InputBanner;
-import command.OrderResolver;
 import command.order.Move;
 import command.order.Order;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import map.Country;
 
 public class RelocateInput extends Input implements ActionListener {
     Country countryAssociation;
-    int locationOfThisCountry;
+    volatile boolean isStillRelocating = true;
     private Move relocatingTo;
-    private InputBanner banner;
-    private ArrayList<Country> countriesToRelocate;
 
-    public RelocateInput(int locationOfCountryToRelocate, ArrayList<Country> countriesToRelocate) {
+    public RelocateInput(InputBanner banner, Country c) {
         super();
-        locationOfThisCountry = locationOfCountryToRelocate;
-        countryAssociation = countriesToRelocate.get(locationOfCountryToRelocate);
-        this.countriesToRelocate = countriesToRelocate;
+        setBanner(banner);
+        countryAssociation = banner.getCountry();
+        this.countryAssociation = c;
         DefaultComboBoxModel<Country> model = new DefaultComboBoxModel<Country>();
 
         for (Country moveTo : countryAssociation.getRelocateableNeighbors()) {
@@ -33,46 +28,31 @@ public class RelocateInput extends Input implements ActionListener {
         setModel(model);
         setSize(longestItem(), 25);
         addActionListener(this);
-        this.banner = new InputBanner(countryAssociation.getMap(), countryAssociation);
-        banner.add(new Info(countryAssociation + " relocates to"));
-        banner.add(this);
-        banner.setLastVisible(this);
+        //this.banner = new InputBanner(countryAssociation.getMap(), countryAssociation);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        firstAction(banner);
-        relocatingTo = new Move(countryAssociation, (Country) getSelectedItem());
-        Submit submit = new Submit(banner);
-        lastAction(banner, submit);
+        firstAction(getBanner());
+        relocatingTo = new Move(countryAssociation);
+        relocatingTo.setMovingTo((Country) getSelectedItem());
+        Submit submit = new Submit(getBanner());
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (locationOfThisCountry < countriesToRelocate.size() - 1) {
-                    RelocateInput relocateInput = new RelocateInput(locationOfThisCountry + 1, countriesToRelocate);
-                } else {
-                    countryAssociation.setOrder(relocatingTo);
-                    OrderResolver.resolveOrders(countriesToRelocate);
-                    ArrayList<Country> stillNeedRelocation = new ArrayList<Country>();
-                    for (Country c : countriesToRelocate) {
-                        if (!c.getOrder().succeeds()) {
-                            stillNeedRelocation.add(c);
-                        }
-                    }
-
-                    if (stillNeedRelocation.size() > 0) {
-                        RelocateInput relocateInput = new RelocateInput(0, stillNeedRelocation);
-                    } else {
-                        countryAssociation.getMap().moveUnits();
-                        countryAssociation.getMap().updateGraphics();
-                    }
-                }
+                relocatingTo.setMovingTo((Country) getSelectedItem());
+                countryAssociation.setOrder(relocatingTo);
+                isStillRelocating = false;
             }
         });
-
+        lastAction(getBanner(), submit);
     }
 
     public Order getOrder() {
         return relocatingTo;
+    }
+
+    public boolean isStillRelocating() {
+        return isStillRelocating;
     }
 }

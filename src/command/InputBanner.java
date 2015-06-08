@@ -133,4 +133,8 @@ public class InputBanner extends ArrayList<JComponent> {
     public Order getOrder() {
         return getLastInput().getOrder();
     }
+
+    public void setOrder() {
+
+    }
 }

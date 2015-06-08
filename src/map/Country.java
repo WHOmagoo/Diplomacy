@@ -17,15 +17,15 @@ public class Country extends JButton implements ActionListener, Comparable {
     private String name;
     private Border borders;
     private SecondDegreeBorder secondDegreeBorders;
-    private Team team = Team.NULL;
-    private UnitType unitType = UnitType.EMPTY;
+    private volatile Team team = Team.NULL;
+    private volatile UnitType unitType = UnitType.EMPTY;
     private TileType tileType;
     private Point originalLocation;
     private javax.swing.border.Border border = null;
     private Map mapAssociation;
     private Order order = new Hold(this);
     private boolean needsRelocation = false;
-    private Country countryMovingTo = null;
+    private Country countryMovingTo = this;
 
     private Country() {
         setSize(40, 40);
@@ -172,7 +172,7 @@ public class Country extends JButton implements ActionListener, Comparable {
         if (unitType == UnitType.ARMY && tileType == TileType.Water) {
             throw new IllegalArgumentException("An army is not allowed in the water");
         }
-
+        setEnabled(true);
         this.team = team;
         this.unitType = unitType;
     }
@@ -270,21 +270,13 @@ public class Country extends JButton implements ActionListener, Comparable {
     }
 
     public void removeOrder() {
-        order = null;
+        order = new Order(this);
     }
 
     public void resetForNewTurn() {
         removeOrder();
         needsRelocation = false;
         setLocation(originalLocation);
-    }
-
-    public void setNeedsRelocation(boolean needsRelocation) {
-        this.needsRelocation = needsRelocation;
-    }
-
-    public boolean needsRelocation() {
-        return needsRelocation;
     }
 
     public Country getMovingTo() {
@@ -300,24 +292,38 @@ public class Country extends JButton implements ActionListener, Comparable {
         ArrayList<Country> countriesLookedAt = new ArrayList<Country>();
 
         for (Country c : getAttackableCountries()) {
-            if (!c.isOccupied()) {
+            if (!c.isOccupied() && c.isCorrectTypes(this)) {
                 relocateableTo.add(c);
             }
             countriesLookedAt.add(c);
         }
 
         while (relocateableTo.size() == 0) {
+            ArrayList<Country> temp = new ArrayList<Country>();
             for (Country c : countriesLookedAt) {
                 for (Country possibleMoveTo : c.getBorders()) {
-                    if (possibleMoveTo.isCorrectTypes(this) && !possibleMoveTo.isOccupied()) {
-                        relocateableTo.add(possibleMoveTo);
+                    if (!possibleMoveTo.isOccupied()) {
+                        if (!relocateableTo.contains(possibleMoveTo)) {
+                            if (unitType == UnitType.NAVY
+                                    && (possibleMoveTo.getTileType() == TileType.Water
+                                    || possibleMoveTo.getTileType() == TileType.Costal)) {
+                                relocateableTo.add(c);
+                                System.out.println("adding " + c + " - " + possibleMoveTo.isOccupied());
+                            } else if (possibleMoveTo.getTileType() == TileType.Costal
+                                    || possibleMoveTo.getTileType() == TileType.Landlocked) {
+                                relocateableTo.add(c);
+                            }
+                        }
                     }
-                    countriesLookedAt.add(possibleMoveTo);
+                    temp.add(possibleMoveTo);
                 }
             }
+            countriesLookedAt.addAll(temp);
+            System.out.println("Still going");
         }
 
         Collections.sort(relocateableTo);
+        System.out.println("out");
         return relocateableTo;
     }
 

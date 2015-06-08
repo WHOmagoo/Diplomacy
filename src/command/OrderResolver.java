@@ -7,9 +7,9 @@ import map.Country;
 import map.Map;
 
 public class OrderResolver extends ArrayList<Order> {
-    private static ArrayList<Order> orders = new ArrayList<Order>();
+    private ArrayList<Order> orders = new ArrayList<Order>();
 
-    public static void resolveOrders(ArrayList<Country> countries) {
+    public OrderResolver(ArrayList<Country> countries) {
         orders = new ArrayList<Order>();
         for (Country c : countries) {
             if (c.getOrder() == null) {
@@ -21,39 +21,52 @@ public class OrderResolver extends ArrayList<Order> {
             }
         }
 
-        ArrayList<Order> invalidOrders1 = cancelSomeOrders(getUnCanceledOrders(orders));
-        ArrayList<Order> invalidOrders2 = cancelSomeOrders(getUnCanceledOrders(invalidOrders1));
-        Collections.sort(invalidOrders1);
-        Collections.sort(invalidOrders2);
-
-        while (!invalidOrders1.equals(invalidOrders2)) {
-            invalidOrders1 = cancelSomeOrders(getUnCanceledOrders(invalidOrders2));
-            invalidOrders2 = cancelSomeOrders(getUnCanceledOrders(invalidOrders1));
-            Collections.sort(invalidOrders1);
-            Collections.sort(invalidOrders2);
-        }
-
-        catchAttackLoop();
-        catchMoveLoop();
-
-        for (Order order : orders) {
-            if (order.isValid() == null) {
-                throw new Error(order + " was not validated");
-            }
-        }
-
-        calculateDefensePowers();
-        calculateAttackPowers();
-        identifyAttackBounces();
-        identifyMoveBounces();
-        failBounced();
-        calculateMoves();
-        labelAttackedForMove();
-        printCommands();
-
     }
 
-    private static ArrayList<Order> getUnCanceledOrders(ArrayList<Order> orders){
+    public void resolve() {
+        if (orders.size() > 0) {
+            ArrayList<Order> invalidOrders1 = cancelSomeOrders(getUnCanceledOrders(orders));
+            ArrayList<Order> invalidOrders2 = cancelSomeOrders(getUnCanceledOrders(invalidOrders1));
+            Collections.sort(invalidOrders1);
+            Collections.sort(invalidOrders2);
+
+            while (!invalidOrders1.equals(invalidOrders2)) {
+                invalidOrders1 = cancelSomeOrders(getUnCanceledOrders(invalidOrders2));
+                invalidOrders2 = cancelSomeOrders(getUnCanceledOrders(invalidOrders1));
+                Collections.sort(invalidOrders1);
+                Collections.sort(invalidOrders2);
+            }
+
+            catchAttackLoop();
+            catchMoveLoop();
+
+            for (Order order : orders) {
+                if (order.isValid() == null) {
+                    throw new Error(order + " was not validated");
+                }
+            }
+
+            calculateDefensePowers();
+            calculateAttackPowers();
+            identifyAttackBounces();
+            identifyMoveBounces();
+            failBounced();
+            calculateMoves();
+            labelAttackedForMove();
+
+            ArrayList<Country> temp = new ArrayList<Country>();
+            for (Order o : orders) {
+                if (o instanceof Move || o instanceof Attack) {
+                    if (o.succeeds()) {
+                        temp.add(o.orderFrom());
+                    }
+                }
+            }
+            orders.get(0).orderFrom().getMap().moveUnits(temp);
+        }
+    }
+
+    private ArrayList<Order> getUnCanceledOrders(ArrayList<Order> orders) {
         ArrayList<Order> uncanceledOrders = new ArrayList<Order>();
         for(Order order : orders){
             if (!(order instanceof Hold)) {
@@ -65,7 +78,7 @@ public class OrderResolver extends ArrayList<Order> {
         return uncanceledOrders;
     }
 
-    private static boolean isCanceled(Order order){
+    private boolean isCanceled(Order order) {
         for(Order o : orders){
             if(o instanceof Attack){
                 Attack attack = (Attack) o;
@@ -78,7 +91,7 @@ public class OrderResolver extends ArrayList<Order> {
         return false;
     }
 
-    private static ArrayList<Order> cancelSomeOrders(ArrayList<Order> executableOrders) throws Error {
+    private ArrayList<Order> cancelSomeOrders(ArrayList<Order> executableOrders) throws Error {
         ArrayList<Order> invalidOrders = new ArrayList<Order>();
         for (Order order : executableOrders) {
             if (order instanceof Attack) {
@@ -103,7 +116,7 @@ public class OrderResolver extends ArrayList<Order> {
         return invalidOrders;
     }
 
-    private static void catchAttackLoop() {
+    private void catchAttackLoop() {
         for(Order order : orders){
             if (order instanceof Attack) {
                 Attack attack = (Attack) order;
@@ -131,7 +144,7 @@ public class OrderResolver extends ArrayList<Order> {
         }
     }
 
-    private static void catchMoveLoop() {
+    private void catchMoveLoop() {
         for (Order order : orders) {
             if (order instanceof Move) {
                 Move move = (Move) order;
@@ -155,7 +168,7 @@ public class OrderResolver extends ArrayList<Order> {
         }
     }
 
-    private static void calculateDefensePowers() {
+    private void calculateDefensePowers() {
         for (Order order : orders) {
             if (order.isValid() == Boolean.TRUE) {
                 if (order instanceof Defend) {
@@ -165,7 +178,7 @@ public class OrderResolver extends ArrayList<Order> {
         }
     }
 
-    private static void calculateAttackPowers() {
+    private void calculateAttackPowers() {
         for (Order order : orders) {
             if (Boolean.TRUE == order.isValid()) {
                 if (order instanceof Support) {
@@ -188,7 +201,7 @@ public class OrderResolver extends ArrayList<Order> {
 
     }
 
-    private static void identifyAttackBounces() {
+    private void identifyAttackBounces() {
         for (Order order : orders) {
             if (order instanceof Attack) {
                 Attack attack = (Attack) order;
@@ -211,7 +224,7 @@ public class OrderResolver extends ArrayList<Order> {
         }
     }
 
-    private static void identifyMoveBounces() {
+    private void identifyMoveBounces() {
         for (Order order : orders) {
             if (order instanceof Move) {
                 Move move = (Move) order;
@@ -244,7 +257,7 @@ public class OrderResolver extends ArrayList<Order> {
         }
     }
 
-    private static void failBounced() {
+    private void failBounced() {
         for (Order order : orders) {
             if (order.isBounced()) {
                 order.setSucceeded(false);
@@ -252,7 +265,7 @@ public class OrderResolver extends ArrayList<Order> {
         }
     }
 
-    private static void calculateMoves() {
+    private void calculateMoves() {
         ArrayList<Move> moves = new ArrayList<Move>();
 
         for (Order order : orders) {
@@ -280,7 +293,7 @@ public class OrderResolver extends ArrayList<Order> {
         }
     }
 
-    private static boolean moveLoopIsValid(Move move) {
+    private boolean moveLoopIsValid(Move move) {
         Country original = move.orderFrom();
         Country other = move.getMovingTo();
         while (original != other && other.getOrder() instanceof Move) {
@@ -302,28 +315,73 @@ public class OrderResolver extends ArrayList<Order> {
         }
     }
 
-    private static void labelAttackedForMove() {
-        ArrayList<Country> needMove = new ArrayList<Country>();
+    private void labelAttackedForMove() {
+        ArrayList<Country> movesFirst = new ArrayList<Country>();
+        ArrayList<Country> movesSecond = new ArrayList<Country>();
+        ArrayList<Country> movesThird = new ArrayList<Country>();
         for (Order o : orders) {
             if (o instanceof Attack) {
-                if (((Attack) o).getAttacking().isOccupied()) {
-                    needMove.add(((Attack) o).getAttacking());
+                if (o.succeeds()) {
+                    if (((Attack) o).getAttacking().isOccupied()) {
+                        movesThird.add(((Attack) o).getAttacking());
+                    } else {
+                        movesFirst.add(o.orderFrom());
+                    }
+                }
+            } else {
+                if (o instanceof Move) {
+                    if (o.succeeds()) {
+                        movesSecond.add(o.orderFrom());
+                    }
                 }
             }
         }
 
-        if (needMove.size() > 0) {
-            Map map = orders.get(0).orderFrom().getMap();
-            map.relocatePrompts(needMove);
+        updateGraphics(movesFirst);
+        updateGraphics(movesSecond);
+        for (Country c : movesThird) {
+            Map map = c.getMap();
+            map.relocatePrompt(c);
+            while (map.isStillRelocating()) {
+            }
+        }
+
+        if (movesThird.size() > 0) {
+            OrderResolver resolver = new OrderResolver(movesThird);
+            resolver.resolve();
         }
     }
 
     @Deprecated //This is only intended for bug testing
-    private static void printCommands() {
+    private void printCommands() {
         System.out.println("Printing Orders");
         for (Order order : orders) {
             order.orderFrom().getMap().printOrders();
             break;
+        }
+    }
+
+    public boolean movesBounce(ArrayList<Country> countriesToRelocate) {
+        boolean movesBounce = false;
+        for (Country c : countriesToRelocate) {
+            for (Country c2 : countriesToRelocate) {
+                if (c != c2) {
+                    if (c.getOrder() instanceof Move && c2.getOrder() instanceof Move) {
+                        if (((Move) c.getOrder()).getMovingTo() == ((Move) c2.getOrder()).getMovingTo()) {
+                            c.getOrder().setSucceeded(false);
+                            movesBounce = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return movesBounce;
+    }
+
+    public void updateGraphics(ArrayList<Country> countries) {
+        if (orders.size() > 0) {
+            orders.get(0).orderFrom().getMap().moveUnits(countries);
         }
     }
 }

@@ -1,9 +1,8 @@
 package map;
 
 import command.ExecuteOrders;
+import command.Info;
 import command.InputBanner;
-import command.OrderType;
-import command.input.OrderInput;
 import command.input.RelocateInput;
 import command.order.Attack;
 import command.order.Move;
@@ -17,11 +16,11 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 public class Map extends JLabel {
-    private ArrayList<Country> countries = new ArrayList<Country>();
+    ExecuteOrders executeOrders = new ExecuteOrders(this);
+    private volatile ArrayList<Country> countries = new ArrayList<Country>();
     private JLabel text = new JLabel();
     private Country lastCountryClicked;
     private InputBanner banner;
-    private ExecuteOrders executeOrders = new ExecuteOrders(this);
 
     public Map(ArrayList<Country> countries) {
         this.countries.addAll(countries);
@@ -96,7 +95,7 @@ public class Map extends JLabel {
         lastCountryClicked = countryClicked;
     }
 
-    @Deprecated //This is intended for bug testing
+    @Deprecated //This is intended for bug testing new maps
     public void verifyBorders() {
         for (Country country : countries) {
             for (Country borderCountry : country.getBorders()) {
@@ -110,20 +109,8 @@ public class Map extends JLabel {
 
     public void updateGraphics() {
         for (Country c : countries) {
-            if (c.needsRelocation() && c.getMovingTo() == null) {
-                displayRelocation(c);
-            } else if (c.needsRelocation()) {
-                c.getMovingTo().setOccupiedBy(c.getTeam(), c.getUnitType());
-                c.refreshGraphics();
-            } else {
-                c.refreshGraphics();
-            }
+            c.refreshGraphics();
         }
-    }
-
-    private void displayRelocation(Country c) {
-        clearOldInput();
-        OrderInput orderInput = new OrderInput(this, OrderType.MOVE);
     }
 
     public ArrayList<Country> getCountries() {
@@ -191,6 +178,7 @@ public class Map extends JLabel {
         }
     }
 
+    @Deprecated //This is only intended for bug testing
     public void setSomeOccupied() {
         int i = 0;
         for (Country c : countries) {
@@ -216,10 +204,10 @@ public class Map extends JLabel {
         }
     }
 
-    public void relocatePrompts(ArrayList<Country> needMove) {
+/*    public void relocatePrompts(ArrayList<Country> needMove) {
         banner.clearAll();
         RelocateInput relocate = new RelocateInput(0, needMove);
-    }
+    }*/
 
     public void moveUnits(ArrayList<Country> countriesToMove) {
         for (Country c : countriesToMove) {
@@ -230,19 +218,48 @@ public class Map extends JLabel {
                     movingTo.setOccupiedBy(c.getTeam(), c.getUnitType());
                     c.setOccupiedBy(Team.NULL, UnitType.EMPTY);
                     c.resetForNewTurn();
-                } else throw new Error("Moving to occupied area " + order);
+                } else {
+                    throw new Error("Moving to occupied area " + order);
+                }
             } else if (order instanceof Attack) {
                 Country movingTo = ((Attack) order).getAttacking();
                 if (!movingTo.isOccupied()) {
                     ((Attack) order).getAttacking().setOccupiedBy(c.getTeam(), c.getUnitType());
                     c.setOccupiedBy(Team.NULL, UnitType.EMPTY);
                     c.resetForNewTurn();
-                } else throw new Error("Moving to occupied area " + order);
+                } else {
+                    throw new Error("Moving to occupied area " + order);
+                }
             }
         }
+
+        updateGraphics();
     }
 
     public void moveUnits() {
         moveUnits(countries);
+    }
+
+    public void removeExecuteOrders() {
+        remove(executeOrders);
+        repaint(executeOrders.getBounds());
+    }
+
+    public void relocatePrompt(Country c) {
+        banner.clearAll();
+        banner = new InputBanner(this, c);
+        RelocateInput relocate = new RelocateInput(banner, c);
+        banner.add(new Info(c + " relocates to"));
+        banner.add(relocate);
+        banner.setLastVisible(relocate);
+    }
+
+    public boolean isStillRelocating() {
+        if (banner.getLastInput() instanceof RelocateInput) {
+            return ((RelocateInput) banner.getLastInput()).isStillRelocating();
+        } else {
+            System.out.println("wrong ;(");
+            return false;
+        }
     }
 }

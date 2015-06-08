@@ -3,7 +3,6 @@ import java.io.*;
 import map.Map;
 
 public class Test {
-
     public static void main(String[] args) {
         GameFrame frame = new GameFrame();
         Map map = MapCreation.createMap();

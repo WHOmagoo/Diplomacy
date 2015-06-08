@@ -10,8 +10,9 @@ import java.util.Timer;
 import javax.swing.BorderFactory;
 import map.Map;
 
-public class ExecuteOrders extends RolloverButton implements ActionListener {
-    private Map map;
+public class ExecuteOrders extends RolloverButton implements ActionListener, Runnable {
+    volatile Thread ted = new Thread(this);
+    private volatile Map map;
 
     public ExecuteOrders(Map map) {
         super("Execute Orders");
@@ -40,6 +41,16 @@ public class ExecuteOrders extends RolloverButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        OrderResolver.resolveOrders(map.getCountries());
+        try {
+            ted.start();
+        } catch (IllegalThreadStateException err) {
+
+        }
+    }
+
+    @Override
+    public void run() {
+        OrderResolver resolver = new OrderResolver(map.getCountries());
+        resolver.resolve();
     }
 }
