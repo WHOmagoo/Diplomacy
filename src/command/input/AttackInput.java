@@ -12,9 +12,6 @@ public class AttackInput extends Input implements ActionListener{
     private InputBanner banner;
     private Attack attack;
 
-    public AttackInput(){
-    }
-
     public AttackInput(InputBanner banner){
         super(banner);
         this.banner = banner;

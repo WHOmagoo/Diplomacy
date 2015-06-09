@@ -62,11 +62,9 @@ public class Country extends JButton implements ActionListener, Comparable {
                     occupiedSecondBorders.add(country);
                 }
             }
-            //TODO check ahead of time if there is a common country that is accessible by both units.
         }
 
         Collections.sort(occupiedSecondBorders);
-
         return occupiedSecondBorders;
     }
 
@@ -77,6 +75,8 @@ public class Country extends JButton implements ActionListener, Comparable {
                 temp.add(c);
             }
         }
+
+        Collections.sort(temp);
 
         return temp;
     }
@@ -97,6 +97,7 @@ public class Country extends JButton implements ActionListener, Comparable {
             }
         }
 
+        Collections.shuffle(attackableCountries);
         Collections.sort(attackableCountries);
         return attackableCountries;
     }
@@ -225,15 +226,18 @@ public class Country extends JButton implements ActionListener, Comparable {
     public int compareTo(Object country) throws IllegalArgumentException {
         try {
             Country other = (Country) country;
-            if(getTileType() != TileType.Water && other.getTileType() == TileType.Water) {
-                return -1;
-            } else if (getTileType() == other.getTileType()) {
-                return this.name.compareTo(other.getName());
-            } else{
-                return 1;
+            if (other.getTileType() == TileType.Water) {
+                if (tileType == TileType.Water) {
+                    return name.compareTo(other.getName());
+                } else {
+                    return -1;
+                }
+            } else {
+                return name.compareTo(other.getName());
             }
         } catch (Exception e) {
-            throw new IllegalArgumentException("Must compare two countries");
+            return this.compareTo(country);
+            //throw new IllegalArgumentException("Must compare two countries");
         }
     }
 
@@ -300,14 +304,17 @@ public class Country extends JButton implements ActionListener, Comparable {
                 for (Country possibleMoveTo : c.getBorders()) {
                     if (!possibleMoveTo.isOccupied()) {
                         if (!relocateableTo.contains(possibleMoveTo)) {
-                            if (unitType == UnitType.NAVY
+                            if (isCorrectTypes(possibleMoveTo)) {
+                                relocateableTo.add(possibleMoveTo);
+                            }
+                            /*if (unitType == UnitType.NAVY
                                     && (possibleMoveTo.getTileType() == TileType.Water
                                     || possibleMoveTo.getTileType() == TileType.Costal)) {
                                 relocateableTo.add(possibleMoveTo);
                             } else if (possibleMoveTo.getTileType() == TileType.Costal
                                     || possibleMoveTo.getTileType() == TileType.Landlocked) {
                                 relocateableTo.add(possibleMoveTo);
-                            }
+                            }*/
                         }
                     }
                     temp.add(possibleMoveTo);

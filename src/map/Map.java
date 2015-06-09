@@ -26,7 +26,7 @@ public class Map extends JLabel {
     public Map(ArrayList<Country> countries) {
         this.countries.addAll(countries);
         Collections.sort(this.countries);
-        for (Country c : countries) {
+        for (Country c : this.countries) {
             c.calculateCoastal();
             c.setMapAssociation(this);
             c.calculateSecondDegreeBorders();
@@ -236,7 +236,7 @@ public class Map extends JLabel {
 
             movingTo.setOccupiedBy(c.getTeam(), c.getUnitType());
             c.setOccupiedBy(Team.NULL, UnitType.EMPTY);
-            c.resetForNewTurn(); //TODO Watch out for this
+            c.resetForNewTurn();
             movingTo.refreshGraphics();
         }
     }

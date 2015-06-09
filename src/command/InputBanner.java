@@ -2,12 +2,12 @@ package command;
 
 import command.input.Input;
 import command.order.Order;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import javax.swing.JComponent;
 import map.Country;
 import map.Map;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 
 public class InputBanner extends ArrayList<JComponent> {
     private Map associatedMap;
@@ -40,17 +40,6 @@ public class InputBanner extends ArrayList<JComponent> {
             }
         }
         numberOfItemsShowing = index;
-    }
-
-    private JComponent getPreviousItem(JComponent component){
-        //TODO delete later.
-        for(int i = 0; i < size(); i++){
-            if (component == get(i)){
-                return get(i - 1);
-            }
-        }
-
-        throw new NullPointerException("The item was not found");
     }
 
     public boolean add(JComponent e){

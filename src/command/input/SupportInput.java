@@ -14,10 +14,6 @@ public class SupportInput extends Input implements ActionListener{
     private InputBanner banner;
     private Support order;
 
-    public SupportInput(){
-
-    }
-
     public SupportInput(InputBanner banner){
         super(banner);
         this.banner = banner;
