@@ -2,11 +2,12 @@ package command;
 
 import command.input.Input;
 import command.order.Order;
-import java.awt.Point;
-import java.util.ArrayList;
-import javax.swing.JComponent;
 import map.Country;
 import map.Map;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class InputBanner extends ArrayList<JComponent> {
     private Map associatedMap;
@@ -75,10 +76,11 @@ public class InputBanner extends ArrayList<JComponent> {
         }
     }
 
-    public void clearAll() {
-        while (size() != 0) {
+    public synchronized void clearAll() {
+        while (size() > 0) {
+            Rectangle oldBounds = get(0).getBounds();
             associatedMap.remove(get(0));
-            associatedMap.repaint(get(0).getBounds());
+            associatedMap.repaint(oldBounds);
             remove(0);
         }
 

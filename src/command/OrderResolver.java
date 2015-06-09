@@ -1,10 +1,11 @@
 package command;
 
 import command.order.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import map.Country;
 import map.Map;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class OrderResolver extends ArrayList<Order> {
     private ArrayList<Order> orders = new ArrayList<Order>();
@@ -338,6 +339,7 @@ public class OrderResolver extends ArrayList<Order> {
         }
 
         updateGraphics(movesFirst);
+        sort(movesSecond);
         updateGraphics(movesSecond);
         for (Country c : movesThird) {
             Map map = c.getMap();
@@ -345,11 +347,46 @@ public class OrderResolver extends ArrayList<Order> {
             while (map.isStillRelocating()) {
             }
         }
+        while(movesBounce(movesThird)){
+            for(Country c : movesThird){
+                if(!c.getOrder().succeeds()){
+                    Map map = c.getMap();
+                    map.relocatePrompt(c);
+                    while (map.isStillRelocating()){
+
+                    }
+                }
+            }
+        }
 
         if (movesThird.size() > 0) {
             OrderResolver resolver = new OrderResolver(movesThird);
             resolver.resolve();
         }
+    }
+
+    private ArrayList<Country> sort(ArrayList<Country> movesSecond) {
+
+        ArrayList<Country> temp = new ArrayList<Country>();
+        do {
+            temp = new ArrayList<Country>();
+            for (int i = 0; i < movesSecond.size(); i++) {
+                Country c = movesSecond.get(i);
+                if (c.getOrder() instanceof Move) {
+                    Move move = (Move) c.getOrder();
+                    if (move.getMovingTo().isOccupied()) {
+                        System.out.println("Adding");
+                        temp.add(0, c);
+                        movesSecond.remove(c);
+                        i--;
+                    }
+                }
+            }
+            updateGraphics(temp);
+            System.out.println(temp.size());
+        } while (temp.size() != 0);
+
+        return null;
     }
 
     @Deprecated //This is only intended for bug testing

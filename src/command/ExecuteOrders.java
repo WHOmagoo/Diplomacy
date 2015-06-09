@@ -3,12 +3,13 @@ package command;
 import constants.ButtonRollover;
 import constants.RolloverButton;
 import constants.Scheme;
-import java.awt.Color;
+import map.Map;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;
-import javax.swing.BorderFactory;
-import map.Map;
 
 public class ExecuteOrders extends RolloverButton implements ActionListener, Runnable {
     volatile Thread ted = new Thread(this);
@@ -41,10 +42,9 @@ public class ExecuteOrders extends RolloverButton implements ActionListener, Run
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
+        if(!ted.isAlive()) {
+            ted = new Thread(this);
             ted.start();
-        } catch (IllegalThreadStateException err) {
-
         }
     }
 

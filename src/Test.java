@@ -1,14 +1,16 @@
 import constants.GameFrame;
-import java.io.*;
 import map.Map;
+
+import java.io.*;
 
 public class Test {
     public static void main(String[] args) {
         GameFrame frame = new GameFrame();
         Map map = MapCreation.createMap();
-        map.setSomeOccupied();
+        //map.setSomeOccupied();
+        //map.clearAll();
 
-        frame.addComponentCentered(map);
+                frame.addComponentCentered(map);
         frame.setVisible(true);
     }
 
