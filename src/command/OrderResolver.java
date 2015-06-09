@@ -1,10 +1,11 @@
 package command;
 
 import command.order.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import map.Country;
 import map.Map;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class OrderResolver extends ArrayList<Order> {
     private ArrayList<Order> orders = new ArrayList<Order>();
@@ -45,6 +46,7 @@ public class OrderResolver extends ArrayList<Order> {
             failBounced();
             calculateMoves();
             moveUnits();
+            System.out.println("We finished");
         }
     }
 
@@ -64,7 +66,7 @@ public class OrderResolver extends ArrayList<Order> {
     }
 
     private void updateOrders() {
-        orders = new ArrayList<>();
+        orders = new ArrayList<Order>();
         for (Country c : countries) {
             if (c.getOrder() == null) {
                 c.setOrder(new Hold(c));
@@ -375,6 +377,7 @@ public class OrderResolver extends ArrayList<Order> {
         updateGraphics(movesFirst);
         moveMoves(movesSecond);
         updateGraphics(movesSecond);
+        System.out.println(movesThird);
         for (Country c : movesThird) {
             Map map = c.getMap();
             map.relocatePrompt(c);

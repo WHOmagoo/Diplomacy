@@ -9,12 +9,11 @@ import command.order.Move;
 import command.order.Order;
 import constants.RolloverButton;
 import constants.Team;
-import java.awt.Point;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 
 public class Map extends JLabel {
     ExecuteOrders executeOrders = new ExecuteOrders(this);
@@ -242,16 +241,25 @@ public class Map extends JLabel {
     }
 
     public void slideTileTo(Country countryToMove, Country movingTo) {
-        double x = countryToMove.getX();
-        double y = countryToMove.getY();
-        while (Math.abs(x - movingTo.getX()) > .5) {
+        final double constant = 50;
+        final int originalX = countryToMove.getX();
+        final int originalY = countryToMove.getY();
+        final float x = (float) ((movingTo.getX() - countryToMove.getX()) / constant);
+        final float y = (float) ((movingTo.getY() - countryToMove.getY() ) / constant);
+        for(int i = 0; i <= constant; i++){
             try {
-                Thread.sleep(12);
+                Thread.sleep(16);
             } catch (InterruptedException e) {
             }
-            x += (movingTo.getX() - countryToMove.getX()) / 40.0;
-            y += (movingTo.getY() - countryToMove.getY()) / 40.0;
-            countryToMove.setLocation((int) Math.round(x), (int) Math.round(y));
+
+            int newX = Math.round(x * i) + originalX;
+            int newY = Math.round(y * i) + originalY;
+            countryToMove.setLocation(newX, newY);
+
+            //while (Math.abs(x - movingTo.getX()) > .25 && Math.abs(y - movingTo.getY()) > .25) {
+            /*x += (movingTo.getX() - countryToMove.getX()) / constant;
+            y += (movingTo.getY() - countryToMove.getY()) / constant;*/
+            //Use this later for an exponential movement formula.
         }
     }
 
@@ -261,8 +269,8 @@ public class Map extends JLabel {
     }
 
     public void slideMultipleTiles(Country... countriesToMove) throws Error {
-        Double[] x = new Double[countriesToMove.length];
-        Double[] y = new Double[x.length];
+        double[] x = new double[countriesToMove.length];
+        double[] y = new double[x.length];
         Point[] countriesMovingTo = new Point[y.length];
         for (int i = 0; i < countriesToMove.length; i++) {
             Country c = countriesToMove[i];
