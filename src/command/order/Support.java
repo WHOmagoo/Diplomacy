@@ -49,4 +49,10 @@ public class Support extends Order {
     public String toString() {
         return orderFrom + " supports " + supporting + "'s attack on " + attacking;
     }
+
+    public void reset() {
+        super.reset();
+        supporting = null;
+        attacking = null;
+    }
 }

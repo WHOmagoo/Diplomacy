@@ -3,17 +3,16 @@ package command;
 import constants.ButtonRollover;
 import constants.RolloverButton;
 import constants.Scheme;
-import map.Map;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;
+import javax.swing.BorderFactory;
+import map.Map;
 
 public class ExecuteOrders extends RolloverButton implements ActionListener, Runnable {
-    volatile Thread ted = new Thread(this);
-    private volatile Map map;
+    Thread ted = new Thread(this);
+    private Map map;
 
     public ExecuteOrders(Map map) {
         super("Execute Orders");

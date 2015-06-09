@@ -35,4 +35,9 @@ public class Defend extends Order {
     public String toString() {
         return orderFrom + " defends " + defending;
     }
+
+    public void reset() {
+        super.reset();
+        defending = null;
+    }
 }

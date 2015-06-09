@@ -3,15 +3,16 @@ package command.input;
 import command.InputBanner;
 import command.order.Order;
 import constants.Scheme;
-import map.Country;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import map.Country;
 
 public class Input extends JComboBox implements ActionListener, Comparable{
-    private volatile InputBanner banner;
+    private InputBanner banner;
     private Order order;
 
     public Input() {

@@ -1,27 +1,18 @@
 package command;
 
 import command.order.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import map.Country;
 import map.Map;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 public class OrderResolver extends ArrayList<Order> {
     private ArrayList<Order> orders = new ArrayList<Order>();
+    private ArrayList<Country> countries = new ArrayList<Country>();
 
     public OrderResolver(ArrayList<Country> countries) {
-        orders = new ArrayList<Order>();
-        for (Country c : countries) {
-            if (c.getOrder() == null) {
-                c.setOrder(new Hold(c));
-            }
-
-            if (!(c.getOrder() instanceof Hold)) {
-                orders.add(c.getOrder());
-            }
-        }
-
+        this.countries = countries;
+        updateOrders();
     }
 
     public void resolve() {
@@ -53,17 +44,35 @@ public class OrderResolver extends ArrayList<Order> {
             identifyMoveBounces();
             failBounced();
             calculateMoves();
-            labelAttackedForMove();
+            moveUnits();
+        }
+    }
 
-            ArrayList<Country> temp = new ArrayList<Country>();
-            for (Order o : orders) {
-                if (o instanceof Move || o instanceof Attack) {
-                    if (o.succeeds()) {
-                        temp.add(o.orderFrom());
-                    }
+    private void finalMove() {
+        ArrayList<Country> temp = new ArrayList<Country>();
+        updateOrders();
+
+        for (Order o : orders) {
+            if (o instanceof Attack) {
+                if (o.succeeds()) {
+                    temp.add(o.orderFrom());
                 }
             }
-            orders.get(0).orderFrom().getMap().moveUnits(temp);
+        }
+
+        updateGraphics(temp);
+    }
+
+    private void updateOrders() {
+        orders = new ArrayList<>();
+        for (Country c : countries) {
+            if (c.getOrder() == null) {
+                c.setOrder(new Hold(c));
+            }
+
+            if (!(c.getOrder() instanceof Hold)) {
+                orders.add(c.getOrder());
+            }
         }
     }
 
@@ -277,21 +286,46 @@ public class OrderResolver extends ArrayList<Order> {
             }
         }
 
+        ArrayList<Move> move1 = moves;
+        ArrayList<Move> move2 = new ArrayList<Move>();
+
+        while (!move1.equals(move2)) {
+            move2 = getSuccessfulMoves(move1);
+            move1 = getSuccessfulMoves(move2);
+            Collections.sort(move2);
+            Collections.sort(moves);
+        }
+    }
+
+    private ArrayList<Move> getSuccessfulMoves(ArrayList<Move> moves) {
         for (Move move : moves) {
-            if (!move.getMovingTo().isOccupied()) {
-                move.setSucceeded(true);
-            } else if (move.getMovingTo().getOrder() instanceof Attack) {
-                if (move.getMovingTo().getOrder().succeeds()) {
+            if (!move.isBounced()) {
+                if (!move.getMovingTo().isOccupied()) {
                     move.setSucceeded(true);
-                }
-            } else if (move.getMovingTo().getOrder() instanceof Move) {
-                if (((Move) move.getMovingTo().getOrder()).isMoveLooped()) {
-                    if (moveLoopIsValid(move)) {
+                } else if (move.getMovingTo().getOrder() instanceof Attack) {
+                    if (move.getMovingTo().getOrder().succeeds()) {
+                        move.setSucceeded(true);
+                    }
+                } else if (move.getMovingTo().getOrder() instanceof Move) {
+                    if (((Move) move.getMovingTo().getOrder()).isMoveLooped()) {
+                        if (moveLoopIsValid(move)) {
+                            move.setSucceeded(true);
+                        }
+                    } else if (move.getMovingTo().getOrder().succeeds()) {
                         move.setSucceeded(true);
                     }
                 }
             }
         }
+
+        ArrayList<Move> stillNeedVerification = new ArrayList<Move>();
+
+        for (Move move : moves) {
+            if (!move.succeeds()) {
+                stillNeedVerification.add(move);
+            }
+        }
+        return stillNeedVerification;
     }
 
     public boolean moveLoopIsValid(Move move) {
@@ -316,7 +350,7 @@ public class OrderResolver extends ArrayList<Order> {
         }
     }
 
-    private void labelAttackedForMove() {
+    private void moveUnits() {
         ArrayList<Country> movesFirst = new ArrayList<Country>();
         ArrayList<Country> movesSecond = new ArrayList<Country>();
         ArrayList<Country> movesThird = new ArrayList<Country>();
@@ -339,7 +373,7 @@ public class OrderResolver extends ArrayList<Order> {
         }
 
         updateGraphics(movesFirst);
-        sort(movesSecond);
+        moveMoves(movesSecond);
         updateGraphics(movesSecond);
         for (Country c : movesThird) {
             Map map = c.getMap();
@@ -353,7 +387,6 @@ public class OrderResolver extends ArrayList<Order> {
                     Map map = c.getMap();
                     map.relocatePrompt(c);
                     while (map.isStillRelocating()){
-
                     }
                 }
             }
@@ -363,30 +396,39 @@ public class OrderResolver extends ArrayList<Order> {
             OrderResolver resolver = new OrderResolver(movesThird);
             resolver.resolve();
         }
-    }
-
-    private ArrayList<Country> sort(ArrayList<Country> movesSecond) {
 
         ArrayList<Country> temp = new ArrayList<Country>();
+        updateOrders();
+
+        for (Order o : orders) {
+            if (o instanceof Attack) {
+                if (o.succeeds()) {
+                    temp.add(o.orderFrom());
+                }
+            }
+        }
+
+        updateGraphics(temp);
+    }
+
+    private void moveMoves(ArrayList<Country> movesSecond) {
+        ArrayList<Country> temp;
         do {
             temp = new ArrayList<Country>();
-            for (int i = 0; i < movesSecond.size(); i++) {
-                Country c = movesSecond.get(i);
+            for (Country c : movesSecond) {
                 if (c.getOrder() instanceof Move) {
                     Move move = (Move) c.getOrder();
-                    if (move.getMovingTo().isOccupied()) {
-                        System.out.println("Adding");
-                        temp.add(0, c);
-                        movesSecond.remove(c);
-                        i--;
+                    if (!move.getMovingTo().isOccupied()) {
+                        temp.add(c);
                     }
                 }
             }
-            updateGraphics(temp);
-            System.out.println(temp.size());
-        } while (temp.size() != 0);
+            for (Country c : temp) {
+                movesSecond.remove(c);
+            }
 
-        return null;
+            updateGraphics(temp);
+        } while (temp.size() > 0);
     }
 
     @Deprecated //This is only intended for bug testing

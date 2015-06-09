@@ -3,13 +3,17 @@ package command.order;
 import map.Country;
 
 public class Order implements Comparable{
-    int defensePower = 1;
+    int defensePower;
     Country orderFrom;
-    Boolean valid = null;
-    boolean succeeded = false;
-    boolean isBounced = false;
+    Boolean valid;
+    boolean succeeded;
+    boolean isBounced;
 
     public Order(Country orderFrom) {
+        defensePower = 1;
+        valid = null;
+        succeeded = false;
+        isBounced = false;
         this.orderFrom = orderFrom;
     }
 
@@ -85,6 +89,13 @@ public class Order implements Comparable{
     @Override
     public String toString() {
         return orderFrom + " holds";
+    }
+
+    public void reset() {
+        valid = null;
+        succeeded = false;
+        isBounced = false;
+        defensePower = 1;
     }
 
 }

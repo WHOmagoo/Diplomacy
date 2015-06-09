@@ -3,12 +3,13 @@ package command.order;
 import map.Country;
 
 public class Move extends Order{
-    private volatile Country movingTo;
-    private boolean moveLooped = false;
+    private Country movingTo;
+    private boolean moveLooped;
 
     public Move(Country orderFrom, Country movingTo) {
         super(orderFrom);
         this.movingTo = movingTo;
+        moveLooped = false;
     }
 
     public Move(Country orderFrom) {
@@ -33,5 +34,11 @@ public class Move extends Order{
 
     public void setMoveLooped() {
         moveLooped = true;
+    }
+
+    public void reset() {
+        super.reset();
+        movingTo = null;
+        moveLooped = false;
     }
 }

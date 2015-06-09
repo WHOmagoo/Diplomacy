@@ -9,16 +9,16 @@ import command.order.Move;
 import command.order.Order;
 import constants.RolloverButton;
 import constants.Team;
-
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collections;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class Map extends JLabel {
     ExecuteOrders executeOrders = new ExecuteOrders(this);
-    private volatile ArrayList<Country> countries = new ArrayList<Country>();
+    private ArrayList<Country> countries = new ArrayList<Country>();
     private JLabel text = new JLabel();
     private Country lastCountryClicked;
     private InputBanner banner;
@@ -210,35 +210,90 @@ public class Map extends JLabel {
         RelocateInput relocate = new RelocateInput(0, needMove);
     }*/
 
-    public void moveUnits(ArrayList<Country> countriesToMove) {
+    public void moveUnits(ArrayList<Country> countriesToMove) throws Error {
         for (Country c : countriesToMove) {
+            Country movingTo = null;
             Order order = c.getOrder();
             if (order instanceof Move) {
-                Country movingTo = ((Move) order).getMovingTo();
+                movingTo = ((Move) order).getMovingTo();
                 if (!movingTo.isOccupied()) {
+                    slideTileTo(c, movingTo);
                     movingTo.setOccupiedBy(c.getTeam(), c.getUnitType());
-                    c.setOccupiedBy(Team.NULL, UnitType.EMPTY);
-                    c.resetForNewTurn();
                 } else {
                     throw new Error("Moving to occupied area " + order);
                 }
             } else if (order instanceof Attack) {
-                Country movingTo = ((Attack) order).getAttacking();
+                movingTo = ((Attack) order).getAttacking();
                 if (!movingTo.isOccupied()) {
+                    slideTileTo(c, movingTo);
                     ((Attack) order).getAttacking().setOccupiedBy(c.getTeam(), c.getUnitType());
-                    c.setOccupiedBy(Team.NULL, UnitType.EMPTY);
-                    c.resetForNewTurn();
                 } else {
                     throw new Error("Moving to occupied area " + order);
                 }
+            } else {
+                throw new Error("Trying to move an unmoveable tile - " + c);
+            }
+
+            movingTo.setOccupiedBy(c.getTeam(), c.getUnitType());
+            c.setOccupiedBy(Team.NULL, UnitType.EMPTY);
+            c.resetForNewTurn(); //TODO Watch out for this
+            movingTo.refreshGraphics();
+        }
+    }
+
+    public void slideTileTo(Country countryToMove, Country movingTo) {
+        double x = countryToMove.getX();
+        double y = countryToMove.getY();
+        while (Math.abs(x - movingTo.getX()) > .5) {
+            try {
+                Thread.sleep(12);
+            } catch (InterruptedException e) {
+            }
+            x += (movingTo.getX() - countryToMove.getX()) / 40.0;
+            y += (movingTo.getY() - countryToMove.getY()) / 40.0;
+            countryToMove.setLocation((int) Math.round(x), (int) Math.round(y));
+        }
+    }
+
+    public void slideMultipleTiles(ArrayList<Country> countriesToMove) throws Error {
+        Country[] countries = (Country[]) countriesToMove.toArray();
+        slideMultipleTiles(countries);
+    }
+
+    public void slideMultipleTiles(Country... countriesToMove) throws Error {
+        Double[] x = new Double[countriesToMove.length];
+        Double[] y = new Double[x.length];
+        Point[] countriesMovingTo = new Point[y.length];
+        for (int i = 0; i < countriesToMove.length; i++) {
+            Country c = countriesToMove[i];
+            if (c.getOrder() instanceof Move) {
+                Move move = (Move) c.getOrder();
+                if (move.isMoveLooped()) {
+                    x[i] = c.getX() + .0;
+                    y[i] = c.getY() + .0;
+                    countriesMovingTo[i] = move.getMovingTo().getLocation();
+                } else throw new Error("You may only move countries that are move looped"
+                        + "Here's what is wrong " + move);
+            } else throw new Error("You may only move countries that are moved\n"
+                    + "Here's what is wrong " + c.getOrder());
+        }
+
+        while (Math.abs(x[0] - countriesMovingTo[0].getX()) > 1) {
+            try {
+                Thread.sleep(12);
+            } catch (InterruptedException e) {
+            }
+            for (int i = 0; i < countriesToMove.length; i++) {
+                x[i] += (countriesMovingTo[i].getX() - countriesToMove[i].getX()) / 40.0;
+                y[i] += (countriesMovingTo[i].getY() - countriesToMove[i].getY()) / 40.0;
+
+                countriesToMove[i].setLocation((int) Math.round(x[i]), (int) Math.round(y[i]));
             }
         }
 
-        updateGraphics();
-    }
-
-    public void moveUnits() {
-        moveUnits(countries);
+        for (Country c : countriesToMove) {
+            c.resetForNewTurn();
+        }
     }
 
     public void removeExecuteOrders() {
@@ -257,9 +312,12 @@ public class Map extends JLabel {
 
     public boolean isStillRelocating() {
         if (banner.getLastInput() instanceof RelocateInput) {
-            return ((RelocateInput) banner.getLastInput()).isStillRelocating();
+            try {
+                return ((RelocateInput) banner.getLastInput()).isStillRelocating();
+            } catch (IndexOutOfBoundsException e) {
+                return false;
+            }
         } else {
-            System.out.println("wrong ;(");
             return false;
         }
     }

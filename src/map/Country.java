@@ -6,20 +6,19 @@ import command.input.OrderInput;
 import command.order.Hold;
 import command.order.Order;
 import constants.Team;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.JButton;
 
 public class Country extends JButton implements ActionListener, Comparable {
     private String name;
-    private volatile Border borders;
+    private Border borders;
     private SecondDegreeBorder secondDegreeBorders;
-    private volatile Team team = Team.NULL;
-    private volatile UnitType unitType = UnitType.EMPTY;
+    private Team team = Team.NULL;
+    private UnitType unitType = UnitType.EMPTY;
     private TileType tileType;
     private Point originalLocation;
     private javax.swing.border.Border border = null;
@@ -269,12 +268,15 @@ public class Country extends JButton implements ActionListener, Comparable {
     }
 
     public void removeOrder() {
-        order = new Order(this);
+        //order.reset();
+        order = null;
+        order = new Hold(this);
     }
 
     public void resetForNewTurn() {
         removeOrder();
         setLocation(originalLocation);
+        refreshGraphics();
     }
 
     public Team getTeam() {
