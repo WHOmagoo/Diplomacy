@@ -226,7 +226,12 @@ public class Map extends JLabel {
                     slideTileTo(c, movingTo);
                     ((Attack) order).getAttacking().setOccupiedBy(c.getTeam(), c.getUnitType());
                 } else {
-                    throw new Error("Moving to occupied area " + order);
+                    if (movingTo instanceof ScoringCountry) {
+                        slideTileTo(c, movingTo);
+                        ((Attack) order).getAttacking().setOccupiedBy(c.getTeam(), c.getUnitType());
+                    } else {
+                        throw new Error("Attack moves to occupied non point scoring area");
+                    }
                 }
             } else {
                 throw new Error("Trying to move an unmoveable tile - " + c);
@@ -234,7 +239,7 @@ public class Map extends JLabel {
 
             movingTo.setOccupiedBy(c.getTeam(), c.getUnitType());
             c.setOccupiedBy(Team.NULL, UnitType.EMPTY);
-            c.resetForNewTurn();
+            c.resetAfterMove();
             movingTo.refreshGraphics();
         }
     }
@@ -316,7 +321,7 @@ public class Map extends JLabel {
             Team cachedTeam = cached.getTeam();
             UnitType cachedUnitType = cached.getUnitType();
             cached.setOccupiedBy(Team.NULL, UnitType.EMPTY);
-            cached.resetForNewTurn();
+            cached.resetAfterMove();
 
             ArrayList<Country> notYetRelocated = new ArrayList<Country>();
             for (int i = 1; i < countriesToMove.length; i++) {
@@ -330,7 +335,7 @@ public class Map extends JLabel {
                     if (!move.getMovingTo().isOccupied()) {
                         move.getMovingTo().setOccupiedBy(orderFrom.getTeam(), orderFrom.getUnitType());
                         orderFrom.setOccupiedBy(Team.NULL, UnitType.EMPTY);
-                        orderFrom.resetForNewTurn();
+                        orderFrom.resetAfterMove();
                         notYetRelocated.remove(orderFrom);
                         break;
                     }

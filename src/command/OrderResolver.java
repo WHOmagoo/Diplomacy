@@ -1,10 +1,14 @@
 package command;
 
+import command.input.AddUnit;
+import command.input.RemoveUnit;
 import command.order.*;
+import constants.Team;
 import java.util.ArrayList;
 import java.util.Collections;
 import map.Country;
 import map.Map;
+import map.ScoringCountry;
 
 public class OrderResolver extends ArrayList<Order> {
     private ArrayList<Order> orders = new ArrayList<Order>();
@@ -59,7 +63,7 @@ public class OrderResolver extends ArrayList<Order> {
 
     private void resetCountries() {
         for (Country c : countries) {
-            c.resetForNewTurn();
+            c.resetOrder();
         }
     }
 
@@ -344,17 +348,36 @@ public class OrderResolver extends ArrayList<Order> {
         ArrayList<Country> movesFirst = new ArrayList<Country>();
         ArrayList<Country> movesSecond = new ArrayList<Country>();
         ArrayList<Country> movesThird = new ArrayList<Country>();
-        ArrayList<Country> movesFourth = new ArrayList<Country>();
-        ArrayList<Country> moveSixth = new ArrayList<Country>();
         ArrayList<Country> movingToAnotherMove = new ArrayList<Country>();
+        ArrayList<Country> movesFifth = new ArrayList<Country>();
+        ArrayList<Country> movesSixth = new ArrayList<Country>();
+        ArrayList<Country> relocating = new ArrayList<Country>();
+        ArrayList<Country> movesEighth = new ArrayList<Country>();
 
         for (Order o : orders) {
             if (o instanceof Attack) {
                 if (o.succeeds()) {
                     if (((Attack) o).getAttacking().isOccupied()) {
-                        movesFourth.add(((Attack) o).getAttacking());
+                        Country countryAttacked = ((Attack) o).getAttacking();
+                        if (countryAttacked instanceof ScoringCountry &&
+                                ((ScoringCountry) countryAttacked).getTeamControls() != o.orderFrom().getTeam()) {
+                            movesFifth.add(o.orderFrom());
+                        } else {
+                            relocating.add(countryAttacked);
+                            movesEighth.add(o.orderFrom());
+                        }
                     } else {
-                        movesFirst.add(o.orderFrom());
+                        if (((Attack) o).getAttacking() instanceof ScoringCountry) {
+                            movesSixth.add(o.orderFrom());
+                            /*if(((ScoringCountry) ((Attack) o).getAttacking()).getTeamControls() != o.orderFrom().getTeam()
+                            && ((ScoringCountry) ((Attack) o).getAttacking()).getTeamControls() != null ) {
+                                movesSixth.add(o.orderFrom());
+                            } else {
+                                movesEighth.add(o.orderFrom());
+                            }*/
+                        } else {
+                            movesFirst.add(o.orderFrom());
+                        }
                     }
                 }
             } else {
@@ -362,8 +385,7 @@ public class OrderResolver extends ArrayList<Order> {
                     if (o.succeeds()) {
                         if (((Move) o).isMoveLooped()) {
                             movesThird.add(o.orderFrom());
-                        } //else if(!((Move) o).getMovingTo().isOccupied()){
-                        else if (((Move) o).getMovingTo().getOrder() instanceof Move) {
+                        } else if (((Move) o).getMovingTo().getOrder() instanceof Move) {
                             movingToAnotherMove.add(o.orderFrom());
                         } else {
                             movesSecond.add(o.orderFrom());
@@ -399,13 +421,47 @@ public class OrderResolver extends ArrayList<Order> {
         }
 
         moveMoves(movingToAnotherMove);
-        for (Country c : movesFourth) {
+
+
+        for (Country c : movesFifth) {
+            Country attacking = ((Attack) c.getOrder()).getAttacking();
+            if (attacking instanceof ScoringCountry) {
+                c.getTeam().markForAddition();
+            }
+        }
+        map.moveUnits(movesFifth);
+        //TODO combine these;
+
+        for (Country c : movesSixth) {
+            Country attacking = ((Attack) c.getOrder()).getAttacking();
+            if (attacking instanceof ScoringCountry) {
+                ((ScoringCountry) attacking).getTeamControls().markForRemove();
+                c.getTeam().markForAddition();
+            }
+        }
+
+        map.moveUnits(movesSixth);
+
+        for (Team team : Team.values()) {
+            if (team != Team.NULL) {
+                for (int i = 0; i < team.getUnitsToRemove() - team.getUnitsToAdd(); i++) {
+                    RemoveUnit remove = new RemoveUnit(map.getBanner(), team);
+                    map.getBanner().setLastVisible(remove);
+                    while (remove.isStillInputting()) {
+                    }
+                }
+            }
+        }
+
+
+        for (Country c : relocating) {
             map.relocatePrompt(c);
             while (map.isStillRelocating()) {
             }
         }
-        while (movesBounce(movesFourth)) {
-            for (Country c : movesFourth) {
+
+        while (movesBounce(relocating)) {
+            for (Country c : relocating) {
                 if(!c.getOrder().succeeds()){
                     map.relocatePrompt(c);
                     while (map.isStillRelocating()){
@@ -414,21 +470,24 @@ public class OrderResolver extends ArrayList<Order> {
             }
         }
 
-        if (movesFourth.size() > 0) {
-            OrderResolver resolver = new OrderResolver(movesFourth);
+        map.updateGraphics();
+
+        if (relocating.size() > 0) {
+            OrderResolver resolver = new OrderResolver(relocating);
             resolver.resolve();
         }
 
+        updateGraphics(movesEighth);
 
-        for (Country c : countries) {
-            if (c.getOrder() instanceof Attack) {
-                if (c.getOrder().succeeds() && ((Attack) c.getOrder()).getAttacking().isOccupied()) {
-                    moveSixth.add(c);
-                    System.out.println("Temp has been added to");
+        for (Team team : Team.values()) {
+            for (int i = 0; i < team.getUnitsToAdd() - team.getUnitsToRemove(); i++) {
+                AddUnit addUnit = new AddUnit(map.getBanner(), team);
+                map.getBanner().setLastVisible(addUnit);
+                while (addUnit.isStillInputting()) {
                 }
             }
+            team.resetAddAndRmove();
         }
-        updateGraphics(moveSixth);
 
     }
 

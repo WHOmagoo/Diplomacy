@@ -27,7 +27,10 @@ public class Submit extends RolloverButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        banner.getCountry().setOrder(banner.getOrder());
+        try {
+            banner.getCountry().setOrder(banner.getOrder());
+        } catch (NullPointerException n) {
+        }
         banner.clearAll();
     }
 }

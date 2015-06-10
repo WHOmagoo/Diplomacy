@@ -136,6 +136,9 @@ public enum Team {
 
     private ImageIcon[] icons;
 
+    private int unitsToAdd = 0;
+    private int unitsToRemove = 0;
+
     Team(ImageIcon[] i) {
         icons = i;
     }
@@ -196,5 +199,26 @@ public enum Team {
         } else {
             return null;
         }
+    }
+
+    public void markForRemove() {
+        unitsToRemove++;
+    }
+
+    public void markForAddition() {
+        unitsToAdd++;
+    }
+
+    public int getUnitsToAdd() {
+        return unitsToAdd;
+    }
+
+    public int getUnitsToRemove() {
+        return unitsToRemove;
+    }
+
+    public void resetAddAndRmove() {
+        unitsToAdd = 0;
+        unitsToRemove = 0;
     }
 }

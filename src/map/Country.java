@@ -171,6 +171,10 @@ public class Country extends JButton implements ActionListener, Comparable {
         if (unitType == UnitType.ARMY && tileType == TileType.Water) {
             throw new IllegalArgumentException("An army is not allowed in the water");
         }
+
+        if (this instanceof ScoringCountry) {
+            ((ScoringCountry) this).setTeamControls(team);
+        }
         setEnabled(true);
         this.team = team;
         this.unitType = unitType;
@@ -179,7 +183,7 @@ public class Country extends JButton implements ActionListener, Comparable {
     public void calculateCoastal() {
         for (Country c : borders) {
             if (c.getTileType() == TileType.Water && tileType == TileType.Landlocked) {
-                tileType = TileType.Costal;
+                tileType = TileType.Coastal;
                 break;
             }
         }
@@ -273,10 +277,14 @@ public class Country extends JButton implements ActionListener, Comparable {
         setVisible(true);
     }
 
-    public void resetForNewTurn() {
-        order = new Hold(this);
+    public void resetAfterMove() {
+        //order = new Hold(this);
         setLocation(originalLocation);
         refreshGraphics();
+    }
+
+    public void resetOrder() {
+        order = new Hold(this);
     }
 
     public Team getTeam() {
@@ -305,9 +313,9 @@ public class Country extends JButton implements ActionListener, Comparable {
                             }
                             /*if (unitType == UnitType.NAVY
                                     && (possibleMoveTo.getTileType() == TileType.Water
-                                    || possibleMoveTo.getTileType() == TileType.Costal)) {
+                                    || possibleMoveTo.getTileType() == TileType.Coastal)) {
                                 relocateableTo.add(possibleMoveTo);
-                            } else if (possibleMoveTo.getTileType() == TileType.Costal
+                            } else if (possibleMoveTo.getTileType() == TileType.Coastal
                                     || possibleMoveTo.getTileType() == TileType.Landlocked) {
                                 relocateableTo.add(possibleMoveTo);
                             }*/
@@ -325,9 +333,9 @@ public class Country extends JButton implements ActionListener, Comparable {
 
     public boolean isCorrectTypes(Country countryAttacking) {
         if (borders.contains(countryAttacking)) {
-            if (tileType == TileType.Costal) {
+            if (tileType == TileType.Coastal) {
                 if (unitType == UnitType.NAVY) {
-                    if (countryAttacking.getTileType() == TileType.Costal) {
+                    if (countryAttacking.getTileType() == TileType.Coastal) {
                         if (countryAttacking == mapAssociation.getCountry("Edinburgh")
                                 && this == mapAssociation.getCountry("Wales")) {
                             return false;
@@ -342,12 +350,12 @@ public class Country extends JButton implements ActionListener, Comparable {
                     }
                 } else {
                     return countryAttacking.getTileType() == TileType.Landlocked
-                            || countryAttacking.getTileType() == TileType.Costal;
+                            || countryAttacking.getTileType() == TileType.Coastal;
                 }
             } else if (tileType == countryAttacking.getTileType()) {
                 return true;
             } else if (tileType == TileType.Water) {
-                return countryAttacking.getTileType() == TileType.Costal;
+                return countryAttacking.getTileType() == TileType.Coastal;
             } else {
                 return true;
             }

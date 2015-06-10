@@ -91,8 +91,9 @@ public class Input extends JComboBox implements ActionListener, Comparable{
     }
 
     public Order getOrder() {
-        System.out.println("we got the wrong one");
-        return order;
+        throw new NullPointerException("Error wrong one " + this);
+        //System.out.println("we got the wrong one");
+        //return order;
     }
 
     public void setOrder(Order order){
