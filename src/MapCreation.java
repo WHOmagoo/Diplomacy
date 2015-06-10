@@ -446,7 +446,7 @@ public class MapCreation {
         countries.get(74).setOccupiedBy(Team.NULL, UnitType.EMPTY);
         countries.get(75).setOccupiedBy(Team.EGYPT, UnitType.NAVY);
         countries.get(76).setOccupiedBy(Team.NULL, UnitType.EMPTY);
-        countries.get(77).setOccupiedBy(Team.EGYPT, UnitType.NAVY);
+        countries.get(77).setOccupiedBy(Team.EGYPT, UnitType.ARMY);
         countries.get(78).setOccupiedBy(Team.NULL, UnitType.EMPTY);
         countries.get(79).setOccupiedBy(Team.NULL, UnitType.EMPTY);
         countries.get(80).setOccupiedBy(Team.NULL, UnitType.EMPTY);

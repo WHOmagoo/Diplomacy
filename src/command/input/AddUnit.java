@@ -37,18 +37,28 @@ public class AddUnit extends Input implements ActionListener {
             }
         }
 
-        model.setSelectedItem("choose a location to add a unit");
+        if (model.getSize() > 1) {
+            model.setSelectedItem("choose a location to add a unit");
+        }
 
         setModel(model);
         setSize(longestItem(), 25);
+
         addActionListener(this);
+
+        if (model.getSize() == 1) {
+            banner.setLastVisible(this);
+            setSelectedIndex(0);
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         firstAction(banner, this);
         addUnit = new addUnitType(banner, team, (Country) getSelectedItem());
-        lastAction(banner, addUnit);
+        if (addUnit.getModel().getSize() != 1) {
+            lastAction(banner, addUnit);
+        }
     }
 
     public boolean isStillInputting() {

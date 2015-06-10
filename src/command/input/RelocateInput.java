@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import map.Country;
+import map.ScoringCountry;
 
 public class RelocateInput extends Input implements ActionListener {
     Country countryAssociation;
@@ -21,7 +22,13 @@ public class RelocateInput extends Input implements ActionListener {
         DefaultComboBoxModel<Country> model = new DefaultComboBoxModel<Country>();
 
         for (Country moveTo : countryAssociation.getRelocateableNeighbors()) {
-            model.addElement(moveTo);
+            if (moveTo instanceof ScoringCountry) {
+                if (((ScoringCountry) moveTo).getTeamControls() == c.getTeam()) {
+                    model.addElement(moveTo);
+                }
+            } else {
+                model.addElement(moveTo);
+            }
         }
         model.setSelectedItem("choose where to relocate to");
 

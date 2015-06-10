@@ -56,7 +56,9 @@ public class Order implements Comparable{
     }
 
     public void setSucceeded(boolean succeeded) {
-        if (valid) {
+        if (valid == Boolean.TRUE && succeeded) {
+            this.succeeded = succeeded;
+        } else if (valid != Boolean.TRUE && !succeeded) {
             this.succeeded = succeeded;
         } else {
             System.out.println("Invalid set to successful" + this);

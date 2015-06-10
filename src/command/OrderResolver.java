@@ -454,21 +454,23 @@ public class OrderResolver extends ArrayList<Order> {
         }
 
 
-        for (Country c : relocating) {
-            map.relocatePrompt(c);
-            while (map.isStillRelocating()) {
+        /*for (Country c : relocating) {
+            if(c.isOccupied()) {
+                map.relocatePrompt(c);
+                while (map.isStillRelocating()) {
+                }
             }
-        }
+        }*/
 
-        while (movesBounce(relocating)) {
+        do {
             for (Country c : relocating) {
-                if(!c.getOrder().succeeds()){
+                if (!c.getOrder().succeeds() && c.isOccupied()) {
                     map.relocatePrompt(c);
                     while (map.isStillRelocating()){
                     }
                 }
             }
-        }
+        } while (movesBounce(relocating));
 
         map.updateGraphics();
 
@@ -482,7 +484,9 @@ public class OrderResolver extends ArrayList<Order> {
         for (Team team : Team.values()) {
             for (int i = 0; i < team.getUnitsToAdd() - team.getUnitsToRemove(); i++) {
                 AddUnit addUnit = new AddUnit(map.getBanner(), team);
-                map.getBanner().setLastVisible(addUnit);
+                if (addUnit.getModel().getSize() != 1) {
+                    map.getBanner().setLastVisible(addUnit);
+                }
                 while (addUnit.isStillInputting()) {
                 }
             }

@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import map.Country;
+import map.ScoringCountry;
 
 public class MoveInput extends Input implements ActionListener{
     private InputBanner banner = null;
@@ -20,8 +21,14 @@ public class MoveInput extends Input implements ActionListener{
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.setSelectedItem("choose where to move");
 
-        for (Country support : banner.getCountry().getAttackableCountries()) {
-            model.addElement(support);
+        for (Country moveTo : banner.getCountry().getAttackableCountries()) {
+            if (moveTo instanceof ScoringCountry) {
+                if (((ScoringCountry) moveTo).getTeamControls() == banner.getCountry().getTeam()) {
+                    model.addElement(moveTo);
+                }
+            } else {
+                model.addElement(moveTo);
+            }
         }
 
         setModel(model);
