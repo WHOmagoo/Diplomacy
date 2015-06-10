@@ -5,15 +5,16 @@ import command.Info;
 import command.InputBanner;
 import command.input.RelocateInput;
 import command.order.Attack;
+import command.order.Hold;
 import command.order.Move;
 import command.order.Order;
 import constants.RolloverButton;
 import constants.Team;
-
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 public class Map extends JLabel {
     ExecuteOrders executeOrders = new ExecuteOrders(this);
@@ -141,8 +142,12 @@ public class Map extends JLabel {
     @Deprecated //Only inteded for bug testing
     public void printOrders() {
         for (Country c : countries) {
-            if (c.getOrder() != null && c.getOrder().isValid() == Boolean.TRUE) {
-                System.out.println(c.getOrder() + " - " + c.getOrder().succeeds());
+            if (c.getOrder() != null) { //&& c.getOrder().isValid() == Boolean.TRUE) {
+                System.out.print(c.getOrder());
+                if (!(c.getOrder() instanceof Hold)) {
+                    System.out.print(" Succeeded:  " + c.getOrder().succeeds());
+                }
+                System.out.println();
             }
         }
     }
@@ -196,12 +201,6 @@ public class Map extends JLabel {
         }
 
         updateGraphics();
-    }
-
-    public void removeOldOrders() {
-        for (Country c : countries) {
-            c.removeOrder();
-        }
     }
 
 /*    public void relocatePrompts(ArrayList<Country> needMove) {
@@ -264,43 +263,84 @@ public class Map extends JLabel {
     }
 
     public void slideMultipleTiles(ArrayList<Country> countriesToMove) throws Error {
-        Country[] countries = (Country[]) countriesToMove.toArray();
-        slideMultipleTiles(countries);
+        if (countriesToMove.size() > 0) {
+            Object[] objectsToConvert = countriesToMove.toArray();
+            Country[] countries = new Country[objectsToConvert.length];
+
+            for (int i = 0; i < objectsToConvert.length; i++) {
+                countries[i] = (Country) objectsToConvert[i];
+            }
+
+            slideMultipleTiles(countries);
+        }
     }
 
     public void slideMultipleTiles(Country... countriesToMove) throws Error {
-        double[] x = new double[countriesToMove.length];
-        double[] y = new double[x.length];
-        Point[] countriesMovingTo = new Point[y.length];
-        for (int i = 0; i < countriesToMove.length; i++) {
-            Country c = countriesToMove[i];
-            if (c.getOrder() instanceof Move) {
-                Move move = (Move) c.getOrder();
-                if (move.isMoveLooped()) {
-                    x[i] = c.getX() + .0;
-                    y[i] = c.getY() + .0;
-                    countriesMovingTo[i] = move.getMovingTo().getLocation();
-                } else throw new Error("You may only move countries that are move looped"
-                        + "Here's what is wrong " + move);
-            } else throw new Error("You may only move countries that are moved\n"
-                    + "Here's what is wrong " + c.getOrder());
-        }
+        if (countriesToMove.length > 1) {
+            final double constant = 50;
+            int[] originalX = new int[countriesToMove.length];
+            int[] originalY = new int[countriesToMove.length];
+            final float[] x = new float[countriesToMove.length];
+            final float[] y = new float[countriesToMove.length];
 
-        while (Math.abs(x[0] - countriesMovingTo[0].getX()) > 1) {
-            try {
-                Thread.sleep(12);
-            } catch (InterruptedException e) {
-            }
             for (int i = 0; i < countriesToMove.length; i++) {
-                x[i] += (countriesMovingTo[i].getX() - countriesToMove[i].getX()) / 40.0;
-                y[i] += (countriesMovingTo[i].getY() - countriesToMove[i].getY()) / 40.0;
-
-                countriesToMove[i].setLocation((int) Math.round(x[i]), (int) Math.round(y[i]));
+                Country c = countriesToMove[i];
+                if (c.getOrder() instanceof Move) {
+                    Move move = (Move) c.getOrder();
+                    if (move.isMoveLooped()) {
+                        Country countryMovingTo = ((Move) countriesToMove[i].getOrder()).getMovingTo();
+                        originalX[i] = countriesToMove[i].getX();
+                        originalY[i] = countriesToMove[i].getY();
+                        x[i] = (float) ((countryMovingTo.getX() - countriesToMove[i].getX()) / constant);
+                        y[i] = (float) ((countryMovingTo.getY() - countriesToMove[i].getY()) / constant);
+                    } else throw new Error("You may only move countries that are move looped\n"
+                            + "Here's what is wrong " + move);
+                } else throw new Error("You may only move countries that are moved\n"
+                        + "Here's what is wrong " + c.getOrder());
             }
-        }
 
-        for (Country c : countriesToMove) {
-            c.resetForNewTurn();
+            for (int iterations = 0; iterations <= constant; iterations++) {
+                try {
+                    Thread.sleep(12);
+                } catch (InterruptedException e) {
+                }
+                for (int countryMoving = 0; countryMoving < countriesToMove.length; countryMoving++) {
+                    int newX = Math.round(x[countryMoving] * iterations) + originalX[countryMoving];
+                    int newY = Math.round(y[countryMoving] * iterations) + originalY[countryMoving];
+                    countriesToMove[countryMoving].setLocation(newX, newY);
+                }
+            }
+
+            Country cached = countriesToMove[0];
+            Country cachedMovingTo = ((Move) cached.getOrder()).getMovingTo();
+            Team cachedTeam = cached.getTeam();
+            UnitType cachedUnitType = cached.getUnitType();
+            cached.setOccupiedBy(Team.NULL, UnitType.EMPTY);
+            cached.resetForNewTurn();
+
+            ArrayList<Country> notYetRelocated = new ArrayList<Country>();
+            for (int i = 1; i < countriesToMove.length; i++) {
+                notYetRelocated.add(countriesToMove[i]);
+            }
+
+            do {
+                for (Country c : notYetRelocated) {
+                    Move move = (Move) c.getOrder();
+                    Country orderFrom = move.orderFrom();
+                    if (!move.getMovingTo().isOccupied()) {
+                        move.getMovingTo().setOccupiedBy(orderFrom.getTeam(), orderFrom.getUnitType());
+                        orderFrom.setOccupiedBy(Team.NULL, UnitType.EMPTY);
+                        orderFrom.resetForNewTurn();
+                        notYetRelocated.remove(orderFrom);
+                        break;
+                    }
+                }
+
+            } while (notYetRelocated.size() > 0);
+            cachedMovingTo.setOccupiedBy(cachedTeam, cachedUnitType);
+            for (Country c : countriesToMove) {
+                c.refreshGraphics();
+            }
         }
     }
 

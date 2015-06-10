@@ -1,11 +1,10 @@
 package command;
 
 import command.order.*;
-import map.Country;
-import map.Map;
-
 import java.util.ArrayList;
 import java.util.Collections;
+import map.Country;
+import map.Map;
 
 public class OrderResolver extends ArrayList<Order> {
     private ArrayList<Order> orders = new ArrayList<Order>();
@@ -13,7 +12,14 @@ public class OrderResolver extends ArrayList<Order> {
 
     public OrderResolver(ArrayList<Country> countries) {
         this.countries = countries;
-        updateOrders();
+        orders = new ArrayList<Order>();
+        for (Country c : this.countries) {
+            if (c.getOrder() == null) {
+                c.setOrder(new Hold(c));
+            } else if (!(c.getOrder() instanceof Hold)) {
+                orders.add(c.getOrder());
+            }
+        }
     }
 
     public void resolve() {
@@ -33,11 +39,11 @@ public class OrderResolver extends ArrayList<Order> {
             catchAttackLoop();
             catchMoveLoop();
 
-            for (Order order : orders) {
+            /*for (Order order : orders) {
                 if (order.isValid() == null) {
                     throw new Error(order + " was not validated");
                 }
-            }
+            }*/
 
             calculateDefensePowers();
             calculateAttackPowers();
@@ -45,36 +51,15 @@ public class OrderResolver extends ArrayList<Order> {
             identifyMoveBounces();
             failBounced();
             calculateMoves();
+            //printCommands();
             moveUnits();
-            System.out.println("We finished");
+            resetCountries();
         }
     }
 
-    private void finalMove() {
-        ArrayList<Country> temp = new ArrayList<Country>();
-        updateOrders();
-
-        for (Order o : orders) {
-            if (o instanceof Attack) {
-                if (o.succeeds()) {
-                    temp.add(o.orderFrom());
-                }
-            }
-        }
-
-        updateGraphics(temp);
-    }
-
-    private void updateOrders() {
-        orders = new ArrayList<Order>();
+    private void resetCountries() {
         for (Country c : countries) {
-            if (c.getOrder() == null) {
-                c.setOrder(new Hold(c));
-            }
-
-            if (!(c.getOrder() instanceof Hold)) {
-                orders.add(c.getOrder());
-            }
+            c.resetForNewTurn();
         }
     }
 
@@ -83,6 +68,7 @@ public class OrderResolver extends ArrayList<Order> {
         for(Order order : orders){
             if (!(order instanceof Hold)) {
                 if (!isCanceled(order)) {
+                    order.setValid();
                     uncanceledOrders.add(order);
                 }
             }
@@ -99,7 +85,6 @@ public class OrderResolver extends ArrayList<Order> {
                 }
             }
         }
-        order.setValid();
         return false;
     }
 
@@ -182,9 +167,9 @@ public class OrderResolver extends ArrayList<Order> {
 
     private void calculateDefensePowers() {
         for (Order order : orders) {
-            if (order.isValid() == Boolean.TRUE) {
-                if (order instanceof Defend) {
-                    ((Defend) order).increaseDefense();
+            if (order instanceof Defend) {
+                if (((Defend) order).increaseDefense()) {
+                    order.setSucceeded(true);
                 }
             }
         }
@@ -195,6 +180,7 @@ public class OrderResolver extends ArrayList<Order> {
             if (Boolean.TRUE == order.isValid()) {
                 if (order instanceof Support) {
                     if (((Support) order).increaseAttackPower()) {
+                        //TODO translate this to Defends as well
                         order.setSucceeded(true);
                     }
                 }
@@ -205,7 +191,8 @@ public class OrderResolver extends ArrayList<Order> {
         for (Order order : orders) {
             if (order instanceof Attack) {
                 Attack attack = (Attack) order;
-                if (attack.overpowers()) {
+                if (attack.overpowers() && attack.isValid()) {
+                    //TODO i changed here too
                     attack.setSucceeded(true);
                 }
             }
@@ -353,14 +340,19 @@ public class OrderResolver extends ArrayList<Order> {
     }
 
     private void moveUnits() {
+        Map map = orders.get(0).orderFrom().getMap();
         ArrayList<Country> movesFirst = new ArrayList<Country>();
         ArrayList<Country> movesSecond = new ArrayList<Country>();
         ArrayList<Country> movesThird = new ArrayList<Country>();
+        ArrayList<Country> movesFourth = new ArrayList<Country>();
+        ArrayList<Country> moveSixth = new ArrayList<Country>();
+        ArrayList<Country> movingToAnotherMove = new ArrayList<Country>();
+
         for (Order o : orders) {
             if (o instanceof Attack) {
                 if (o.succeeds()) {
                     if (((Attack) o).getAttacking().isOccupied()) {
-                        movesThird.add(((Attack) o).getAttacking());
+                        movesFourth.add(((Attack) o).getAttacking());
                     } else {
                         movesFirst.add(o.orderFrom());
                     }
@@ -368,26 +360,53 @@ public class OrderResolver extends ArrayList<Order> {
             } else {
                 if (o instanceof Move) {
                     if (o.succeeds()) {
-                        movesSecond.add(o.orderFrom());
+                        if (((Move) o).isMoveLooped()) {
+                            movesThird.add(o.orderFrom());
+                        } //else if(!((Move) o).getMovingTo().isOccupied()){
+                        else if (((Move) o).getMovingTo().getOrder() instanceof Move) {
+                            movingToAnotherMove.add(o.orderFrom());
+                        } else {
+                            movesSecond.add(o.orderFrom());
+                        }
                     }
                 }
             }
         }
 
-        updateGraphics(movesFirst);
-        moveMoves(movesSecond);
-        updateGraphics(movesSecond);
-        System.out.println(movesThird);
-        for (Country c : movesThird) {
-            Map map = c.getMap();
+        map.moveUnits(movesFirst);
+        map.moveUnits(movesSecond);
+
+        while (movesThird.size() > 0) {
+            ArrayList<Country> loopedMoves = new ArrayList<Country>();
+            Country original = movesThird.get(0);
+            Country lastAdded = movesThird.get(0);
+
+            while (!loopedMoves.contains(original)) {
+                for (Country c : movesThird) {
+                    if (((Move) c.getOrder()).getMovingTo() == lastAdded) {
+                        loopedMoves.add(c);
+                        lastAdded = c;
+                        break;
+                    }
+                }
+            }
+
+            for (Country country : loopedMoves) {
+                movesThird.remove(country);
+            }
+
+            map.slideMultipleTiles(loopedMoves);
+        }
+
+        moveMoves(movingToAnotherMove);
+        for (Country c : movesFourth) {
             map.relocatePrompt(c);
             while (map.isStillRelocating()) {
             }
         }
-        while(movesBounce(movesThird)){
-            for(Country c : movesThird){
+        while (movesBounce(movesFourth)) {
+            for (Country c : movesFourth) {
                 if(!c.getOrder().succeeds()){
-                    Map map = c.getMap();
                     map.relocatePrompt(c);
                     while (map.isStillRelocating()){
                     }
@@ -395,43 +414,22 @@ public class OrderResolver extends ArrayList<Order> {
             }
         }
 
-        if (movesThird.size() > 0) {
-            OrderResolver resolver = new OrderResolver(movesThird);
+        if (movesFourth.size() > 0) {
+            OrderResolver resolver = new OrderResolver(movesFourth);
             resolver.resolve();
         }
 
-        ArrayList<Country> temp = new ArrayList<Country>();
-        updateOrders();
 
-        for (Order o : orders) {
-            if (o instanceof Attack) {
-                if (o.succeeds()) {
-                    temp.add(o.orderFrom());
+        for (Country c : countries) {
+            if (c.getOrder() instanceof Attack) {
+                if (c.getOrder().succeeds() && ((Attack) c.getOrder()).getAttacking().isOccupied()) {
+                    moveSixth.add(c);
+                    System.out.println("Temp has been added to");
                 }
             }
         }
+        updateGraphics(moveSixth);
 
-        updateGraphics(temp);
-    }
-
-    private void moveMoves(ArrayList<Country> movesSecond) {
-        ArrayList<Country> temp;
-        do {
-            temp = new ArrayList<Country>();
-            for (Country c : movesSecond) {
-                if (c.getOrder() instanceof Move) {
-                    Move move = (Move) c.getOrder();
-                    if (!move.getMovingTo().isOccupied()) {
-                        temp.add(c);
-                    }
-                }
-            }
-            for (Country c : temp) {
-                movesSecond.remove(c);
-            }
-
-            updateGraphics(temp);
-        } while (temp.size() > 0);
     }
 
     @Deprecated //This is only intended for bug testing
@@ -459,6 +457,26 @@ public class OrderResolver extends ArrayList<Order> {
         }
 
         return movesBounce;
+    }
+
+    private void moveMoves(ArrayList<Country> movingToAnotherMove) {
+        ArrayList<Country> temp;
+        do {
+            temp = new ArrayList<Country>();
+            for (Country c : movingToAnotherMove) {
+                if (c.getOrder() instanceof Move) {
+                    Move move = (Move) c.getOrder();
+                    if (!move.getMovingTo().isOccupied()) {
+                        temp.add(c);
+                    }
+                }
+            }
+            for (Country c : temp) {
+                movingToAnotherMove.remove(c);
+            }
+
+            updateGraphics(temp);
+        } while (temp.size() > 0);
     }
 
     public void updateGraphics(ArrayList<Country> countries) {

@@ -22,7 +22,9 @@ public class DefenseInput extends Input implements ActionListener{
         model.setSelectedItem("choose who to " + OrderType.DEFEND);
 
         for (Country support : banner.getCountry().getAttackableCountries()) {
-            model.addElement(support);
+            if(support.isOccupied()) {
+                model.addElement(support);
+            }
         }
 
         setModel(model);

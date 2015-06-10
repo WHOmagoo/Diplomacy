@@ -22,14 +22,14 @@ public class Defend extends Order {
         this.defending = defending;
     }
 
-    public void increaseDefense() throws NullPointerException {
-        try {
+    public boolean increaseDefense() throws NullPointerException {
             if (valid) {
                 defending.getOrder().increaseDefense(this);
+                succeeded = true;
+                return true;
+            } else {
+                return false;
             }
-        } catch (NullPointerException np) {
-            throw new NullPointerException("This order has not yet been validated (" + this + ")");
-        }
     }
 
     public String toString() {

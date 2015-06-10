@@ -38,16 +38,10 @@ public class Order implements Comparable{
     }
 
     void increaseDefense(Defend defenseCommand) {
-        try {
-            if (valid) {
-                if (defenseCommand.getDefending() == orderFrom) {
-                    if (defenseCommand.getDefending().contains(orderFrom)) {
-                        defensePower++;
-                    }
-                }
+        if (defenseCommand.getDefending() == orderFrom) {
+            if (orderFrom.contains(defenseCommand.orderFrom())) {
+                defensePower++;
             }
-        } catch (NullPointerException np) {
-            throw new NullPointerException("This order has not yet been validated (" + this + ")");
         }
     }
 
@@ -62,7 +56,12 @@ public class Order implements Comparable{
     }
 
     public void setSucceeded(boolean succeeded) {
-        this.succeeded = succeeded;
+        if (valid) {
+            this.succeeded = succeeded;
+        } else {
+            System.out.println("Invalid set to successful" + this);
+            throw new Error("Wankers");
+        }
         /*} else {
             //May change this to a println if it is the wrong type.
             throw new NullPointerException("Cannot set this order as successful with false validity.\n"

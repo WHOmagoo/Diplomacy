@@ -199,6 +199,8 @@ public class Country extends JButton implements ActionListener, Comparable {
         setDisabledIcon(getIcon());
         if (team == Team.NULL) {
             setEnabled(false);
+        } else {
+            setEnabled(true);
         }
     }
 
@@ -271,14 +273,8 @@ public class Country extends JButton implements ActionListener, Comparable {
         setVisible(true);
     }
 
-    public void removeOrder() {
-        //order.reset();
-        order = null;
-        order = new Hold(this);
-    }
-
     public void resetForNewTurn() {
-        removeOrder();
+        order = new Hold(this);
         setLocation(originalLocation);
         refreshGraphics();
     }
