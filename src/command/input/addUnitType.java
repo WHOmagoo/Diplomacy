@@ -39,6 +39,7 @@ public class addUnitType extends Input implements ActionListener {
         setModel(model);
         setSize(longestItem(), 25);
         addActionListener(this);
+        banner.setLastVisible(this);
         if (model.getSize() == 1) {
             banner.setLastVisible(this);
             setSelectedIndex(0);

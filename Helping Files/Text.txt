@@ -98,15 +98,17 @@
 /*East Black Sea*/
 
 
-Hugh M. Yes
-Maggie T. Maybe
-Ben M. Yes
-Nick T. Yes
-Dylan M. Yes
-Cyrus W. Yes
-Annie S. No
-Michael H. ?
-Elijah R.Yes
-Sofie B. Yes
-Sean H. Maybe
-Maddie H. Maybe
+Hugh M.     Yes Yes
+Maggie T.   Yes Yes
+Ben M.      Yes No
+Nick T.     Yes Yes
+Dylan M.    Yes No
+Cyrus W.    Yes Yes
+Annie S.    Yes No
+Michael H.  No  No
+Elijah R.   Yes No
+Sofie B.    Yes Yes
+Sean H.     Yes No
+Maddie H.   No  No
+Henry B.    Yes No
+Gina        Yes No

@@ -10,18 +10,20 @@ import command.order.Move;
 import command.order.Order;
 import constants.RolloverButton;
 import constants.Team;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-public class Map extends JLabel {
+public class Map extends JLabel implements Serializable {
     ExecuteOrders executeOrders = new ExecuteOrders(this);
     private ArrayList<Country> countries = new ArrayList<Country>();
-    private JLabel text = new JLabel();
-    private Country lastCountryClicked;
-    private InputBanner banner;
+    transient private JLabel text = new JLabel();
+    transient private Country lastCountryClicked;
+    transient private InputBanner banner;
 
     public Map(ArrayList<Country> countries) {
         this.countries.addAll(countries);
@@ -216,7 +218,6 @@ public class Map extends JLabel {
                 movingTo = ((Move) order).getMovingTo();
                 if (!movingTo.isOccupied()) {
                     slideTileTo(c, movingTo);
-                    movingTo.setOccupiedBy(c.getTeam(), c.getUnitType());
                 } else {
                     throw new Error("Moving to occupied area " + order);
                 }
@@ -224,11 +225,9 @@ public class Map extends JLabel {
                 movingTo = ((Attack) order).getAttacking();
                 if (!movingTo.isOccupied()) {
                     slideTileTo(c, movingTo);
-                    ((Attack) order).getAttacking().setOccupiedBy(c.getTeam(), c.getUnitType());
                 } else {
                     if (movingTo instanceof ScoringCountry) {
                         slideTileTo(c, movingTo);
-                        ((Attack) order).getAttacking().setOccupiedBy(c.getTeam(), c.getUnitType());
                     } else {
                         throw new Error("Attack moves to occupied non point scoring area");
                     }
@@ -236,11 +235,6 @@ public class Map extends JLabel {
             } else {
                 throw new Error("Trying to move an unmoveable tile - " + c);
             }
-
-            movingTo.setOccupiedBy(c.getTeam(), c.getUnitType());
-            c.setOccupiedBy(Team.NULL, UnitType.EMPTY);
-            c.resetAfterMove();
-            movingTo.refreshGraphics();
         }
     }
 
@@ -265,6 +259,11 @@ public class Map extends JLabel {
             y += (movingTo.getY() - countryToMove.getY()) / constant;*/
             //Use this later for an exponential movement formula.
         }
+
+        movingTo.setOccupiedBy(countryToMove.getTeam(), countryToMove.getUnitType());
+        countryToMove.setOccupiedBy(Team.NULL, UnitType.EMPTY);
+        countryToMove.resetAfterMove();
+        movingTo.refreshGraphics();
     }
 
     public void slideMultipleTiles(ArrayList<Country> countriesToMove) throws Error {
@@ -385,5 +384,19 @@ public class Map extends JLabel {
     public void setCountryOccupied(String liverpool, Team britain, UnitType navy) {
         Country c = getCountry(liverpool);
         c.setOccupiedBy(britain, navy);
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.writeObject(countries);
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.readObject();
+    }
+
+    public void refreshTeamValues() {
+        for (Team team : Team.values()) {
+            team.recalculateCountriesControlled(countries);
+        }
     }
 }

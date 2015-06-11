@@ -16,6 +16,7 @@ public class MapCreation {
         map.setMapText(new ImageIcon("files\\Map Text.png"));
         map.updateGraphics();
         map.addAllCountries();
+        map.refreshTeamValues();
         return map;
     }
 

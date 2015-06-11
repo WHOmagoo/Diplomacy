@@ -1,22 +1,35 @@
 import constants.GameFrame;
+import constants.Team;
 import java.io.*;
 import map.Map;
 
-public class Test {
-    public static void main(String[] args) {
+public class Main {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         GameFrame frame = new GameFrame();
         Map map = MapCreation.createMap();
-        //map.setSomeOccupied();
+        for (Team team : Team.values()) {
+            team.refreshUnitTotal(map.getCountries());
+            //System.out.println(team + " " + team.getUnitsToAdd());
+        }
+        //writeMap(map);
+//        Map map = readMap();
+
+/*        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File("Save files\\test.dat")));
+        out.writeObject(new Attack(map.getCountry("Finland"), map.getCountry("Leningrad")));
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream(new File("Save files\\test.dat")));
+        System.out.println(in.readObject());*/
+
+//        map.getCountry("Finland").setOrder(new Attack(map.getCountry("Finland"), map.getCountry("Leningrad")));
+//        map.setSomeOccupied();
         //map.clearAll();
 
-                frame.addComponentCentered(map);
+        frame.addComponentCentered(map);
         frame.setVisible(true);
     }
 
-    public static Map writeMap() {
+    public static Map writeMap(Map map) {
         try {
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File("..\\Save files\\test.dat")));
-            Map map = MapCreation.createMap();
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(new File("Save files\\test.dat")));
             try {
                 out.writeObject(map);
                 out.close();
@@ -39,7 +52,7 @@ public class Test {
 
     public static Map readMap() {
         try {
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream("..\\Save files\\test.dat"));
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("Save files\\test.dat"));
             try {
                 Map map = (Map) in.readObject();
                 in.close();
@@ -57,9 +70,5 @@ public class Test {
 
         return null;
 
-    }
-
-    public static Map moip() {
-        return null;
     }
 }

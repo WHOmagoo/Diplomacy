@@ -348,48 +348,33 @@ public class OrderResolver extends ArrayList<Order> {
         ArrayList<Country> movesFirst = new ArrayList<Country>();
         ArrayList<Country> movesSecond = new ArrayList<Country>();
         ArrayList<Country> movesThird = new ArrayList<Country>();
-        ArrayList<Country> movingToAnotherMove = new ArrayList<Country>();
+        ArrayList<Country> movesFourth = new ArrayList<Country>();
         ArrayList<Country> movesFifth = new ArrayList<Country>();
         ArrayList<Country> movesSixth = new ArrayList<Country>();
-        ArrayList<Country> relocating = new ArrayList<Country>();
-        ArrayList<Country> movesEighth = new ArrayList<Country>();
+        ArrayList<Country> movesSeventh = new ArrayList<Country>();
 
         for (Order o : orders) {
-            if (o instanceof Attack) {
-                if (o.succeeds()) {
-                    if (((Attack) o).getAttacking().isOccupied()) {
-                        Country countryAttacked = ((Attack) o).getAttacking();
-                        if (countryAttacked instanceof ScoringCountry &&
-                                ((ScoringCountry) countryAttacked).getTeamControls() != o.orderFrom().getTeam()) {
-                            movesFifth.add(o.orderFrom());
-                        } else {
-                            relocating.add(countryAttacked);
-                            movesEighth.add(o.orderFrom());
-                        }
+            if (o.succeeds()) {
+                if (o instanceof Attack) {
+                    if (((Attack) o).getAttacking() instanceof ScoringCountry) {
+                        movesFirst.add(o.orderFrom());
                     } else {
-                        if (((Attack) o).getAttacking() instanceof ScoringCountry) {
-                            movesSixth.add(o.orderFrom());
-                            /*if(((ScoringCountry) ((Attack) o).getAttacking()).getTeamControls() != o.orderFrom().getTeam()
-                            && ((ScoringCountry) ((Attack) o).getAttacking()).getTeamControls() != null ) {
-                                movesSixth.add(o.orderFrom());
-                            } else {
-                                movesEighth.add(o.orderFrom());
-                            }*/
-                        } else {
-                            movesFirst.add(o.orderFrom());
-                        }
+                        movesFifth.add(((Attack) o).getAttacking());
+                        movesSixth.add(o.orderFrom());
                     }
-                }
-            } else {
-                if (o instanceof Move) {
-                    if (o.succeeds()) {
-                        if (((Move) o).isMoveLooped()) {
-                            movesThird.add(o.orderFrom());
-                        } else if (((Move) o).getMovingTo().getOrder() instanceof Move) {
-                            movingToAnotherMove.add(o.orderFrom());
-                        } else {
+                } else if (o instanceof Move) {
+                    if (!((Move) o).getMovingTo().isOccupied()) {
+                        movesSecond.add(o.orderFrom());
+                    } else if ((((Move) o).getMovingTo().getOrder() instanceof Attack)) {
+                        if (((Attack) ((Move) o).getMovingTo().getOrder()).getAttacking() instanceof ScoringCountry) {
                             movesSecond.add(o.orderFrom());
+                        } else /*Moving to Attack on Not Scoring Country*/ {
+                            movesSeventh.add(o.orderFrom());
                         }
+                    } else if (((Move) o).isMoveLooped()) {
+                        movesThird.add(o.orderFrom());
+                    } else if (((Move) o).getMovingTo().getOrder() instanceof Move) {
+                        movesFourth.add(o.orderFrom());
                     }
                 }
             }
@@ -397,14 +382,53 @@ public class OrderResolver extends ArrayList<Order> {
 
         map.moveUnits(movesFirst);
         map.moveUnits(movesSecond);
+        this.moveLoopedUnits(movesThird);
+        this.moveMovingToMove(movesFourth);
+        this.relocateUnits(movesFifth);
+        map.moveUnits(movesSixth);
+        map.moveUnits(movesSeventh);
 
-        while (movesThird.size() > 0) {
+        refreshTeamScores();
+
+        for (Team team : Team.values()) {
+            if (team != Team.NULL) {
+                for (int i = 0; i < team.getUnitsToRemove(); i++) {
+                    RemoveUnit remove = new RemoveUnit(map.getBanner(), team);
+                    //map.getBanner().setLastVisible(remove);
+                    while (remove.isStillInputting()) {
+                    }
+                }
+            }
+        }
+
+        for (Team team : Team.values()) {
+            if (team != Team.NULL) {
+                for (int i = 0; i < team.getUnitsToAdd(); i++) {
+                    AddUnit add = new AddUnit(map.getBanner(), team);
+                    while (add.isStillInputting()) {
+                    }
+                }
+                team.resetAddAndRmove();
+            }
+        }
+    }
+
+    private void refreshTeamScores() {
+        for (Team team : Team.values()) {
+            team.recalculateCountriesControlled(countries);
+            team.refreshUnitTotal(countries);
+        }
+    }
+
+    private void moveLoopedUnits(ArrayList<Country> loopedCountries) {
+        while (loopedCountries.size() > 0) {
+            Map map = loopedCountries.get(0).getMap();
             ArrayList<Country> loopedMoves = new ArrayList<Country>();
-            Country original = movesThird.get(0);
-            Country lastAdded = movesThird.get(0);
+            Country original = loopedCountries.get(0);
+            Country lastAdded = loopedCountries.get(0);
 
             while (!loopedMoves.contains(original)) {
-                for (Country c : movesThird) {
+                for (Country c : loopedCountries) {
                     if (((Move) c.getOrder()).getMovingTo() == lastAdded) {
                         loopedMoves.add(c);
                         lastAdded = c;
@@ -414,85 +438,33 @@ public class OrderResolver extends ArrayList<Order> {
             }
 
             for (Country country : loopedMoves) {
-                movesThird.remove(country);
+                loopedCountries.remove(country);
             }
 
             map.slideMultipleTiles(loopedMoves);
         }
+    }
 
-        moveMoves(movingToAnotherMove);
+    private void relocateUnits(ArrayList<Country> unitsToRelocate) {
+        final ArrayList<Country> allUnitsToRelocate = unitsToRelocate;
 
-
-        for (Country c : movesFifth) {
-            Country attacking = ((Attack) c.getOrder()).getAttacking();
-            if (attacking instanceof ScoringCountry) {
-                c.getTeam().markForAddition();
+        while (unitsToRelocate.size() > 0) {
+            for (Country c : unitsToRelocate) {
+                if (c.isOccupied()) {
+                    c.getMap().relocatePrompt(c);
+                    while (c.getMap().isStillRelocating()) {
+                    }
+                }
             }
-        }
-        map.moveUnits(movesFifth);
-        //TODO combine these;
-
-        for (Country c : movesSixth) {
-            Country attacking = ((Attack) c.getOrder()).getAttacking();
-            if (attacking instanceof ScoringCountry) {
-                ((ScoringCountry) attacking).getTeamControls().markForRemove();
-                c.getTeam().markForAddition();
-            }
-        }
-
-        map.moveUnits(movesSixth);
-
-        for (Team team : Team.values()) {
-            if (team != Team.NULL) {
-                for (int i = 0; i < team.getUnitsToRemove() - team.getUnitsToAdd(); i++) {
-                    RemoveUnit remove = new RemoveUnit(map.getBanner(), team);
-                    map.getBanner().setLastVisible(remove);
-                    while (remove.isStillInputting()) {
+            unitsToRelocate = wasMoveBounced(unitsToRelocate);
+            for (Country c : allUnitsToRelocate) {
+                if (!unitsToRelocate.contains(c)) {
+                    if (c.getOrder() instanceof Move) {
+                        c.getMap().slideTileTo(c, ((Move) c.getOrder()).getMovingTo());
                     }
                 }
             }
         }
-
-
-        /*for (Country c : relocating) {
-            if(c.isOccupied()) {
-                map.relocatePrompt(c);
-                while (map.isStillRelocating()) {
-                }
-            }
-        }*/
-
-        do {
-            for (Country c : relocating) {
-                if (!c.getOrder().succeeds() && c.isOccupied()) {
-                    map.relocatePrompt(c);
-                    while (map.isStillRelocating()){
-                    }
-                }
-            }
-        } while (movesBounce(relocating));
-
-        map.updateGraphics();
-
-        if (relocating.size() > 0) {
-            OrderResolver resolver = new OrderResolver(relocating);
-            resolver.resolve();
-        }
-
-        updateGraphics(movesEighth);
-
-        for (Team team : Team.values()) {
-            for (int i = 0; i < team.getUnitsToAdd() - team.getUnitsToRemove(); i++) {
-                AddUnit addUnit = new AddUnit(map.getBanner(), team);
-                if (addUnit.getModel().getSize() != 1) {
-                    map.getBanner().setLastVisible(addUnit);
-                }
-                while (addUnit.isStillInputting()) {
-                }
-            }
-            team.resetAddAndRmove();
-        }
-
     }
 
     @Deprecated //This is only intended for bug testing
@@ -504,25 +476,26 @@ public class OrderResolver extends ArrayList<Order> {
         }
     }
 
-    public boolean movesBounce(ArrayList<Country> countriesToRelocate) {
-        boolean movesBounce = false;
+    public ArrayList<Country> wasMoveBounced(ArrayList<Country> countriesToRelocate) {
+        ArrayList<Country> moveWasBounced = new ArrayList<Country>();
         for (Country c : countriesToRelocate) {
-            for (Country c2 : countriesToRelocate) {
-                if (c != c2) {
-                    if (c.getOrder() instanceof Move && c2.getOrder() instanceof Move) {
-                        if (((Move) c.getOrder()).getMovingTo() == ((Move) c2.getOrder()).getMovingTo()) {
-                            c.getOrder().setSucceeded(false);
-                            movesBounce = true;
+            if (c.isOccupied()) {
+                for (Country c2 : countriesToRelocate) {
+                    if (c != c2) {
+                        if (c.getOrder() instanceof Move && c2.getOrder() instanceof Move) {
+                            if (((Move) c.getOrder()).getMovingTo() == ((Move) c2.getOrder()).getMovingTo()) {
+                                moveWasBounced.add(c);
+                            }
                         }
                     }
                 }
             }
         }
+        return moveWasBounced;
 
-        return movesBounce;
     }
 
-    private void moveMoves(ArrayList<Country> movingToAnotherMove) {
+    private void moveMovingToMove(ArrayList<Country> movingToAnotherMove) {
         ArrayList<Country> temp;
         do {
             temp = new ArrayList<Country>();

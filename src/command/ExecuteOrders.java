@@ -12,7 +12,7 @@ import map.Country;
 import map.Map;
 
 public class ExecuteOrders extends RolloverButton implements ActionListener, Runnable {
-    Thread ted = new Thread(this);
+    transient Thread ted = new Thread(this);
     private Map map;
 
     public ExecuteOrders(Map map) {
@@ -42,9 +42,17 @@ public class ExecuteOrders extends RolloverButton implements ActionListener, Run
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(!ted.isAlive()) {
+        try {
+            if (!ted.isAlive()) {
+                ted = new Thread(this);
+                ted.start();
+            }
+        } catch (NullPointerException n) {
             ted = new Thread(this);
-            ted.start();
+            if (!ted.isAlive()) {
+                ted = new Thread(this);
+                ted.start();
+            }
         }
     }
 

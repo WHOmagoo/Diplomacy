@@ -21,8 +21,6 @@ public class RemoveUnit extends Input implements ActionListener {
         super(banner);
         this.banner = banner;
         country = banner.getCountry();
-        Info teamRemove = new Info(teamToRemoveTile.toString());
-        banner.add(teamRemove);
 
         DefaultComboBoxModel<Country> model = new DefaultComboBoxModel<Country>();
         for (Country c : banner.getMap().getCountries()) {
@@ -33,9 +31,21 @@ public class RemoveUnit extends Input implements ActionListener {
 
         model.setSelectedItem("choose a unit to remove");
 
+        String infoText = teamToRemoveTile.toString();
+        if (model.getSize() == 1) {
+            infoText += " choose a unit to remove";
+        }
+
+        Info teamRemove = new Info(infoText);
+        banner.add(teamRemove);
+
         setModel(model);
         setSize(longestItem(), 25);
         addActionListener(this);
+        banner.setLastVisible(this);
+        if (model.getSize() == 1) {
+            setSelectedIndex(0);
+        }
     }
 
     @Override
@@ -47,6 +57,7 @@ public class RemoveUnit extends Input implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 isStillInputting = false;
                 ((Country) getSelectedItem()).setOccupiedBy(Team.NULL, UnitType.EMPTY);
+                ((Country) getSelectedItem()).refreshGraphics();
             }
         });
         lastAction(banner, submit);

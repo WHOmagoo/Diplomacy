@@ -23,8 +23,6 @@ public class AddUnit extends Input implements ActionListener {
         this.banner = banner;
         this.team = team;
         country = banner.getCountry();
-        Info teamAdd = new Info(team.toString());
-        banner.add(teamAdd);
 
         DefaultComboBoxModel<Country> model = new DefaultComboBoxModel<Country>();
         for (Country c : banner.getMap().getCountries()) {
@@ -37,6 +35,13 @@ public class AddUnit extends Input implements ActionListener {
             }
         }
 
+        String infoText = team.toString();
+        if (model.getSize() == 1) {
+            infoText += "choose where to add unit";
+        }
+        Info teamAdd = new Info(infoText);
+        banner.add(teamAdd);
+
         if (model.getSize() > 1) {
             model.setSelectedItem("choose a location to add a unit");
         }
@@ -45,10 +50,10 @@ public class AddUnit extends Input implements ActionListener {
         setSize(longestItem(), 25);
 
         addActionListener(this);
+        banner.setLastVisible(this);
 
         if (model.getSize() == 1) {
-            banner.setLastVisible(this);
-            setSelectedIndex(0);
+            setSelectedItem(model.getElementAt(0));
         }
     }
 
@@ -56,9 +61,6 @@ public class AddUnit extends Input implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         firstAction(banner, this);
         addUnit = new addUnitType(banner, team, (Country) getSelectedItem());
-        if (addUnit.getModel().getSize() != 1) {
-            lastAction(banner, addUnit);
-        }
     }
 
     public boolean isStillInputting() {

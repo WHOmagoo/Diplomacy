@@ -9,26 +9,30 @@ import constants.Team;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.JButton;
+import javax.swing.border.EmptyBorder;
 
 public class Country extends JButton implements ActionListener, Comparable {
+
+    public static final long serialVersionUID = 8139L;
     private String name;
     private Border borders;
     private SecondDegreeBorder secondDegreeBorders;
-    private Team team = Team.NULL;
+    private volatile Team team = Team.NULL;
     private UnitType unitType = UnitType.EMPTY;
     private TileType tileType;
     private Point originalLocation;
-    private javax.swing.border.Border border = null;
+    //private javax.swing.border.Border border = new EmptyBorder(0,0,0,0);
     private Map mapAssociation;
-    private Order order = new Hold(this);
+    private transient Order order = new Hold(this);
 
     Country() {
         setSize(40, 40);
         setOpaque(true);
-        setBorder(border);
+        setBorder(new EmptyBorder(0, 0, 0, 0));
         setContentAreaFilled(false);
         addActionListener(this);
     }
@@ -113,9 +117,9 @@ public class Country extends JButton implements ActionListener, Comparable {
         return temp;
     }
 
-    public javax.swing.border.Border getBorder() {
+    /*public javax.swing.border.Border getBorder() {
         return border;
-    }
+    }*///TODO fix this
 
     public SecondDegreeBorder getSecondDegreeBorders() {
         return secondDegreeBorders;
@@ -172,10 +176,14 @@ public class Country extends JButton implements ActionListener, Comparable {
             throw new IllegalArgumentException("An army is not allowed in the water");
         }
 
-        if (this instanceof ScoringCountry) {
-            ((ScoringCountry) this).setTeamControls(team);
+        if (team != Team.NULL) {
+            if (this instanceof ScoringCountry) {
+                ((ScoringCountry) this).setTeamControls(team);
+            }
+            setEnabled(true);
+        } else {
+            setEnabled(false);
         }
-        setEnabled(true);
         this.team = team;
         this.unitType = unitType;
     }
@@ -278,7 +286,6 @@ public class Country extends JButton implements ActionListener, Comparable {
     }
 
     public void resetAfterMove() {
-        //order = new Hold(this);
         setLocation(originalLocation);
         refreshGraphics();
     }
@@ -374,5 +381,27 @@ public class Country extends JButton implements ActionListener, Comparable {
         }
 
         return false;
+    }
+
+    /*private void writeObject(java.io.ObjectOutputStream out) throws IOException{
+
+    }
+    private void readObject(java.io.ObjectInputStream in)throws IOException, ClassNotFoundException {
+
+    }
+    private void readObjectNoData()throws ObjectStreamException {
+
+    }*/
+
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.writeObject(name);
+        out.writeObject(team);
+        out.writeObject(unitType);
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        name = (String) in.readObject();
+        team = (Team) in.readObject();
+        unitType = (UnitType) in.readObject();
     }
 }

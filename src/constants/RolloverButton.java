@@ -4,8 +4,8 @@ import java.util.Timer;
 import javax.swing.JButton;
 
 public class RolloverButton extends JButton {
-    Timer timer = new Timer();
-    private boolean isAdded = false;
+    transient Timer timer = new Timer();
+    transient private boolean isAdded = false;
 
     public RolloverButton(String text) {
         super(text);

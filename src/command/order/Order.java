@@ -1,8 +1,11 @@
 package command.order;
 
+import java.io.IOException;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import map.Country;
 
-public class Order implements Comparable{
+public class Order implements Comparable, Serializable {
     int defensePower;
     Country orderFrom;
     Boolean valid;
@@ -99,4 +102,15 @@ public class Order implements Comparable{
         defensePower = 1;
     }
 
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.writeObject(orderFrom);
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        orderFrom = (Country) in.readObject();
+    }
+
+    private void readObjectNoData() throws ObjectStreamException {
+
+    }
 }

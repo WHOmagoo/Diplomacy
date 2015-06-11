@@ -1,5 +1,6 @@
 package command.order;
 
+import java.io.IOException;
 import map.Country;
 
 public class Attack extends Order {
@@ -65,5 +66,15 @@ public class Attack extends Order {
 
     public void setAttackLooped(Boolean aBoolean) {
         isAttackLooped = aBoolean;
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.writeObject(orderFrom);
+        out.writeObject(attacking);
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        orderFrom = (Country) in.readObject();
+        attacking = (Country) in.readObject();
     }
 }

@@ -1,6 +1,9 @@
 package constants;
 
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import map.Country;
+import map.ScoringCountry;
 import map.UnitType;
 
 public enum Team {
@@ -138,6 +141,7 @@ public enum Team {
 
     private int unitsToAdd = 0;
     private int unitsToRemove = 0;
+    private int countriesCountrolled = 0;
 
     Team(ImageIcon[] i) {
         icons = i;
@@ -220,5 +224,38 @@ public enum Team {
     public void resetAddAndRmove() {
         unitsToAdd = 0;
         unitsToRemove = 0;
+    }
+
+    public void refreshUnitTotal(ArrayList<Country> countries) {
+        int unitsControlled = 0;
+        for (Country c : countries) {
+            if (c.getTeam() == this) {
+                unitsControlled++;
+            }
+        }
+
+        if (countriesCountrolled - unitsControlled > 0) {
+            unitsToAdd = countriesCountrolled - unitsControlled;
+            unitsToRemove = 0;
+        } else if (unitsControlled - countriesCountrolled > 0) {
+            unitsToAdd = 0;
+            unitsToRemove = unitsControlled - countriesCountrolled;
+        } else {
+            unitsToAdd = 0;
+            unitsToRemove = 0;
+        }
+    }
+
+    public void recalculateCountriesControlled(ArrayList<Country> countries) {
+        int countriesControlled = 0;
+        for (Country c : countries) {
+            if (c instanceof ScoringCountry) {
+                if (((ScoringCountry) c).getTeamControls() == this) {
+                    countriesControlled++;
+                }
+            }
+        }
+
+        this.countriesCountrolled = countriesControlled;
     }
 }
