@@ -1,11 +1,14 @@
 package command;
 
+import command.order.Order;
+import command.order.OrderContainer;
 import constants.ButtonRollover;
 import constants.RolloverButton;
 import constants.Scheme;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Timer;
 import javax.swing.BorderFactory;
 import map.Country;
@@ -42,33 +45,30 @@ public class ExecuteOrders extends RolloverButton implements ActionListener, Run
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
-            if (!ted.isAlive()) {
-                ted = new Thread(this);
-                ted.start();
-            }
-        } catch (NullPointerException n) {
-            ted = new Thread(this);
-            if (!ted.isAlive()) {
-                ted = new Thread(this);
-                ted.start();
-            }
-        }
+        map.getBanner().clearAll();
+        ArrayList orders = new ArrayList<>();
+        ted = new Thread(this);
+        ted.start();
     }
 
     @Override
     public void run() {
+        ArrayList<Order> orders = new ArrayList<Order>();
         for (Country c : map.getCountries()) {
             c.setEnabled(false);
+            orders.add(c.getOrder());
         }
 
-        OrderResolver resolver = new OrderResolver(map.getCountries());
-        resolver.resolve();
+        map.sendOrders(new OrderContainer(orders));
+
+        /*OrderResolver resolver = new OrderResolver(map.getCountries());
+        resolver.resolve();*/
 
         for (Country c : map.getCountries()) {
             if (c.isOccupied()) {
                 c.setEnabled(true);
             }
         }
+        System.out.println("Orders Resolved");
     }
 }

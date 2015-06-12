@@ -43,11 +43,12 @@ public class OrderResolver extends ArrayList<Order> {
             catchAttackLoop();
             catchMoveLoop();
 
-            /*for (Order order : orders) {
+            for (Order order : orders) {
                 if (order.isValid() == null) {
-                    throw new Error(order + " was not validated");
+                    System.out.println(order + " was not validated");
+//                  throw new Error(order + " was not validated");
                 }
-            }*/
+            }
 
             calculateDefensePowers();
             calculateAttackPowers();
@@ -55,9 +56,9 @@ public class OrderResolver extends ArrayList<Order> {
             identifyMoveBounces();
             failBounced();
             calculateMoves();
-            //printCommands();
             moveUnits();
             resetCountries();
+            printCommands();
         }
     }
 
@@ -84,7 +85,7 @@ public class OrderResolver extends ArrayList<Order> {
         for(Order o : orders){
             if(o instanceof Attack){
                 Attack attack = (Attack) o;
-                if (attack.getAttacking() == order.orderFrom()) {
+                if (attack.getAttacking() == order.orderFrom() && attack.isValid() != Boolean.FALSE) {
                         return true;
                 }
             }
@@ -93,7 +94,7 @@ public class OrderResolver extends ArrayList<Order> {
     }
 
     private ArrayList<Order> cancelSomeOrders(ArrayList<Order> executableOrders) throws Error {
-        ArrayList<Order> invalidOrders = new ArrayList<Order>();
+        ArrayList<Order> invalidOrders = new ArrayList<>();
         for (Order order : executableOrders) {
             if (order instanceof Attack) {
                 if (Boolean.TRUE == order.isValid()) {
@@ -113,7 +114,6 @@ public class OrderResolver extends ArrayList<Order> {
                 invalidOrders.add(order);
             }
         }
-
         return invalidOrders;
     }
 
@@ -184,7 +184,6 @@ public class OrderResolver extends ArrayList<Order> {
             if (Boolean.TRUE == order.isValid()) {
                 if (order instanceof Support) {
                     if (((Support) order).increaseAttackPower()) {
-                        //TODO translate this to Defends as well
                         order.setSucceeded(true);
                     }
                 }
@@ -195,8 +194,7 @@ public class OrderResolver extends ArrayList<Order> {
         for (Order order : orders) {
             if (order instanceof Attack) {
                 Attack attack = (Attack) order;
-                if (attack.overpowers() && attack.isValid()) {
-                    //TODO i changed here too
+                if (attack.overpowers() && attack.isValid() == Boolean.TRUE) {
                     attack.setSucceeded(true);
                 }
             }

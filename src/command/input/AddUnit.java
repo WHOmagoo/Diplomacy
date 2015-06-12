@@ -37,15 +37,12 @@ public class AddUnit extends Input implements ActionListener {
 
         String infoText = team.toString();
         if (model.getSize() == 1) {
-            infoText += "choose where to add unit";
+            infoText += " choose where to add unit";
         }
         Info teamAdd = new Info(infoText);
         banner.add(teamAdd);
 
-        if (model.getSize() > 1) {
-            model.setSelectedItem("choose a location to add a unit");
-        }
-
+        model.setSelectedItem(" choose a location to add a unit");
         setModel(model);
         setSize(longestItem(), 25);
 

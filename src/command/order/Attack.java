@@ -1,12 +1,16 @@
 package command.order;
 
 import java.io.IOException;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import map.Country;
+import server.StringToCountry;
 
-public class Attack extends Order {
-    int attackPower = 1;
-    private Country attacking;
-    private boolean isAttackLooped = false;
+public class Attack extends Order implements Serializable {
+    private static final long serialVersionUID = 65536L;
+    transient int attackPower = 1;
+    transient private Country attacking;
+    transient private boolean isAttackLooped = false;
 
     public Attack(Country orderFrom, Country attacking) {
         super(orderFrom);
@@ -69,12 +73,14 @@ public class Attack extends Order {
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.writeObject(orderFrom);
-        out.writeObject(attacking);
+        out.writeUTF(attacking.toString());
     }
 
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        orderFrom = (Country) in.readObject();
-        attacking = (Country) in.readObject();
+        attacking = StringToCountry.getCountry(in.readUTF());
+    }
+
+    private void readObjectNoData() throws ObjectStreamException {
+        System.out.println("This shouldn't have been called because it was not handled");
     }
 }

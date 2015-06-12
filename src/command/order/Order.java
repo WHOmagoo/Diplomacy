@@ -4,13 +4,15 @@ import java.io.IOException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import map.Country;
+import server.StringToCountry;
 
 public class Order implements Comparable, Serializable {
-    int defensePower;
-    Country orderFrom;
-    Boolean valid;
-    boolean succeeded;
-    boolean isBounced;
+    private static final long serialVersionUID = 65535L;
+    transient int defensePower;
+    transient Country orderFrom;
+    transient Boolean valid;
+    transient boolean succeeded;
+    transient boolean isBounced;
 
     public Order(Country orderFrom) {
         defensePower = 1;
@@ -61,17 +63,12 @@ public class Order implements Comparable, Serializable {
     public void setSucceeded(boolean succeeded) {
         if (valid == Boolean.TRUE && succeeded) {
             this.succeeded = succeeded;
-        } else if (valid != Boolean.TRUE && !succeeded) {
+        } else if (!succeeded) {
             this.succeeded = succeeded;
         } else {
             System.out.println("Invalid set to successful" + this);
-            throw new Error("Wankers");
+            throw new Error("Wrong");
         }
-        /*} else {
-            //May change this to a println if it is the wrong type.
-            throw new NullPointerException("Cannot set this order as successful with false validity.\n"
-                    + this);
-        }*/
     }
 
     public boolean succeeds() {
@@ -103,14 +100,15 @@ public class Order implements Comparable, Serializable {
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.writeObject(orderFrom);
+        out.writeUTF(orderFrom.toString());
+        out.writeObject(null);
     }
 
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        orderFrom = (Country) in.readObject();
+        orderFrom = StringToCountry.getCountry((String) in.readObject());
     }
 
     private void readObjectNoData() throws ObjectStreamException {
-
+        System.out.println("This shouldn't have been called because it was not handled");
     }
 }

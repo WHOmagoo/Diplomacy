@@ -21,7 +21,7 @@ public class Country extends JButton implements ActionListener, Comparable {
     private String name;
     private Border borders;
     private SecondDegreeBorder secondDegreeBorders;
-    private volatile Team team = Team.NULL;
+    private Team team = Team.NULL;
     private UnitType unitType = UnitType.EMPTY;
     private TileType tileType;
     private Point originalLocation;

@@ -112,3 +112,86 @@ Sean H.     Yes No
 Maddie H.   No  No
 Henry B.    Yes No
 Gina        Yes No
+
+package server;
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * Created by Hugh on 6/10/2015.
+ */
+public class Host {
+    static ServerSocket serverSocket;
+    static ObjectOutputStream sendMessage;
+    static ObjectInputStream receiveMessage;
+
+    public static void main(String[] args) throws IOException {
+        serverSocket = new ServerSocket(25565);
+        Thread recieve = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Socket sux = serverSocket.accept();
+                    int ordersRecieved = 0;
+
+                    while(ordersRecieved < 3) {
+                        //Socket send = new Socket("localhost", 25565);
+                        ObjectInputStream messageIn = new ObjectInputStream(sux.getInputStream());
+                        System.out.println("reading stuff");
+                        int unit = messageIn.readInt();
+                        System.out.println(unit);
+                        System.out.println(messageIn.readUTF());
+                        sendMessage = new ObjectOutputStream(sux.getOutputStream());
+                        System.out.println("writting stuff");
+                     while(ordersRecieved < 10){
+                        sendMessage.writeInt(unit);
+                        sendMessage.flush();
+                        sendMessage.writeUTF("hey boi");
+                        sendMessage.flush();
+                         ordersRecieved++;
+
+                     }
+                        System.out.println("Checking");
+                        //ordersRecieved++;
+                    }
+                    System.out.println("out");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        recieve.start();
+        /*
+        System.out.println("Starting Server");
+        socketGetter = new ServerSocket(25565);
+        System.out.println("Waiting for connection");
+        sock = socketGetter.accept();
+        sendMessage = new ObjectOutputStream(sock.getOutputStream());
+        sendMessage.writeObject(new Country("BOb", new Point(50, 55), TileType.Water));
+        System.out.println("Message Sent");*/
+    }
+
+    public static ObjectOutputStream out() {
+        try {
+            return new ObjectOutputStream(new FileOutputStream("Save Files\\orders.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ObjectInputStream in() {
+        try {
+            return new ObjectInputStream(new FileInputStream("Save Files\\orders.txt"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+}

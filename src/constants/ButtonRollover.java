@@ -16,11 +16,10 @@ public class ButtonRollover extends TimerTask {
 
     @Override
     public void run() {
-        if (jButton.isAdded())
-            if (jButton.getModel().isRollover()) {
-                jButton.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
-            } else {
-                jButton.setBorder(oldBorder);
-            }
+        if (jButton.getModel().isRollover()) {
+            jButton.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+        } else {
+            jButton.setBorder(oldBorder);
+        }
     }
 }

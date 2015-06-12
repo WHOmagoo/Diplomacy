@@ -4,28 +4,27 @@ import command.ExecuteOrders;
 import command.Info;
 import command.InputBanner;
 import command.input.RelocateInput;
-import command.order.Attack;
-import command.order.Hold;
-import command.order.Move;
-import command.order.Order;
+import command.order.*;
 import constants.RolloverButton;
 import constants.Team;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import server.ClientConnection;
 
 public class Map extends JLabel implements Serializable {
     ExecuteOrders executeOrders = new ExecuteOrders(this);
     private ArrayList<Country> countries = new ArrayList<Country>();
-    transient private JLabel text = new JLabel();
-    transient private Country lastCountryClicked;
-    transient private InputBanner banner;
+    private JLabel text = new JLabel();
+    private Country lastCountryClicked;
+    private InputBanner banner;
+    private ClientConnection connection;
 
     public Map(ArrayList<Country> countries) {
+        connection = new ClientConnection();
         this.countries.addAll(countries);
         Collections.sort(this.countries);
         for (Country c : this.countries) {
@@ -37,6 +36,7 @@ public class Map extends JLabel implements Serializable {
         setLayout(null);
         setSize(1024, 768);
         add(executeOrders);
+        server.StringToCountry.setMap(this);
     }
 
     public void setMapGraphic(ImageIcon map) {
@@ -78,7 +78,7 @@ public class Map extends JLabel implements Serializable {
             }
         }
 
-        throw new NullPointerException("The specified country does not exist");
+        throw new NullPointerException("The specified country does not exist (" + nameOfCountry + ")");
     }
 
     public String toString() {
@@ -386,17 +386,17 @@ public class Map extends JLabel implements Serializable {
         c.setOccupiedBy(britain, navy);
     }
 
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.writeObject(countries);
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.readObject();
-    }
-
     public void refreshTeamValues() {
         for (Team team : Team.values()) {
             team.recalculateCountriesControlled(countries);
         }
+    }
+
+    public void sendOrders(OrderContainer orders) {
+        connection.writeOrders(orders);
+    }
+
+    public void sendOrders(Order order) {
+        connection.writeOrders(order);
     }
 }
