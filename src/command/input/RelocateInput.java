@@ -21,7 +21,7 @@ public class RelocateInput extends Input implements ActionListener {
         this.countryAssociation = c;
         DefaultComboBoxModel<Country> model = new DefaultComboBoxModel<Country>();
 
-        for (Country moveTo : countryAssociation.getRelocateableNeighbors()) {
+        for (Country moveTo : countryAssociation.getRelocateableToNeighbors()) {
             if (moveTo instanceof ScoringCountry) {
                 if (((ScoringCountry) moveTo).getTeamControls() == c.getTeam()) {
                     model.addElement(moveTo);

@@ -21,10 +21,8 @@ public class DefenseInput extends Input implements ActionListener{
         DefaultComboBoxModel<Country> model = new DefaultComboBoxModel();
         model.setSelectedItem("choose who to " + OrderType.DEFEND);
 
-        for (Country support : banner.getCountry().getAttackableCountries()) {
-            if(support.isOccupied()) {
-                model.addElement(support);
-            }
+        for (Country support : banner.getCountry().getOccupiedNeighbors()) {
+            model.addElement(support);
         }
 
         setModel(model);

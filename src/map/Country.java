@@ -25,7 +25,6 @@ public class Country extends JButton implements ActionListener, Comparable {
     private UnitType unitType = UnitType.EMPTY;
     private TileType tileType;
     private Point originalLocation;
-    //private javax.swing.border.Border border = new EmptyBorder(0,0,0,0);
     private Map mapAssociation;
     private transient Order order = new Hold(this);
 
@@ -43,17 +42,6 @@ public class Country extends JButton implements ActionListener, Comparable {
         this.tileType = tileType;
         originalLocation = location;
         setLocation(location);
-    }
-
-    public ArrayList<Country> getOccupiedNeighbors() {
-        ArrayList<Country> occupiedNeighbors = new ArrayList<Country>();
-        for (Country country : borders) {
-            if (country.isOccupied()) {
-                occupiedNeighbors.add(country);
-            }
-        }
-
-        return occupiedNeighbors;
     }
 
     public ArrayList<Country> getSupportableCountries() {
@@ -96,12 +84,11 @@ public class Country extends JButton implements ActionListener, Comparable {
     public ArrayList<Country> getAttackableCountries(){
         ArrayList<Country> attackableCountries = new ArrayList<Country>();
         for (Country otherCountry : getBorders()) {
-            if (isCorrectTypes(otherCountry)) {
+            if (isCorrectTypes(otherCountry) && otherCountry.getTeam() != team) {
                 attackableCountries.add(otherCountry);
             }
         }
 
-        Collections.shuffle(attackableCountries);
         Collections.sort(attackableCountries);
         return attackableCountries;
     }
@@ -116,10 +103,6 @@ public class Country extends JButton implements ActionListener, Comparable {
 
         return temp;
     }
-
-    /*public javax.swing.border.Border getBorder() {
-        return border;
-    }*///TODO fix this
 
     public SecondDegreeBorder getSecondDegreeBorders() {
         return secondDegreeBorders;
@@ -180,10 +163,8 @@ public class Country extends JButton implements ActionListener, Comparable {
             if (this instanceof ScoringCountry) {
                 ((ScoringCountry) this).setTeamControls(team);
             }
-            setEnabled(true);
-        } else {
-            setEnabled(false);
         }
+
         this.team = team;
         this.unitType = unitType;
     }
@@ -209,11 +190,6 @@ public class Country extends JButton implements ActionListener, Comparable {
         setRolloverIcon(team.getRolloverIcon(unitType));
         setPressedIcon(team.getPressedIcon(unitType));
         setDisabledIcon(getIcon());
-        if (team == Team.NULL) {
-            setEnabled(false);
-        } else {
-            setEnabled(true);
-        }
     }
 
     public void resetPosition() {
@@ -286,7 +262,7 @@ public class Country extends JButton implements ActionListener, Comparable {
     }
 
     public void resetAfterMove() {
-        setLocation(originalLocation);
+        resetPosition();
         refreshGraphics();
     }
 
@@ -298,7 +274,7 @@ public class Country extends JButton implements ActionListener, Comparable {
         return team;
     }
 
-    public ArrayList<Country> getRelocateableNeighbors() {
+    public ArrayList<Country> getRelocateableToNeighbors() {
         ArrayList<Country> relocateableTo = new ArrayList<Country>();
         ArrayList<Country> countriesLookedAt = new ArrayList<Country>();
 
@@ -318,14 +294,6 @@ public class Country extends JButton implements ActionListener, Comparable {
                             if (isCorrectTypes(possibleMoveTo)) {
                                 relocateableTo.add(possibleMoveTo);
                             }
-                            /*if (unitType == UnitType.NAVY
-                                    && (possibleMoveTo.getTileType() == TileType.Water
-                                    || possibleMoveTo.getTileType() == TileType.Coastal)) {
-                                relocateableTo.add(possibleMoveTo);
-                            } else if (possibleMoveTo.getTileType() == TileType.Coastal
-                                    || possibleMoveTo.getTileType() == TileType.Landlocked) {
-                                relocateableTo.add(possibleMoveTo);
-                            }*/
                         }
                     }
                     temp.add(possibleMoveTo);
@@ -336,6 +304,17 @@ public class Country extends JButton implements ActionListener, Comparable {
 
         Collections.sort(relocateableTo);
         return relocateableTo;
+    }
+
+    public ArrayList<Country> getOccupiedNeighbors() {
+        ArrayList<Country> occupiedNeighbors = new ArrayList<Country>();
+        for (Country c : borders) {
+            if (c.isOccupied() && isCorrectTypes(c)) {
+                occupiedNeighbors.add(c);
+            }
+        }
+
+        return occupiedNeighbors;
     }
 
     public boolean isCorrectTypes(Country countryAttacking) {
@@ -382,16 +361,6 @@ public class Country extends JButton implements ActionListener, Comparable {
 
         return false;
     }
-
-    /*private void writeObject(java.io.ObjectOutputStream out) throws IOException{
-
-    }
-    private void readObject(java.io.ObjectInputStream in)throws IOException, ClassNotFoundException {
-
-    }
-    private void readObjectNoData()throws ObjectStreamException {
-
-    }*/
 
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         out.writeObject(name);

@@ -1,9 +1,6 @@
 package command.order;
 
-import java.io.IOException;
-import java.io.ObjectStreamException;
 import map.Country;
-import server.StringToCountry;
 
 public class Defend extends Order {
     private static final long serialVersionUID = 65537L;
@@ -45,15 +42,17 @@ public class Defend extends Order {
         defending = null;
     }
 
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.writeUTF(defending.toString());
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        defending = StringToCountry.getCountry(in.readUTF());
-    }
-
-    private void readObjectNoData() throws ObjectStreamException {
-        System.out.println("This shouldn't have been called because it was not handled");
-    }
+/*
+*   private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+*       out.writeUTF(defending.toString());
+*   }
+*
+*   private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+*       defending = StringToCountry.getCountry(in.readUTF());
+*   }
+*
+*   private void readObjectNoData() throws ObjectStreamException {
+*       System.out.println("This shouldn't have been called because it was not handled");
+*   }
+*/
 }

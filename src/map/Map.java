@@ -4,7 +4,10 @@ import command.ExecuteOrders;
 import command.Info;
 import command.InputBanner;
 import command.input.RelocateInput;
-import command.order.*;
+import command.order.Attack;
+import command.order.Hold;
+import command.order.Move;
+import command.order.Order;
 import constants.RolloverButton;
 import constants.Team;
 import java.io.Serializable;
@@ -13,7 +16,6 @@ import java.util.Collections;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import server.ClientConnection;
 
 public class Map extends JLabel implements Serializable {
     ExecuteOrders executeOrders = new ExecuteOrders(this);
@@ -21,10 +23,9 @@ public class Map extends JLabel implements Serializable {
     private JLabel text = new JLabel();
     private Country lastCountryClicked;
     private InputBanner banner;
-    private ClientConnection connection;
 
     public Map(ArrayList<Country> countries) {
-        connection = new ClientConnection();
+//        connection = new ClientConnection();
         this.countries.addAll(countries);
         Collections.sort(this.countries);
         for (Country c : this.countries) {
@@ -36,7 +37,6 @@ public class Map extends JLabel implements Serializable {
         setLayout(null);
         setSize(1024, 768);
         add(executeOrders);
-        server.StringToCountry.setMap(this);
     }
 
     public void setMapGraphic(ImageIcon map) {
@@ -98,7 +98,7 @@ public class Map extends JLabel implements Serializable {
         lastCountryClicked = countryClicked;
     }
 
-    @Deprecated //This is intended for bug testing new maps
+    //This is intended for bug testing new maps
     public void verifyBorders() {
         for (Country country : countries) {
             for (Country borderCountry : country.getBorders()) {
@@ -141,13 +141,13 @@ public class Map extends JLabel implements Serializable {
         }
     }
 
-    @Deprecated //Only inteded for bug testing
+    //Only inteded for bug testing
     public void printOrders() {
         for (Country c : countries) {
-            if (c.getOrder() != null) { //&& c.getOrder().isValid() == Boolean.TRUE) {
+            if (c.getOrder() != null) {
                 System.out.print(c.getOrder());
                 if (!(c.getOrder() instanceof Hold)) {
-                    System.out.print(" Succeeded:  " + c.getOrder().succeeds());
+                    System.out.print(" Succeeded - " + c.getOrder().succeeds());
                 }
                 System.out.println();
             }
@@ -174,41 +174,6 @@ public class Map extends JLabel implements Serializable {
             ((RolloverButton) component).removed();
         }
     }
-
-    public void setCountryOccupied(String name){
-        try {
-            getCountry(name).setOccupiedBy(Team.EGYPT, UnitType.ARMY);
-            updateGraphics();
-            getCountry(name).setEnabled(true);
-        } catch (NullPointerException e){
-            throw new Error("Wrong country added");
-        }
-    }
-
-    @Deprecated //This is only intended for bug testing
-    public void setSomeOccupied() {
-        int i = 0;
-        for (Country c : countries) {
-            if (c.getTileType() != TileType.Water) {
-                if (i % 3 == 0)
-                    c.setOccupiedBy(Team.EGYPT, UnitType.ARMY);
-            } else {
-                if (i % 3 == 0)
-                    c.setOccupiedBy(Team.BRITAIN, UnitType.NAVY);
-            }
-
-            if (i % 3 == 0)
-                c.setEnabled(true);
-            i++;
-        }
-
-        updateGraphics();
-    }
-
-/*    public void relocatePrompts(ArrayList<Country> needMove) {
-        banner.clearAll();
-        RelocateInput relocate = new RelocateInput(0, needMove);
-    }*/
 
     public void moveUnits(ArrayList<Country> countriesToMove) throws Error {
         for (Country c : countriesToMove) {
@@ -390,13 +355,5 @@ public class Map extends JLabel implements Serializable {
         for (Team team : Team.values()) {
             team.recalculateCountriesControlled(countries);
         }
-    }
-
-    public void sendOrders(OrderContainer orders) {
-        connection.writeOrders(orders);
-    }
-
-    public void sendOrders(Order order) {
-        connection.writeOrders(order);
     }
 }

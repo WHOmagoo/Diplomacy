@@ -10,7 +10,7 @@ import map.Country;
 import map.Map;
 import map.ScoringCountry;
 
-public class OrderResolver extends ArrayList<Order> {
+public class OrderResolver {
     private ArrayList<Order> orders = new ArrayList<Order>();
     private ArrayList<Country> countries = new ArrayList<Country>();
 
@@ -44,10 +44,7 @@ public class OrderResolver extends ArrayList<Order> {
             catchMoveLoop();
 
             for (Order order : orders) {
-                if (order.isValid() == null) {
-                    System.out.println(order + " was not validated");
-//                  throw new Error(order + " was not validated");
-                }
+                assert order.isValid() == true : order + " was not validated";
             }
 
             calculateDefensePowers();
@@ -59,6 +56,10 @@ public class OrderResolver extends ArrayList<Order> {
             moveUnits();
             resetCountries();
             printCommands();
+        } else {
+            System.out.println("|======================|");
+            System.out.println("|No orders were entered|");
+            System.out.println("|======================|");
         }
     }
 
@@ -93,19 +94,16 @@ public class OrderResolver extends ArrayList<Order> {
         return false;
     }
 
-    private ArrayList<Order> cancelSomeOrders(ArrayList<Order> executableOrders) throws Error {
+    private ArrayList<Order> cancelSomeOrders(ArrayList<Order> executableOrders) {
         ArrayList<Order> invalidOrders = new ArrayList<>();
         for (Order order : executableOrders) {
             if (order instanceof Attack) {
+                assert order.isValid() == Boolean.TRUE : "Tried to use " + order + " to cancel an attack but it was not validated";
                 if (Boolean.TRUE == order.isValid()) {
-                    if (((Attack) order).getAttacking().getOrder() == null) {
-                    } else {
+                    if (((Attack) order).getAttacking().getOrder() != null) {
                         ((Attack) order).getAttacking().getOrder().setInvalid();
                     }
-                } else {
-                    throw new Error("Tried to cancel commands using a falsely valid attack");
                 }
-            } else {
             }
         }
 
@@ -465,13 +463,15 @@ public class OrderResolver extends ArrayList<Order> {
         }
     }
 
-    @Deprecated //This is only intended for bug testing
+    //This is only intended for bug testing
     private void printCommands() {
+        System.out.println("========================");
+        System.out.println("========================");
         System.out.println("Printing Orders");
-        for (Order order : orders) {
-            order.orderFrom().getMap().printOrders();
-            break;
-        }
+        System.out.println("---------------");
+        orders.get(0).orderFrom().getMap().printOrders();
+        System.out.println("========================");
+        System.out.println("========================");
     }
 
     public ArrayList<Country> wasMoveBounced(ArrayList<Country> countriesToRelocate) {

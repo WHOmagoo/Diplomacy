@@ -98,6 +98,5 @@ public class Input extends JComboBox implements ActionListener, Comparable{
 
     public void setOrder(Order order){
         this.order = order;
-        System.out.println("This should only be used in emergencies");
     }
 }

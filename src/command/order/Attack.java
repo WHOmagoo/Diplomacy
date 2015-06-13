@@ -1,10 +1,7 @@
 package command.order;
 
-import java.io.IOException;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 import map.Country;
-import server.StringToCountry;
 
 public class Attack extends Order implements Serializable {
     private static final long serialVersionUID = 65536L;
@@ -72,15 +69,17 @@ public class Attack extends Order implements Serializable {
         isAttackLooped = aBoolean;
     }
 
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.writeUTF(attacking.toString());
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        attacking = StringToCountry.getCountry(in.readUTF());
-    }
-
-    private void readObjectNoData() throws ObjectStreamException {
-        System.out.println("This shouldn't have been called because it was not handled");
-    }
+/*
+*   private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+*       out.writeUTF(attacking.toString());
+*   }
+*
+*   private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+*       attacking = StringToCountry.getCountry(in.readUTF());
+*   }
+*
+*   private void readObjectNoData() throws ObjectStreamException {
+*       System.out.println("This shouldn't have been called because it was not handled");
+*   }
+*/
 }

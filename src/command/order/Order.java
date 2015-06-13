@@ -1,10 +1,7 @@
 package command.order;
 
-import java.io.IOException;
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 import map.Country;
-import server.StringToCountry;
 
 public class Order implements Comparable, Serializable {
     private static final long serialVersionUID = 65535L;
@@ -56,7 +53,7 @@ public class Order implements Comparable, Serializable {
             Order o = (Order) obj;
             return o.orderFrom().compareTo(this.orderFrom);
         } else{
-            throw new ClassCastException("Wrong type");
+            throw new ClassCastException(obj + " was of the wrong type");
         }
     }
 
@@ -66,8 +63,7 @@ public class Order implements Comparable, Serializable {
         } else if (!succeeded) {
             this.succeeded = succeeded;
         } else {
-            System.out.println("Invalid set to successful" + this);
-            throw new Error("Wrong");
+            throw new Error("Invalid set to successful " + this);
         }
     }
 
@@ -99,16 +95,18 @@ public class Order implements Comparable, Serializable {
         defensePower = 1;
     }
 
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        out.writeUTF(orderFrom.toString());
-        out.writeObject(null);
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-        orderFrom = StringToCountry.getCountry((String) in.readObject());
-    }
-
-    private void readObjectNoData() throws ObjectStreamException {
-        System.out.println("This shouldn't have been called because it was not handled");
-    }
+/*
+*   private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+*       out.writeUTF(orderFrom.toString());
+*       out.writeObject(null);
+*   }
+*
+*   private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+*       orderFrom = StringToCountry.getCountry((String) in.readObject());
+*   }
+*
+*   private void readObjectNoData() throws ObjectStreamException {
+*       System.out.println("This shouldn't have been called because it was not handled");
+*   }
+*/
 }

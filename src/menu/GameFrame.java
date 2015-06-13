@@ -1,4 +1,14 @@
-package constants;
+/**
+ * GameFrame.java
+ * Assignment: Final Project
+ * Purpose: This was a culminating project that should
+ * show our knowledge of writing java code.
+ *
+ * @version 06/13/15
+ * @author Hugh McGough
+ */
+
+package menu;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,8 +17,10 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import menu.main.actions.Quit;
 
 public class GameFrame extends JFrame {
+
     public GameFrame() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(0, 0, (int) screenSize.getWidth(), (int) screenSize.getHeight());
@@ -23,6 +35,7 @@ public class GameFrame extends JFrame {
         addMinimize();
     }
 
+    //Adds the quit button to the JFrame which does not need to be accessible by other classes.
     private void addQuit() {
         JButton quit = new JButton(new ImageIcon("files\\x.png"));
         quit.setLayout(null);
@@ -32,16 +45,11 @@ public class GameFrame extends JFrame {
         quit.setOpaque(false);
         quit.setContentAreaFilled(false);
         quit.setRolloverIcon(new ImageIcon("files\\xrollover.png"));
-        quit.addActionListener(new ActionListener() {
-                                   public void actionPerformed(ActionEvent e) {
-                                       System.exit(0);
-                                   }
-                               }
-        );
-
-        add(quit);
+        quit.addActionListener(new Quit());
+        add(quit, 0);
     }
 
+    //Adds the minimize button to the JFrame which does not need to be accessible by other classes.
     private void addMinimize() {
 
         JButton minimize = new JButton(new ImageIcon("files\\-.png"));
@@ -58,9 +66,14 @@ public class GameFrame extends JFrame {
                                    }
         );
 
-        add(minimize);
+        add(minimize, 0);
     }
 
+    /**
+     * Adds a JComponent that is centered on the screen vertically and horizontally
+     * Parameters
+     * component - the JComponent to add
+     */
     public void addComponentCentered(JComponent component) {
         int x = this.getWidth() / 2 - component.getWidth() / 2;
         int y = this.getHeight() / 2 - component.getHeight() / 2;
@@ -68,4 +81,13 @@ public class GameFrame extends JFrame {
         add(component);
     }
 
+    /**
+     * Removes everything from the JFrame except the exit and minimize buttons which should always
+     * be on the JFrame
+     */
+    public void removeAll() {
+        for (int i = 2; i < getContentPane().getComponentCount(); i++) {
+            getContentPane().remove(i);
+        }
+    }
 }

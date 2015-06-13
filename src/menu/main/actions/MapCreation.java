@@ -1,3 +1,5 @@
+package menu.main.actions;
+
 import constants.Team;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -11,7 +13,6 @@ public class MapCreation {
         tempCountries = setBorders(tempCountries);
         Map map = new Map(tempCountries);
         setOccupiedBy(tempCountries);
-        //Watch out for order of code execution, may cause errors later.
         map.setMapGraphic(new ImageIcon("files\\Map.png"));
         map.setMapText(new ImageIcon("files\\Map Text.png"));
         map.updateGraphics();
