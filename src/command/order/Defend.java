@@ -1,3 +1,13 @@
+/**
+ * Defend.java
+ * Assignment: Final Project
+ * Purpose: This was a culminating project that should
+ * show our knowledge of writing java code.
+ *
+ * @version 06/13/15
+ * @author Hugh McGough
+ */
+
 package command.order;
 
 import map.Country;
@@ -6,24 +16,35 @@ public class Defend extends Order {
     private static final long serialVersionUID = 65537L;
     private Country defending;
 
-    public Defend(Country orderFrom, Country countryBeingDefended) {
-        super(orderFrom);
-        this.defending = countryBeingDefended;
-    }
-
+    /**
+     * The constructor for defend
+     *
+     * @param orderFrom the country from which this originates.
+     */
     public Defend(Country orderFrom) {
         super(orderFrom);
     }
 
+    /**
+     * @return the country that this order is defending
+     */
     public Country getDefending() {
         return defending;
     }
 
+    /**
+     * @param defending the country that this order is defending
+     */
     public void setDefending(Country defending) {
         this.defending = defending;
     }
 
-    public boolean increaseDefense() throws NullPointerException {
+    /**
+     * Increases the defense of the country it defends.
+     *
+     * @return true if it sucessfully increased the defense power otherwise false
+     */
+    public boolean increaseDefense() {
             if (valid) {
                 defending.getOrder().increaseDefense(this);
                 succeeded = true;
@@ -33,16 +54,22 @@ public class Defend extends Order {
             }
     }
 
+    /**
+     * @return the string representation of this object.
+     */
     public String toString() {
         return orderFrom + " defends " + defending;
     }
 
+    /**
+     * will reset the fields of this object, except for the order from.
+     */
     public void reset() {
         super.reset();
         defending = null;
     }
 
-/*
+/**
 *   private void writeObject(java.io.ObjectOutputStream out) throws IOException {
 *       out.writeUTF(defending.toString());
 *   }

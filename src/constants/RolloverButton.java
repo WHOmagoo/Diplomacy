@@ -1,3 +1,13 @@
+/**
+ * RolloverButton.java
+ * Assignment: Final Project
+ * Purpose: This was a culminating project that should
+ * show our knowledge of writing java code.
+ *
+ * @version 06/13/15
+ * @author Hugh McGough
+ */
+
 package constants;
 
 import java.awt.Color;
@@ -9,10 +19,15 @@ import javax.swing.JButton;
 import javax.swing.border.Border;
 
 public class RolloverButton extends JButton implements Runnable {
-    transient Timer timer = new Timer();
+    Timer timer = new Timer();
     private Border oldBorder;
     private RolloverButton button;
 
+    /**
+     * This is the default constructor for the class.
+     *
+     * @param text the text for the button to have.
+     */
     public RolloverButton(String text) {
         super(text);
         button = this;
@@ -26,6 +41,11 @@ public class RolloverButton extends JButton implements Runnable {
         oldBorder = getBorder();
     }
 
+    /**
+     * This method should be called once the button has been added to a JComponent, it starts the
+     * timer to check if the mouse is hovering over the button and will cancel it once the JButton
+     * is no longer visible.
+     */
     public void added() {
         try {
             timer.schedule(new TimerTask() {
@@ -43,10 +63,17 @@ public class RolloverButton extends JButton implements Runnable {
         }
     }
 
+    /**
+     * This cancels the timer and should be called once removed from the JComponent.
+     */
     public void removed() {
         timer.cancel();
     }
 
+    /**
+     * This is the method that runs every 30 milliseconds or so and it checks if the mouse is
+     * hovering over the button.
+     */
     @Override
     public void run() {
     }

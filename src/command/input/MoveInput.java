@@ -21,7 +21,7 @@ public class MoveInput extends Input implements ActionListener{
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.setSelectedItem("choose where to move");
 
-        for (Country moveTo : banner.getCountry().getAttackableCountries()) {
+        for (Country moveTo : banner.getCountry().getMovableTo()) {
             if (moveTo instanceof ScoringCountry) {
                 if (((ScoringCountry) moveTo).getTeamControls() == banner.getCountry().getTeam()) {
                     model.addElement(moveTo);

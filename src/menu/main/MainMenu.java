@@ -27,6 +27,8 @@ public class MainMenu extends JPanel {
      * Parameters
      *   container - this is to add objects to it on a button push and set things to the height
      *               of the GameFrame
+     * Outputs
+     *    Creates a JPanel with all of the menu items on it
      */
     public MainMenu(GameFrame container) {
         new JPanel();

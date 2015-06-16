@@ -13,10 +13,6 @@ public class SupportAttackInput extends Input implements ActionListener{
     private InputBanner banner;
     private Support order;
 
-    public SupportAttackInput(){
-
-    }
-
     public SupportAttackInput(Country supporting){
         super(supporting.getMap().getBanner());
         banner = supporting.getMap().getBanner();

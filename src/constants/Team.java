@@ -1,3 +1,13 @@
+/**
+ * Team.java
+ * Assignment: Final Project
+ * Purpose: This was a culminating project that should
+ * show our knowledge of writing java code.
+ *
+ * @version 06/13/15
+ * @author Hugh McGough
+ */
+
 package constants;
 
 import java.util.ArrayList;
@@ -143,38 +153,22 @@ public enum Team {
     private int unitsToRemove = 0;
     private int countriesCountrolled = 0;
 
+    /**
+     * This is the constructor.
+     *
+     * @param i - an array of icons in order of army, army rollover, army click, navy, navy
+     *          rollover, and navy click.
+     */
     Team(ImageIcon[] i) {
         icons = i;
     }
 
-    ImageIcon[] getIcons() {
-        return icons;
-    }
-
-    public ImageIcon getArmyIcon() {
-        return icons[0];
-    }
-
-    public ImageIcon getArmyRolloverIcon() {
-        return icons[1];
-    }
-
-    public ImageIcon getArmyClickIcon() {
-        return icons[2];
-    }
-
-    public ImageIcon getNavyIcon() {
-        return icons[3];
-    }
-
-    public ImageIcon getNavyRolloverIcon() {
-        return icons[4];
-    }
-
-    public ImageIcon getNavyClickIcon() {
-        return icons[5];
-    }
-
+    /**
+     * Gets the icon of the specified unit type.
+     *
+     * @param unitType the type of unit to get the ImageIcon of
+     * @return ImageIcon of the picture to use for the specified unit type
+     */
     public ImageIcon getIcon(UnitType unitType) {
         if (unitType == UnitType.ARMY) {
             return icons[0];
@@ -185,6 +179,11 @@ public enum Team {
         }
     }
 
+    /**
+     * Gets the rollover icon of the specified unit type.
+     * @param unitType the type of unit to get the rollover ImageIcon of
+     * @return ImageIcon of the picture to use for the specified unit type's rollover
+     */
     public ImageIcon getRolloverIcon(UnitType unitType) {
         if (unitType == UnitType.ARMY) {
             return icons[1];
@@ -195,6 +194,11 @@ public enum Team {
         }
     }
 
+    /**
+     * Gets the pressed icon of the specified unit type.
+     * @param unitType the type of unit to get the clicked ImageIcon of
+     * @return ImageIcon of the picture to use for clicked stat of the specified unit type
+     */
     public ImageIcon getPressedIcon(UnitType unitType) {
         if (unitType == UnitType.ARMY) {
             return icons[2];
@@ -205,27 +209,33 @@ public enum Team {
         }
     }
 
-    public void markForRemove() {
-        unitsToRemove++;
-    }
-
-    public void markForAddition() {
-        unitsToAdd++;
-    }
-
+    /**
+     * @return returns the number of units that need to be added after orders have been resolved.
+     */
     public int getUnitsToAdd() {
         return unitsToAdd;
     }
 
+    /**
+     * @return the number of units that need to removed after orders have been resolved.
+     */
     public int getUnitsToRemove() {
         return unitsToRemove;
     }
 
-    public void resetAddAndRmove() {
+    /**
+     * resets the number of units to add and remove to zero
+     */
+    public void resetAddAndRemove() {
         unitsToAdd = 0;
         unitsToRemove = 0;
     }
 
+    /**
+     * Recalculates the total number of units to add and to remove after a turn has been taken.
+     * @param countries the current state of the board to count the number of countries
+     *                  each team controls, and the number of units.
+     */
     public void refreshUnitTotal(ArrayList<Country> countries) {
         int unitsControlled = 0;
         for (Country c : countries) {
@@ -246,6 +256,11 @@ public enum Team {
         }
     }
 
+    /**
+     * Calculates how many ScoringCountries are owned by the team.
+     * @param countries the current state of the board to count the number of countries
+     *                  each team controls.
+     */
     public void recalculateCountriesControlled(ArrayList<Country> countries) {
         int countriesControlled = 0;
         for (Country c : countries) {

@@ -97,31 +97,12 @@
 /*West Black Sea*/
 /*East Black Sea*/
 
-
-Hugh M.     Yes Yes
-Maggie T.   Yes Yes
-Ben M.      Yes No
-Nick T.     Yes Yes
-Dylan M.    Yes No
-Cyrus W.    Yes Yes
-Annie S.    Yes No
-Michael H.  No  No
-Elijah R.   Yes No
-Sofie B.    Yes Yes
-Sean H.     Yes No
-Maddie H.   No  No
-Henry B.    Yes No
-Gina        Yes No
-
 package server;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- * Created by Hugh on 6/10/2015.
- */
 public class Host {
     static ServerSocket serverSocket;
     static ObjectOutputStream sendMessage;

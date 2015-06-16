@@ -17,7 +17,7 @@ import javax.swing.JButton;
 
 public class MenuButton extends JButton {
 
-    /*The constructor
+    /**The constructor
     * Parameters
     *   text - a string to add to the button
     */
@@ -34,7 +34,7 @@ public class MenuButton extends JButton {
         setFocusPainted(false);
     }
 
-    /*Another constructor
+    /**Another constructor
     * Parameters
     *   text - a string to add to the button
     *   actionPerformed - an ActionListener to associate with the button

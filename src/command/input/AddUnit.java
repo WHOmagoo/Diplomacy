@@ -9,9 +9,6 @@ import javax.swing.DefaultComboBoxModel;
 import map.Country;
 import map.ScoringCountry;
 
-/**
- * Created by Hugh on 6/10/2015.
- */
 public class AddUnit extends Input implements ActionListener {
     InputBanner banner;
     Country country;

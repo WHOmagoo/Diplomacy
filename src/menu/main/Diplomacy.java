@@ -2,19 +2,17 @@ package menu.main;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class Diplomacy extends JLabel {
     /**
-     *
+     * The constructor for this class
+     * Outputs
+     *    Creates a JLabel with a specific picture in it
      */
     public Diplomacy() {
-        new JLabel();
-        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         setIcon(new ImageIcon("Files\\Diplomacy Text.png"));
         setSize(1024, 241);
         setBorder(BorderFactory.createLineBorder(Color.GRAY, 4, true));

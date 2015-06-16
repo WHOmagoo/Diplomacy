@@ -1,3 +1,13 @@
+/**
+ * Border.java
+ * Assignment: Final Project
+ * Purpose: This was a culminating project that should
+ * show our knowledge of writing java code.
+ *
+ * @version 06/13/15
+ * @author Hugh McGough
+ */
+
 package map;
 
 import java.util.ArrayList;
@@ -6,19 +16,34 @@ import java.util.Collections;
 public class Border extends ArrayList<Country> {
     private Country country;
 
-    public Border() {
+    /**
+     * This is the default constructor for any sub classes.
+     */
+    public Border(Country c) {
+        country = c;
     }
 
+    /**
+     * This is the constructor that should be used for a new Border object
+     * Parameters
+     * country - the country that the borders belong to
+     * borders - an ArrayList of countries that border the country
+     */
     public Border(Country country, ArrayList<Country> borders) throws IllegalArgumentException {
+        this(country);
         if (borders.contains(country)) {
             throw new IllegalArgumentException("The Country must not be bordered by itself.\nCountry of issue: " + country);
         }
         Collections.sort(borders);
         super.addAll(borders);
-        this.country = country;
-
     }
 
+    /**
+     * This is the constructor that should be used for a new Border object
+     * Parameters
+     * country - the country that the borders belong to
+     * borders - an array of countries that border the country
+     */
     public Border(Country country, Country[] borders) throws IllegalArgumentException {
         for (Country c : borders) {
             if (c == country) {
@@ -38,18 +63,11 @@ public class Border extends ArrayList<Country> {
 
     }
 
+    /**
+     * returns
+     *   Country - the country that this border object belongs to.
+     */
     public Country getCountry() {
         return country;
     }
-
-    public Country getCountry(String nameOfCountry) {
-        for (Country country : this) {
-            if (country.getName() == nameOfCountry) {
-                return country;
-            }
-        }
-
-        throw new NullPointerException("The specified country does not exist as a border");
-    }
-
 }

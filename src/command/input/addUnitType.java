@@ -9,9 +9,6 @@ import map.Country;
 import map.TileType;
 import map.UnitType;
 
-/**
- * Created by Hugh on 6/10/2015.
- */
 public class addUnitType extends Input implements ActionListener {
     InputBanner banner;
     Country locationAdding;

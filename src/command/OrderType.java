@@ -1,3 +1,13 @@
+/**
+ * OrderType.java
+ * Assignment: Final Project
+ * Purpose: This was a culminating project that should
+ * show our knowledge of writing java code.
+ *
+ * @version 06/13/15
+ * @author Hugh McGough
+ */
+
 package command;
 
 import command.input.*;

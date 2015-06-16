@@ -1,4 +1,14 @@
-package menu.main.actions;
+/**
+ * MapCreation.java
+ * Assignment: Final Project
+ * Purpose: This was a culminating project that should
+ * show our knowledge of writing java code.
+ *
+ * @version 06/13/15
+ * @author Hugh McGough
+ */
+
+package menu.main;
 
 import constants.Team;
 import java.awt.Point;
@@ -8,6 +18,9 @@ import map.*;
 
 public class MapCreation {
 
+    /**
+     * This calls all of the methods that are necessary to create a Map object
+     */
     public static Map createMap() {
         ArrayList<Country> tempCountries = createCountries();
         tempCountries = setBorders(tempCountries);
@@ -21,6 +34,15 @@ public class MapCreation {
         return map;
     }
 
+
+    /**
+     * Creates the Country objects that will be added to the map,
+     * before being added to the map each country is given a
+     * unique number so that its other properties can be added to
+     * an array and then added to the country object inside of a for loop.
+     * Output
+     * returns - an ArrayList of Country objects.
+     */
     private static ArrayList<Country> createCountries() {
         final String[] COUNTRY_NAME_LIST = {
 /*0-4*/     "Off Map", "Liverpool", "Ireland", "Wales", "Edinburgh",
@@ -145,106 +167,111 @@ public class MapCreation {
                 new Point(841, 283)};   /*East Black Sea*/
 
         boolean[] scoresPoints = new boolean[]{
-        false,  /*Off Map*/
-        true,   /*Liverpool*/
-        false,  /*Ireland*/
-        true,   /*Wales*/
-        true,   /*Edinburgh*/
-        true,   /*London*/
-        false,  /*Norway*/
-        false,  /*Sweden*/
-        true,   /*Finland*/
-        true,   /*Vologda*/
-        true,   /*Leningrad*/
-        true,   /*Smolensk*/
-        false,  /*Moscow*/
-        false,  /*Bellorussia*/
-        false,  /*Presov*/
-        false,  /*Kiev*/
-        true,   /*Holland*/
-        true,   /*Kiel*/
-        true,   /*Berlin*/
-        true,   /*Siliesia*/
-        true,   /*Rurh*/
-        false,  /*Munich*/
-        false,  /*Belgium*/
-        true,   /*Picardy*/
-        true,   /*Brest*/
-        true,   /*Paris*/
-        true,   /*Marseille*/
-        false,  /*Gacony*/
-        true,   /*Bilboa*/
-        true,   /*Lugo*/
-        false,  /*Portugal*/
-        true,   /*Seville*/
-        true,   /*Valancia*/
-        false,  /*Barcelona*/
-        false,  /*Ust*/
-        false,  /*Pechora*/
-        true,   /*Komi*/
-        true,   /*Gorki*/
-        true,   /*Crimea*/
-        true,   /*Rostov*/
-        false,  /*Czechoslovakia*/
-        true,   /*Austria*/
-        true,   /*Hungary*/
-        true,   /*Bosnia*/
-        true,   /*Albania*/
-        false,  /*Serbia*/
-        false,  /*Banat*/
-        true,   /*Romania*/
-        true,   /*Bulgaria*/
-        true,   /*Macedonia*/
-        true,   /*Greece*/
-        true,   /*Istanbul*/
-        true,   /*Samsun*/
-        false,  /*Kras*/
-        true,   /*Izmir*/
-        true,   /*Lebanon*/
-        true,   /*Israel*/
-        false,  /*Jordan*/
-        false,  /*Piedmont*/
-        false,  /*Venice*/
-        false,  /*Tuscany*/
-        true,   /*Rome*/
-        true,   /*Apulia*/
-        true,   /*Naples*/
-        true,   /*Sicily*/
-        true,   /*Sardinia*/
-        false,  /*Casablanca*/
-        true,   /*Algiers*/
-        true,   /*Setif*/
-        true,   /*Aflou*/
-        false,  /*Sahara*/
-        false,  /*Fazzar*/
-        false,  /*Murzq*/
-        false,  /*Bengasi*/
-        true,   /*Sallum*/
-        true,   /*Tobruk*/
-        false,  /*Cairo*/
-        true,   /*Nile*/
-        false,  /*Sawhaj*/
-        true,   /*Crete*/
-        false,  /*Irish Sea*/
-        false,  /*North Sea*/
-        false,  /*Baltic Sea*/
-        false,  /*English  Channel*/
-        false,  /*Atlantic Ocean*/
-        false,  /*Bay of Biscay*/
-        false,  /*Gibraltar*/
-        false,  /*Western Mediterranean*/
-        false,  /*Gulf of Lyons*/
-        false,  /*Tyrrhenian Sea*/
-        false,  /*Ionian Sea*/
-        false,  /*Adriatic Sea*/
-        false,  /*Agean Sea*/
-        false,  /*Eastern Mediterranean*/
-        false,  /*Red Sea*/
-        false,  /*Lake Cherkassy*/
-        false,  /*West Black Sea*/
-        false   /*East Black Sea*/
+                false,  /*Off Map*/
+                true,   /*Liverpool*/
+                false,  /*Ireland*/
+                true,   /*Wales*/
+                true,   /*Edinburgh*/
+                true,   /*London*/
+                false,  /*Norway*/
+                false,  /*Sweden*/
+                true,   /*Finland*/
+                true,   /*Vologda*/
+                true,   /*Leningrad*/
+                true,   /*Smolensk*/
+                false,  /*Moscow*/
+                false,  /*Bellorussia*/
+                false,  /*Presov*/
+                false,  /*Kiev*/
+                true,   /*Holland*/
+                true,   /*Kiel*/
+                true,   /*Berlin*/
+                true,   /*Siliesia*/
+                true,   /*Rurh*/
+                false,  /*Munich*/
+                false,  /*Belgium*/
+                true,   /*Picardy*/
+                true,   /*Brest*/
+                true,   /*Paris*/
+                true,   /*Marseille*/
+                false,  /*Gacony*/
+                true,   /*Bilboa*/
+                true,   /*Lugo*/
+                false,  /*Portugal*/
+                true,   /*Seville*/
+                true,   /*Valancia*/
+                false,  /*Barcelona*/
+                false,  /*Ust*/
+                false,  /*Pechora*/
+                true,   /*Komi*/
+                true,   /*Gorki*/
+                true,   /*Crimea*/
+                true,   /*Rostov*/
+                false,  /*Czechoslovakia*/
+                true,   /*Austria*/
+                true,   /*Hungary*/
+                true,   /*Bosnia*/
+                true,   /*Albania*/
+                false,  /*Serbia*/
+                false,  /*Banat*/
+                true,   /*Romania*/
+                true,   /*Bulgaria*/
+                true,   /*Macedonia*/
+                true,   /*Greece*/
+                true,   /*Istanbul*/
+                true,   /*Samsun*/
+                false,  /*Kras*/
+                true,   /*Izmir*/
+                true,   /*Lebanon*/
+                true,   /*Israel*/
+                false,  /*Jordan*/
+                false,  /*Piedmont*/
+                false,  /*Venice*/
+                false,  /*Tuscany*/
+                true,   /*Rome*/
+                true,   /*Apulia*/
+                true,   /*Naples*/
+                true,   /*Sicily*/
+                true,   /*Sardinia*/
+                false,  /*Casablanca*/
+                true,   /*Algiers*/
+                true,   /*Setif*/
+                true,   /*Aflou*/
+                false,  /*Sahara*/
+                false,  /*Fazzar*/
+                false,  /*Murzq*/
+                false,  /*Bengasi*/
+                true,   /*Sallum*/
+                true,   /*Tobruk*/
+                false,  /*Cairo*/
+                true,   /*Nile*/
+                false,  /*Sawhaj*/
+                true,   /*Crete*/
+                false,  /*Irish Sea*/
+                false,  /*North Sea*/
+                false,  /*Baltic Sea*/
+                false,  /*English  Channel*/
+                false,  /*Atlantic Ocean*/
+                false,  /*Bay of Biscay*/
+                false,  /*Gibraltar*/
+                false,  /*Western Mediterranean*/
+                false,  /*Gulf of Lyons*/
+                false,  /*Tyrrhenian Sea*/
+                false,  /*Ionian Sea*/
+                false,  /*Adriatic Sea*/
+                false,  /*Agean Sea*/
+                false,  /*Eastern Mediterranean*/
+                false,  /*Red Sea*/
+                false,  /*Lake Cherkassy*/
+                false,  /*West Black Sea*/
+                false   /*East Black Sea*/
         };
 
+
+        /**
+         * This for loop creates all of the country objects using
+         * the arrays of data that have been created.
+         */
         ArrayList<Country> tempCountries = new ArrayList<Country>();
         for (int i = 0; i < COUNTRY_NAME_LIST.length; i++) {
             TileType tileType;
@@ -262,6 +289,13 @@ public class MapCreation {
         return tempCountries;
     }
 
+    /*
+    * This sets the creates the borders for the countries to use. Again each country
+    * is referenced by its unique number until it has been added to the map.
+    * Sorry for each line being so long but there was really no other way to do it nicely.
+    * Output
+    *   returns an ArrayList of Country objects that now have borders set.
+    */
     private static ArrayList<Country> setBorders(ArrayList<Country> countries) {
         Border[] tempBorders = new Border[]{
                 new Border(countries.get(0), new Country[]{countries.get(6), countries.get(7), countries.get(35), countries.get(53), countries.get(57), countries.get(78), countries.get(72), countries.get(71), countries.get(70), countries.get(30), countries.get(2), countries.get(80), countries.get(97), countries.get(94), countries.get(86), countries.get(84)}),
@@ -334,7 +368,7 @@ public class MapCreation {
                 new Border(countries.get(67), new Country[]{countries.get(87), countries.get(66), countries.get(68), countries.get(65), countries.get(69), countries.get(89)}),
                 new Border(countries.get(68), new Country[]{countries.get(67), countries.get(69), countries.get(70), countries.get(71), countries.get(89), countries.get(73)}),
                 new Border(countries.get(69), new Country[]{countries.get(66), countries.get(67), countries.get(68), countries.get(70), countries.get(86)}),
-                new Border(countries.get(70), new Country[]{countries.get(69), countries.get(68), countries.get(71), countries.get(0)}),
+                new Border(countries.get(70), new Country[]{countries.get(69), countries.get(68), countries.get(71), countries.get(0), countries.get(86)}),
                 new Border(countries.get(71), new Country[]{countries.get(0), countries.get(70), countries.get(72), countries.get(68), countries.get(73)}),
                 new Border(countries.get(72), new Country[]{countries.get(73), countries.get(71), countries.get(78), countries.get(74), countries.get(0)}),
                 new Border(countries.get(73), new Country[]{countries.get(68), countries.get(89), countries.get(71), countries.get(72), countries.get(74), countries.get(64), countries.get(90)}),
@@ -370,6 +404,11 @@ public class MapCreation {
         return countries;
     }
 
+    /*
+    * This sets the initial occupation of countries for a new game.
+    * Output
+    *   The Team and UnitType fields are changed in each Country object.
+    */
     private static void setOccupiedBy(ArrayList<Country> countries) {
         countries.get(0).setOccupiedBy(Team.NULL, UnitType.EMPTY);
         countries.get(1).setOccupiedBy(Team.BRITAIN, UnitType.NAVY);

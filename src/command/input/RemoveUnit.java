@@ -9,9 +9,6 @@ import javax.swing.DefaultComboBoxModel;
 import map.Country;
 import map.UnitType;
 
-/**
- * Created by Hugh on 6/10/2015.
- */
 public class RemoveUnit extends Input implements ActionListener {
     InputBanner banner;
     Country country;
