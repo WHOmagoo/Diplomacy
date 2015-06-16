@@ -404,7 +404,7 @@ public class OrderResolver {
                     while (add.isStillInputting()) {
                     }
                 }
-                team.resetAddAndRmove();
+                team.resetAddAndRemove();
             }
         }
     }
