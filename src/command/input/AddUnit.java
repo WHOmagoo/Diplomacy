@@ -1,3 +1,13 @@
+/**
+ * AddUnit.java
+ * Assignment: Final Project
+ * Purpose: This was a culminating project that should
+ * show our knowledge of writing java code.
+ *
+ * @version 06/13/15
+ * @author Hugh McGough
+ */
+
 package command.input;
 
 import command.Info;
@@ -13,8 +23,14 @@ public class AddUnit extends Input implements ActionListener {
     InputBanner banner;
     Country country;
     Team team;
-    addUnitType addUnit = null;
+    AddUnitType addUnit = null;
 
+    /**
+     * The default constructor for this class
+     *
+     * @param banner the banner to add this to
+     * @param team   the team the needs to add units
+     */
     public AddUnit(InputBanner banner, Team team) {
         super(banner);
         this.banner = banner;
@@ -51,12 +67,20 @@ public class AddUnit extends Input implements ActionListener {
         }
     }
 
+    /**
+     * The action performed after action
+     *
+     * @param e the object that triggered this
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         firstAction(banner, this);
-        addUnit = new addUnitType(banner, team, (Country) getSelectedItem());
+        addUnit = new AddUnitType(banner, team, (Country) getSelectedItem());
     }
 
+    /**
+     * @return Will return true if it is still inputting, otherwise will return false
+     */
     public boolean isStillInputting() {
         try {
             return addUnit.isStillInputting();

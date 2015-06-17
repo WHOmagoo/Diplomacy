@@ -1,3 +1,13 @@
+/**
+ * SupportAttackInput.java
+ * Assignment: Final Project
+ * Purpose: This was a culminating project that should
+ * show our knowledge of writing java code.
+ *
+ * @version 06/13/15
+ * @author Hugh McGough
+ */
+
 package command.input;
 
 import command.InputBanner;
@@ -13,6 +23,11 @@ public class SupportAttackInput extends Input implements ActionListener{
     private InputBanner banner;
     private Support order;
 
+    /**
+     * The constructor for this class
+     *
+     * @param supporting the country that is being supported.
+     */
     public SupportAttackInput(Country supporting){
         super(supporting.getMap().getBanner());
         banner = supporting.getMap().getBanner();
@@ -27,6 +42,11 @@ public class SupportAttackInput extends Input implements ActionListener{
 
     }
 
+    /**
+     * The action performed on action, it will prompt users to submit the order
+     *
+     * @param e the object that triggered this method
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         order.setAttacking((Country) getSelectedItem());
@@ -36,10 +56,16 @@ public class SupportAttackInput extends Input implements ActionListener{
         //submit.startRollover();
     }
 
+    /**
+     * @return the order that this has edited
+     */
     public Order getOrder() {
         return order;
     }
 
+    /**
+     * @param order the order that this should be editing
+     */
     public void setOrder(Support order) {
         this.order = order;
     }

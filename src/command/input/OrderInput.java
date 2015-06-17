@@ -1,3 +1,13 @@
+/**
+ * OrderInput.java
+ * Assignment: Final Project
+ * Purpose: This was a culminating project that should
+ * show our knowledge of writing java code.
+ *
+ * @version 06/13/15
+ * @author Hugh McGough
+ */
+
 package command.input;
 
 import command.InputBanner;
@@ -7,7 +17,6 @@ import command.order.Order;
 import command.order.Support;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import map.Country;
 import map.Map;
@@ -18,10 +27,12 @@ public class OrderInput extends Input implements ActionListener {
     private InputBanner banner;
     private Order order;
 
-    public OrderInput(ArrayList<OrderType> possibleOrders, Map map) {
-        this(map, (OrderType[]) possibleOrders.toArray());
-    }
-
+    /**
+     * The constructor for this class
+     *
+     * @param map            the map that this is associated with
+     * @param possibleOrders the orders that this unit may execute
+     */
     public OrderInput(Map map, OrderType... possibleOrders) {
         super();
         banner = map.getBanner();
@@ -38,6 +49,11 @@ public class OrderInput extends Input implements ActionListener {
         addActionListener(this);
     }
 
+    /**
+     * The action performed for this object, will prompt for the next input
+     *
+     * @param e the object that triggered this
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         firstAction(banner);
@@ -54,10 +70,16 @@ public class OrderInput extends Input implements ActionListener {
         }
     }
 
+    /**
+     * @return the order that this input has made.
+     */
     public Order getOrder() {
         return order;
     }
 
+    /**
+     * @param order sets the order that this class will be adding on to
+     */
     public void setOrder(Support order){
         this.order = order;
     }

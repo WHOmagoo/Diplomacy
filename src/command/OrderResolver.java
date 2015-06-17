@@ -14,6 +14,11 @@ public class OrderResolver {
     private ArrayList<Order> orders = new ArrayList<Order>();
     private ArrayList<Country> countries = new ArrayList<Country>();
 
+    /**
+     * The constructor for this class, sets the countries that should be evaluated for orders
+     *
+     * @param countries the countries to be evaluated
+     */
     public OrderResolver(ArrayList<Country> countries) {
         this.countries = countries;
         orders = new ArrayList<Order>();
@@ -26,6 +31,9 @@ public class OrderResolver {
         }
     }
 
+    /**
+     * Calls all of the methods to resolve the orders.
+     */
     public void resolve() {
         if (orders.size() > 0) {
             ArrayList<Order> invalidOrders1 = cancelSomeOrders(getUnCanceledOrders(orders));
@@ -33,6 +41,9 @@ public class OrderResolver {
             Collections.sort(invalidOrders1);
             Collections.sort(invalidOrders2);
 
+            /**
+             * This will go in a loop until getUncanceledOrders does not return any new orders.
+             */
             while (!invalidOrders1.equals(invalidOrders2)) {
                 invalidOrders1 = cancelSomeOrders(getUnCanceledOrders(invalidOrders2));
                 invalidOrders2 = cancelSomeOrders(getUnCanceledOrders(invalidOrders1));
@@ -63,12 +74,22 @@ public class OrderResolver {
         }
     }
 
+    /**
+     * Resets all of the countries orders for the next turn.
+     */
     private void resetCountries() {
         for (Country c : countries) {
             c.resetOrder();
         }
     }
 
+    /**
+     * Gets all of the orders which have not been attacked or are attacked by orders that have
+     * already been verified as canceled.
+     *
+     * @param orders the list of orders that are not yet been considered valid
+     * @return
+     */
     private ArrayList<Order> getUnCanceledOrders(ArrayList<Order> orders) {
         ArrayList<Order> uncanceledOrders = new ArrayList<Order>();
         for(Order order : orders){
@@ -82,10 +103,17 @@ public class OrderResolver {
         return uncanceledOrders;
     }
 
+    /**
+     * Will look through all of the orders to see if any of the other orders cancel it, an order is
+     * canceled by being attacked by an attack with its validity of true or unknown (null).
+     *
+     * @param order the order that is in question
+     * @return true if it is canceled by an attack false otherwise
+     */
     private boolean isCanceled(Order order) {
-        for(Order o : orders){
-            if(o instanceof Attack){
-                Attack attack = (Attack) o;
+        for (Order otherOrder : orders) {
+            if (otherOrder instanceof Attack) {
+                Attack attack = (Attack) otherOrder;
                 if (attack.getAttacking() == order.orderFrom() && attack.isValid() != Boolean.FALSE) {
                         return true;
                 }
@@ -94,6 +122,12 @@ public class OrderResolver {
         return false;
     }
 
+    /**
+     * Cancels the orders that have been attacked by uncanceled orders.
+     *
+     * @param executableOrders An ArrayList of orders that are not canceled
+     * @return returns the list of orders that have still not yet been validated
+     */
     private ArrayList<Order> cancelSomeOrders(ArrayList<Order> executableOrders) {
         ArrayList<Order> invalidOrders = new ArrayList<>();
         for (Order order : executableOrders) {
@@ -115,6 +149,12 @@ public class OrderResolver {
         return invalidOrders;
     }
 
+    /**
+     * Will cancel attacks if 2 or more countries attack each other. This scenario is not caught by
+     * the getUncanceled orders because all the countries in the loop are considered as canceled
+     * because it has been attacked by an attack of unknown validity. This sets them as invalid and
+     * also marks that they attacked in a circle.
+     */
     private void catchAttackLoop() {
         for(Order order : orders){
             if (order instanceof Attack) {
@@ -143,6 +183,10 @@ public class OrderResolver {
         }
     }
 
+    /**
+     * This is the same as the catchAttackLoop scenario except that it sets the move orders as valid
+     * because they don't cancel each others moves like the attacks do.
+     */
     private void catchMoveLoop() {
         for (Order order : orders) {
             if (order instanceof Move) {
@@ -167,6 +211,10 @@ public class OrderResolver {
         }
     }
 
+    /**
+     * Calculates the defense powers by adding to the defense power 1 point for each valid defend
+     * move. Will also set the defend moves as succeeded if the defense power was raised.
+     */
     private void calculateDefensePowers() {
         for (Order order : orders) {
             if (order instanceof Defend) {
@@ -177,6 +225,13 @@ public class OrderResolver {
         }
     }
 
+    /**
+     * This takes the support orders and attempts to add to the attack power 1 point per support
+     * helping the attack, will also set the order as succeeded if the support successfully
+     * increased the attack power of the country it was supporting, after that it takes all of the
+     * attack orders and see if the attack power is greater than the defense power of the country it
+     * is attacking.
+     */
     private void calculateAttackPowers() {
         for (Order order : orders) {
             if (Boolean.TRUE == order.isValid()) {
@@ -200,6 +255,11 @@ public class OrderResolver {
 
     }
 
+    /**
+     * Will go through all of the Attack orders and see if there are multiple countries that have
+     * attacked the same country, if they both attack with the same power then they are both bounced
+     * (Order is canceled) otherwise the country with the lesser attack power is canceled.
+     */
     private void identifyAttackBounces() {
         for (Order order : orders) {
             if (order instanceof Attack) {
@@ -223,6 +283,11 @@ public class OrderResolver {
         }
     }
 
+    /**
+     * This identifies all the move orders that are moving to where another unit is moving to, a
+     * move can be bounced by another successful move order to the same Country or another move to
+     * the same country.
+     */
     private void identifyMoveBounces() {
         for (Order order : orders) {
             if (order instanceof Move) {
@@ -256,6 +321,9 @@ public class OrderResolver {
         }
     }
 
+    /**
+     * This fails all of the moves that bounced by setting them as succeeded to false
+     */
     private void failBounced() {
         for (Order order : orders) {
             if (order.isBounced()) {
@@ -264,6 +332,11 @@ public class OrderResolver {
         }
     }
 
+    /**
+     * This goes through all of the move commands and will only set the move orders that are not
+     * bounced and that are moving to an unoccupied area to successful, or a move moving to another
+     * successful move.
+     */
     private void calculateMoves() {
         ArrayList<Move> moves = new ArrayList<Move>();
 
@@ -278,6 +351,11 @@ public class OrderResolver {
         ArrayList<Move> move1 = moves;
         ArrayList<Move> move2 = new ArrayList<Move>();
 
+        /**
+         * This loop will iterate through all of the moves and reevaluate the move orders and will
+         * set some as successful if the conditions are met, once no more moves can be marked as
+         * successful, the two ArrayLists are equal and it exits.
+         */
         while (!move1.equals(move2)) {
             move2 = getSuccessfulMoves(move1);
             move1 = getSuccessfulMoves(move2);
@@ -286,6 +364,13 @@ public class OrderResolver {
         }
     }
 
+    /**
+     * This will go through the input and will mark the move orders that are moving to empty
+     * countries or moving to successful moving countries, and return the move orders that have not
+     * yet been set as successful.
+     * @param moves the move orders that have not yet been set to successful
+     * @return the move orders that have not yet been evaluated.
+     */
     private ArrayList<Move> getSuccessfulMoves(ArrayList<Move> moves) {
         for (Move move : moves) {
             if (!move.isBounced()) {
@@ -317,6 +402,12 @@ public class OrderResolver {
         return stillNeedVerification;
     }
 
+    /**
+     * This will check to make sure that all of the move orders that were moveLooped are still valid
+     * and that one's order was not canceled.
+     * @param move the move order that is to be evaluated
+     * @return a boolean true if it is still valid otherwise false
+     */
     public boolean moveLoopIsValid(Move move) {
         Country original = move.orderFrom();
         Country other = move.getMovingTo();
@@ -339,16 +430,38 @@ public class OrderResolver {
         }
     }
 
+    /**
+     * This will move the units on the map to their new locations.
+     */
     private void moveUnits() {
         Map map = orders.get(0).orderFrom().getMap();
+
+        //The first to move are orders that attack an empty country, or a scoringCountry
         ArrayList<Country> movesFirst = new ArrayList<Country>();
+
+        /*The second to move is orders that move to an empty country, or a country that will be
+            moved above*/
         ArrayList<Country> movesSecond = new ArrayList<Country>();
+
+        //The third is to move orders that are moveLooped
         ArrayList<Country> movesThird = new ArrayList<Country>();
+
+        //The fourth is to move orders that are moving to countries that have move orders
         ArrayList<Country> movesFourth = new ArrayList<Country>();
+
+        /*The fifth is to relocate countries that have been successfully attacked but occupy a non
+            point scoring country*/
         ArrayList<Country> movesFifth = new ArrayList<Country>();
+
+        /*The sixth is to move countries that have successfully attacked a non ScoringCountry
+        occupied country.*/
         ArrayList<Country> movesSixth = new ArrayList<Country>();
+
+        /*The seventh is to move countries that have move orders to countries that have successfully
+            attacked a non ScoringCountry.*/
         ArrayList<Country> movesSeventh = new ArrayList<Country>();
 
+        //Iterates through all of the orders and sorts them into the proper ArrayList
         for (Order o : orders) {
             if (o.succeeds()) {
                 if (o instanceof Attack) {
@@ -376,6 +489,7 @@ public class OrderResolver {
             }
         }
 
+        //Moves the units through their respective methods
         map.moveUnits(movesFirst);
         map.moveUnits(movesSecond);
         this.moveLoopedUnits(movesThird);
@@ -386,6 +500,7 @@ public class OrderResolver {
 
         refreshTeamScores();
 
+        //Prompts users to remove units if applicable
         for (Team team : Team.values()) {
             if (team != Team.NULL) {
                 for (int i = 0; i < team.getUnitsToRemove(); i++) {
@@ -397,6 +512,7 @@ public class OrderResolver {
             }
         }
 
+        //Prompts users to select where to add their new units if applicable
         for (Team team : Team.values()) {
             if (team != Team.NULL) {
                 for (int i = 0; i < team.getUnitsToAdd(); i++) {
@@ -409,6 +525,9 @@ public class OrderResolver {
         }
     }
 
+    /**
+     * Finds out if a team needs to add or remove units after the units have been moved.
+     */
     private void refreshTeamScores() {
         for (Team team : Team.values()) {
             team.recalculateCountriesControlled(countries);
@@ -416,6 +535,11 @@ public class OrderResolver {
         }
     }
 
+    /**
+     * This moves the units that were marked as moveLooped, it uses a special method from the map
+     * class to move them.
+     * @param loopedCountries the countries that are moveLooped
+     */
     private void moveLoopedUnits(ArrayList<Country> loopedCountries) {
         while (loopedCountries.size() > 0) {
             Map map = loopedCountries.get(0).getMap();
@@ -441,6 +565,11 @@ public class OrderResolver {
         }
     }
 
+    /**
+     * This is where the stuff happens to prompt the user to relocate their unit when it was
+     * attacked
+     * @param unitsToRelocate the units that have been attacked and need relocation
+     */
     private void relocateUnits(ArrayList<Country> unitsToRelocate) {
         final ArrayList<Country> allUnitsToRelocate = unitsToRelocate;
 
@@ -463,7 +592,10 @@ public class OrderResolver {
         }
     }
 
-    //This is only intended for bug testing
+
+    /**
+     * This method is to print the commands and is not intended for use in the final product
+     */
     private void printCommands() {
         System.out.println("========================");
         System.out.println("========================");
@@ -474,6 +606,12 @@ public class OrderResolver {
         System.out.println("========================");
     }
 
+    /**
+     * Will take in an ArrayList of countries that have been relocated and then it will evaluate if
+     * two countries moves were bounced, it returns the countries that still need to be relocated
+     * @param countriesToRelocate The countries that have entered relocation orders
+     * @return an ArrayList of countries that still need to be relocated because of an order bounce
+     */
     public ArrayList<Country> wasMoveBounced(ArrayList<Country> countriesToRelocate) {
         ArrayList<Country> moveWasBounced = new ArrayList<Country>();
         for (Country c : countriesToRelocate) {
@@ -493,6 +631,12 @@ public class OrderResolver {
 
     }
 
+    /**
+     * This is the method that moves the units that are moving to countries that are occupied by
+     * successful move orders. It starts with the order that is moving to an unoccupied area and
+     * keeps going until all units have been moved
+     * @param movingToAnotherMove an ArrayList of countries that still need to be moved
+     */
     private void moveMovingToMove(ArrayList<Country> movingToAnotherMove) {
         ArrayList<Country> temp;
         do {
@@ -508,14 +652,9 @@ public class OrderResolver {
             for (Country c : temp) {
                 movingToAnotherMove.remove(c);
             }
-
-            updateGraphics(temp);
+            if (temp.size() > 0) {
+                temp.get(0).getMap().moveUnits(temp);
+            }
         } while (temp.size() > 0);
-    }
-
-    public void updateGraphics(ArrayList<Country> countries) {
-        if (orders.size() > 0) {
-            orders.get(0).orderFrom().getMap().moveUnits(countries);
-        }
     }
 }

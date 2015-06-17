@@ -1,3 +1,13 @@
+/**
+ * RemoveUnit.java
+ * Assignment: Final Project
+ * Purpose: This was a culminating project that should
+ * show our knowledge of writing java code.
+ *
+ * @version 06/13/15
+ * @author Hugh McGough
+ */
+
 package command.input;
 
 import command.Info;
@@ -14,6 +24,12 @@ public class RemoveUnit extends Input implements ActionListener {
     Country country;
     private volatile boolean isStillInputting = true;
 
+    /**
+     * The constructor for this class
+     *
+     * @param banner           the banner to add this to.
+     * @param teamToRemoveTile the team that is removing a tile
+     */
     public RemoveUnit(InputBanner banner, Team teamToRemoveTile) {
         super(banner);
         this.banner = banner;
@@ -45,6 +61,11 @@ public class RemoveUnit extends Input implements ActionListener {
         }
     }
 
+    /**
+     * The action event that is triggered on action
+     *
+     * @param e the object that triggered the action
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         firstAction(banner, this);
@@ -60,6 +81,9 @@ public class RemoveUnit extends Input implements ActionListener {
         lastAction(banner, submit);
     }
 
+    /**
+     * @return will return true if the order has not yet been submitted, otherwise false
+     */
     public boolean isStillInputting() {
         return isStillInputting;
     }

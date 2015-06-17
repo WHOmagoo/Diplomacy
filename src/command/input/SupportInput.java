@@ -1,3 +1,13 @@
+/**
+ * SupportInput.java
+ * Assignment: Final Project
+ * Purpose: This was a culminating project that should
+ * show our knowledge of writing java code.
+ *
+ * @version 06/13/15
+ * @author Hugh McGough
+ */
+
 package command.input;
 
 import command.Info;
@@ -14,6 +24,11 @@ public class SupportInput extends Input implements ActionListener{
     private InputBanner banner;
     private Support order;
 
+    /**
+     * The constructor for this class
+     *
+     * @param banner the banner to add this to
+     */
     public SupportInput(InputBanner banner){
         super(banner);
         this.banner = banner;
@@ -29,6 +44,11 @@ public class SupportInput extends Input implements ActionListener{
         addActionListener(this);
     }
 
+    /**
+     * The action performed on action, this should prompt users for the next input
+     *
+     * @param e the object that triggered this
+     */
     public void actionPerformed(ActionEvent e){
         super.firstAction(banner);
         Info supportAttackInfo = new Info("attack on");
@@ -39,10 +59,19 @@ public class SupportInput extends Input implements ActionListener{
         lastAction(banner, supportAttack);
     }
 
+    /**
+     * @return the order that this has edited
+     */
     public Order getOrder() {
         return order;
     }
 
+    /**
+     * Sets the order that this should be editing
+     *
+     * @param order sets the order that this should Input should edit
+     * @throws ClassCastException
+     */
     public void setOrder(Order order) throws ClassCastException{
         this.order = (Support) order;
     }
