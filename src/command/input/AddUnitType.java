@@ -1,3 +1,13 @@
+/**
+ * AddUnitType.java
+ * Assignment: Final Project
+ * Purpose: This was a culminating project that should
+ * show our knowledge of writing java code.
+ *
+ * @version 06/13/15
+ * @author Hugh McGough
+ */
+
 package command.input;
 
 import command.InputBanner;
@@ -9,13 +19,20 @@ import map.Country;
 import map.TileType;
 import map.UnitType;
 
-public class addUnitType extends Input implements ActionListener {
+public class AddUnitType extends Input implements ActionListener {
     InputBanner banner;
     Country locationAdding;
     Team team;
     private volatile boolean isStillInputting = true;
 
-    public addUnitType(InputBanner banner, Team team, Country locationPicked) {
+    /**
+     * The unit type to be added
+     *
+     * @param banner         the banner to display this to
+     * @param team           the team that is adding a unit
+     * @param locationPicked where the team is adding a unit
+     */
+    public AddUnitType(InputBanner banner, Team team, Country locationPicked) {
         super(banner);
         this.banner = banner;
         this.team = team;
@@ -43,6 +60,11 @@ public class addUnitType extends Input implements ActionListener {
         }
     }
 
+    /**
+     * The action performed on action
+     *
+     * @param e the object that triggered it
+     */
     public void actionPerformed(ActionEvent e) {
         firstAction(banner, this);
         Submit submit = new Submit(banner);
@@ -57,6 +79,9 @@ public class addUnitType extends Input implements ActionListener {
         lastAction(banner, submit);
     }
 
+    /**
+     * @return will return true if the user is still submitting their orders, otherwise false
+     */
     public boolean isStillInputting() {
         return isStillInputting;
     }
