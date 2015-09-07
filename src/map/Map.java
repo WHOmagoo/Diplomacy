@@ -76,10 +76,37 @@ public class Map extends JLabel implements Serializable {
      * Clears the old input from the input banner
      */
     public void clearOldInput(){
+
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                banner.clearAll();
+            }
+        };
+        Thread thread = new Thread(run);
+
         try {
-            banner.clearAll();
+            System.out.println(banner.size());
+            if (banner.size() != 0) {
+                banner.clearAll();
+                Info info = new Info("Order not entered");
+                info.setLocation(0, 0);
+                add(info);
+                repaint(info.getBounds());
+                //banner.setLastVisible(info);
+                System.out.println("order was not entered");
+                thread.start();
+            } else {
+                banner.clearAll();
+            }
         } catch (NullPointerException npe){
         }
+
         banner = new InputBanner(this);
     }
 
