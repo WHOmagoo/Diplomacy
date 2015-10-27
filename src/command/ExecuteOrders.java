@@ -55,17 +55,20 @@ public class ExecuteOrders extends RolloverButton implements ActionListener, Run
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!ted.isAlive()) {
-            map.getBanner().clearAll();
+            try {
+                map.getBanner().clearAll();
+            } catch (NullPointerException n) {
+            }
             ted = new Thread(this);
             ted.start();
         }
 
         //TODO implement later;
-        /*try {
+        try {
             saveMap.writeObject(map);
         } catch (IOException e1) {
             e1.printStackTrace();
-        }*/
+        }
     }
 
     /**

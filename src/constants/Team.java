@@ -29,7 +29,7 @@ public enum Team {
 
     EASTERN_EUROPE(new ImageIcon[]
             {
-                    new ImageIcon("files\\Austria\\EasterEuropearmy.png"),
+                    new ImageIcon("files\\Austria\\EasternEuropearmy.png"),
                     new ImageIcon("files\\Austria\\EasternEuropearmyrollover.png"),
                     new ImageIcon("files\\Austria\\EasternEuropearmyclick.png"),
                     new ImageIcon("files\\Austria\\EasternEuropenavy.png"),
