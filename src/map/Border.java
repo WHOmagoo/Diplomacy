@@ -10,10 +10,14 @@
 
 package map;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Border extends ArrayList<Country> {
+public class Border extends ArrayList<Country> implements Serializable {
     private Country country;
 
     /**
@@ -69,5 +73,19 @@ public class Border extends ArrayList<Country> {
      */
     public Country getCountry() {
         return country;
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException, ClassNotFoundException {
+        for (Country c : this) {
+            out.writeUTF(c.toString());
+        }
+        out.writeUTF("\0");
+        out.write(null);
+
+    }
+
+    private void readObject(ObjectInputStream in) {
+        while (true) {
+        }
     }
 }

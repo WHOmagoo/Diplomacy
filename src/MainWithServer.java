@@ -16,7 +16,7 @@ public class MainWithServer {
 
     public static void connectToServer() {
         try {
-            ConnectToServer b = new ConnectToServer();
+            ConnectToServer.ConnectToServer();
         } catch (IOException e) {
             e.printStackTrace();
         }

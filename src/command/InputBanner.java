@@ -121,7 +121,7 @@ public class InputBanner extends ArrayList<JComponent> {
     public void setLastVisible(JComponent item){
         if(getIndex(item) == -1){
             add(item);
-            System.out.println("adding " + item);
+            //TODO fix this System.out.println("adding " + item);
         }
 
         setLastVisible(getIndex(item));

@@ -1,7 +1,8 @@
 package map;
 
-public class SecondDegreeBorder extends Border {
+import java.io.Serializable;
 
+public class SecondDegreeBorder extends Border implements Serializable {
     /**
      * This is the constructor for this class, this will take the regular borders of a country and
      * add the borders of the regular borders to this object.
@@ -20,3 +21,4 @@ public class SecondDegreeBorder extends Border {
         }
     }
 }
+

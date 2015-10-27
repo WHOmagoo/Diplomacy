@@ -19,21 +19,23 @@ import constants.Team;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.JButton;
 import javax.swing.border.EmptyBorder;
 
-public class Country extends JButton implements ActionListener, Comparable {
+public class Country extends JButton implements ActionListener, Comparable, Serializable {
     public static final long serialVersionUID = 8139L;
     private String name;
-    private Border borders;
-    private SecondDegreeBorder secondDegreeBorders;
+    private Border borders; //TODO implement Serialized
+    private transient SecondDegreeBorder secondDegreeBorders;
     private Team team = Team.NULL;
     private UnitType unitType = UnitType.EMPTY;
     private TileType tileType;
     private Point originalLocation;
-    private Map mapAssociation;
+    private transient Map mapAssociation;
     private Order order = new Hold(this);
 
     Country() {
@@ -43,7 +45,6 @@ public class Country extends JButton implements ActionListener, Comparable {
         setContentAreaFilled(false);
         addActionListener(this);
     }
-
     /**
      * This is the default constructor for the Country object.
      * Parameters
@@ -519,19 +520,25 @@ public class Country extends JButton implements ActionListener, Comparable {
         mapAssociation.addToInputBanner(orderInput);
     }
 
-    /**
-     * These methods have not yet been fully implemented and are intended for use once the server
-     *  and save system has been implemented
-     * private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-     *    out.writeObject(name);
-     *    out.writeObject(team);
-     *    out.writeObject(unitType);
-     * }
-     *
-     * private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-     *    name = (String) in.readObject();
-     *    team = (Team) in.readObject();
-     *    unitType = (UnitType) in.readObject();
-     * }
-     */
+
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.writeObject(name);
+        out.writeObject(tileType);
+        out.writeObject(team);
+        out.writeObject(unitType);
+        out.writeObject(borders);
+        out.writeObject(originalLocation);
+        out.write(null);
+        out.close();
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        name = (String) in.readObject();
+        tileType = (TileType) in.readObject();
+        team = (Team) in.readObject();
+        unitType = (UnitType) in.readObject();
+        borders = (Border) in.readObject();
+        originalLocation = (Point) in.readObject();
+        in.close();
+    }
 }

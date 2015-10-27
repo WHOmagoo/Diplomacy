@@ -13,12 +13,18 @@ package command;
 import constants.RolloverButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import map.Country;
 import map.Map;
 
 public class ExecuteOrders extends RolloverButton implements ActionListener, Runnable {
     Thread ted = new Thread(this);
     private Map map;
+    private ObjectOutputStream saveMap;
+    private FileOutputStream file;
 
     /**
      * The constructor for an ExecuteOrder, pre sets everything it needs.
@@ -28,6 +34,14 @@ public class ExecuteOrders extends RolloverButton implements ActionListener, Run
     public ExecuteOrders(Map map) {
         super("Execute Orders");
         this.map = map;
+        try {
+            file = new FileOutputStream("Save.dat");
+            saveMap = new ObjectOutputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         setLocation(57, 726);
         setSize(getFontMetrics(getFont()).stringWidth(getText()) + 13, 25);
         addActionListener(this);
@@ -45,6 +59,13 @@ public class ExecuteOrders extends RolloverButton implements ActionListener, Run
             ted = new Thread(this);
             ted.start();
         }
+
+        //TODO implement later;
+        /*try {
+            saveMap.writeObject(map);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }*/
     }
 
     /**

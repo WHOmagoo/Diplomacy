@@ -66,7 +66,7 @@ public class OrderResolver {
             calculateMoves();
             moveUnits();
             resetCountries();
-            printCommands();
+            //TODO fix this printCommands();
         } else {
             System.out.println("|======================|");
             System.out.println("|No orders were entered|");

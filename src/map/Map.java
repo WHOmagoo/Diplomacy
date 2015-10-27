@@ -20,6 +20,9 @@ import command.order.Move;
 import command.order.Order;
 import constants.RolloverButton;
 import constants.Team;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,10 +31,11 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 public class Map extends JLabel implements Serializable {
+    public static final long serialVersionUID = 8140L;
     private ArrayList<Country> countries = new ArrayList<Country>();
-    private JLabel text = new JLabel();
-    private Country lastCountryClicked;
-    private InputBanner banner;
+    private transient JLabel text = new JLabel();
+    private transient Country lastCountryClicked;
+    private transient InputBanner banner;
 
     /**
      * This is the constructor for the Map class, it just needs to know the countries that it needs
@@ -91,7 +95,7 @@ public class Map extends JLabel implements Serializable {
         Thread thread = new Thread(run);
 
         try {
-            System.out.println(banner.size());
+            //TODO fix this System.out.println(banner.size());
             if (banner.size() != 0) {
                 banner.clearAll();
                 Info info = new Info("Order not entered");
@@ -99,7 +103,7 @@ public class Map extends JLabel implements Serializable {
                 add(info);
                 repaint(info.getBounds());
                 //banner.setLastVisible(info);
-                System.out.println("order was not entered");
+                //TODO fix this System.out.println("order was not entered");
                 thread.start();
             } else {
                 banner.clearAll();
@@ -501,5 +505,15 @@ public class Map extends JLabel implements Serializable {
         for (Team team : Team.values()) {
             team.recalculateCountriesControlled(countries);
         }
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException, ClassNotFoundException {
+        out.writeLong(serialVersionUID);
+        out.writeObject(countries);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.readLong();
+        countries = (ArrayList<Country>) in.readObject();
     }
 }
